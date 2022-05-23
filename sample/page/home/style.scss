@@ -1,0 +1,7 @@
+$fontSize: 13px;
+
+h1 {
+  background-color: darkgray;
+  border: solid 1px red;
+  font-size: $fontSize * 2;
+}

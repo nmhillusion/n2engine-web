@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "sourceRoot": "./src",
+    "sourceMap": true,
+    "target": "ES5",
+    "charset": "utf8",
+    "alwaysStrict": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "pretty": true,
+    "rootDir": "./",
+  },
+}

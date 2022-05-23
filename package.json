@@ -1,0 +1,27 @@
+{
+  "name": "n2engine-web",
+  "version": "1.0.0",
+  "description": "Tool to render (pug|scss|typescript|assets) to (html|css|javascript|assets)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "tsc-user": "tsc --project user.tsconfig.json"
+  },
+  "keywords": [
+    "nmhillusion",
+    "engine"
+  ],
+  "author": "nmhillusion",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.35",
+    "@types/node-sass": "^4.11.2",
+    "@types/pug": "^2.0.6",
+    "@types/shelljs": "^0.8.11",
+    "node-sass": "^7.0.1",
+    "pug": "^3.0.2",
+    "shelljs": "^0.8.5",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.6.4"
+  }
+}

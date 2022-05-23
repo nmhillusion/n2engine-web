@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ES5",
+    "charset": "utf8",
+    "alwaysStrict": true,
+    "declaration": true,
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "pretty": true,
+    "rootDir": "./"
+  },
+  "files": ["./sample/page/home/index.ts"]
+}
