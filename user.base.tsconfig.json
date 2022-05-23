@@ -10,5 +10,5 @@
     "pretty": true,
     "rootDir": "./"
   },
-  "files": ["./sample/page/home/index.ts"]
+  "files": []
 }

@@ -2,3 +2,4 @@ node_modules/
 sampleDist/
 dist/
 package-lock.json
+user.tsconfig.json
