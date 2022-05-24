@@ -1,5 +1,5 @@
 {
-  "name": "n2engine-web",
+  "name": "@nmhillusion/n2engine-web",
   "version": "1.0.0",
   "description": "Tool to render (pug|scss|typescript|assets) to (html|css|javascript|assets)",
   "main": "index.js",
@@ -23,5 +23,12 @@
     "shelljs": "^0.8.5",
     "ts-node": "^10.8.0",
     "typescript": "^4.6.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nmhillusion/n2engine-web.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }
