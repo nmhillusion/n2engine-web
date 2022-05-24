@@ -11,6 +11,9 @@
     "module": "CommonJS",
     "outDir": "./dist",
     "pretty": true,
-    "rootDir": "./",
+    "rootDir": "./src",
   },
+  "include": [
+    "src/**/*"
+  ]
 }
