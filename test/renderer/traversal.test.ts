@@ -1,15 +1,18 @@
+import * as fs from "fs";
 import { TraversalWorkspace } from "../../src/renderer/TraversalWorkspace";
 
 const traversalWorkspace = new TraversalWorkspace();
+const startDir = fs.realpathSync(__dirname + "/../../sample");
 
 test("test traversal", function () {
   traversalWorkspace.registerCallback({
     invoke(filePath: string) {
       expect(filePath).toBeTruthy();
-      
-      console.log("[testing]", { filePath });
+      expect(filePath.startsWith(startDir)).toBeTruthy();
+
+      console.log("[pass traversal]", { filePath });
     },
   });
 
-  traversalWorkspace.traversalPath(__dirname + "/../../sample");
+  traversalWorkspace.traversalPath(startDir);
 });
