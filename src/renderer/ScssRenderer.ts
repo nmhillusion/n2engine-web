@@ -10,6 +10,8 @@ export class ScssRenderer extends Renderable {
 
   protected doRender(filePath: string, rootDir: string, outDir: string) {
     if (filePath.endsWith(".scss")) {
+      console.log("[scss] render: ", filePath);
+
       const { css } = sass.renderSync({
         file: filePath,
       });

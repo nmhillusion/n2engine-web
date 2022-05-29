@@ -1,5 +1,4 @@
 export interface RenderConfig {
-  baseDir: string;
   rootDir: string;
   outDir: string;
   pug: {

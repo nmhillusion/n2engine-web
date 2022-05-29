@@ -23,8 +23,7 @@ export class Renderer {
   private registerForRenderer(renderer: Renderable) {
     renderer?.registerRender(
       this.renderConfig.rootDir,
-      this.renderConfig.outDir,
-      this.renderConfig.baseDir
+      this.renderConfig.outDir
     );
   }
 

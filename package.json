@@ -9,8 +9,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsc",
-    "tsc-user": "tsc --project user.tsconfig.json"
+    "build": "tsc"
   },
   "keywords": [
     "nmhillusion",

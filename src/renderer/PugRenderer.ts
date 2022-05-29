@@ -47,6 +47,8 @@ export class PugRenderer extends Renderable {
 
   protected doRender(filePath: string, rootDir: string, outDir: string) {
     if (filePath.endsWith(".pug")) {
+      console.log("[pug] render: ", filePath);
+
       let rendered = pug.renderFile(filePath, {
         pretty: true,
       });
