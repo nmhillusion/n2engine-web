@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as shelljs from "shelljs";
 
 import { Renderable } from "./Renderable";
-import { TraversalWorkspace } from "./TraversalWorkspace";
 import { WORKSPACE_DIR } from "../index";
 
 export class TypeScriptRenderer extends Renderable {
@@ -10,10 +9,6 @@ export class TypeScriptRenderer extends Renderable {
     WORKSPACE_DIR + "/user.tsconfig.json";
   private readonly userBaseTsConfigPath: string =
     WORKSPACE_DIR + "/user.base.tsconfig.json";
-
-  constructor(traversaler: TraversalWorkspace) {
-    super(traversaler);
-  }
 
   private readUserTsConfigFile() {
     return fs.readFileSync(this.userBaseTsConfigPath).toString();

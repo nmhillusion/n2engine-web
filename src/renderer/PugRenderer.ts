@@ -1,17 +1,12 @@
 import * as pug from "pug";
 import { FileSystemHelper } from "./FileSystemHelper";
 import { Renderable } from "./Renderable";
-import { TraversalWorkspace } from "./TraversalWorkspace";
 
 export class PugRenderer extends Renderable {
   private readonly PATTERN__LINK_SCSS =
     /<link(?:.+?)href=(?:'|")(?:.+?)(\.scss)(?:'|")(?:.*?)>/;
   private readonly PATTERN__LINK_TS =
     /<script(?:.+?)src=(?:'|")(?:.+?)(\.ts)(?:'|")(?:.*?)>/;
-
-  constructor(traversaler: TraversalWorkspace) {
-    super(traversaler);
-  }
 
   private renameForImportScss(content: string): string {
     const matches = content.matchAll(new RegExp(this.PATTERN__LINK_SCSS, "gi"));
