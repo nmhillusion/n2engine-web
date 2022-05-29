@@ -5,8 +5,7 @@ import { Renderable } from "./Renderable";
 import { TraversalWorkspace } from "./TraversalWorkspace";
 
 export class TypeScriptRenderer extends Renderable {
-  private readonly userTsConfigPath: string =
-    __dirname + "/../../user.tsconfig.json";
+  private readonly userTsConfigPath: string = "./user.tsconfig.json";
   private readonly userBaseTsConfigPath: string =
     __dirname + "/../../user.base.tsconfig.json";
 
@@ -31,7 +30,7 @@ export class TypeScriptRenderer extends Renderable {
       tsConfig.compilerOptions.outDir = outDir;
       this.writeUserTsConfigFile(JSON.stringify(tsConfig));
 
-      shelljs.exec("npm run tsc-user");
+      shelljs.exec("tsc --project ./user.tsconfig.json");
     }
   }
 }

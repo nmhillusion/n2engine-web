@@ -1,4 +1,4 @@
-import { RenderConfig } from "model/RenderConfig";
+import { RenderConfig } from "../model/RenderConfig";
 import { PugRenderer } from "./PugRenderer";
 import { Renderable } from "./Renderable";
 import { ScssRenderer } from "./ScssRenderer";

@@ -7,7 +7,6 @@
     "charset": "utf8",
     "alwaysStrict": true,
     "declaration": true,
-    "declarationDir": "./types",
     "declarationMap": true,
     "module": "CommonJS",
     "outDir": "./dist",

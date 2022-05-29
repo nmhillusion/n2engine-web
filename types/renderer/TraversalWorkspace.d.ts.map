@@ -1,1 +1,0 @@
-{"version":3,"file":"TraversalWorkspace.d.ts","sourceRoot":"./src/","sources":["renderer/TraversalWorkspace.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,4BAA4B,CAAC;AAE/D,qBAAa,kBAAkB;IAC7B,OAAO,CAAC,SAAS,CAA2B;IAE5C,OAAO,CAAC,WAAW;IAenB,OAAO,CAAC,mBAAmB;IAQpB,gBAAgB,CAAC,QAAQ,EAAE,iBAAiB;IAM5C,aAAa,CAAC,QAAQ,EAAE,MAAM;CAGtC"}

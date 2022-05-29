@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Tool to render (pug|scss|typescript|assets) to (html|css|javascript|assets)",
   "main": "dist/index.js",
-  "types": "types/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "./dist/"
   ],
   "scripts": {
     "test": "jest",
