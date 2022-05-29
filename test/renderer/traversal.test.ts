@@ -2,10 +2,14 @@ import { TraversalWorkspace } from "../../src/renderer/TraversalWorkspace";
 
 const traversalWorkspace = new TraversalWorkspace();
 
-traversalWorkspace.registerCallback({
-  invoke(filePath: string) {
-    console.log("[testing]", { filePath });
-  },
-});
+test("test traversal", function () {
+  traversalWorkspace.registerCallback({
+    invoke(filePath: string) {
+      expect(filePath).toBeTruthy();
+      
+      console.log("[testing]", { filePath });
+    },
+  });
 
-traversalWorkspace.traversalPath(__dirname + "/../../sample");
+  traversalWorkspace.traversalPath(__dirname + "/../../sample");
+});
