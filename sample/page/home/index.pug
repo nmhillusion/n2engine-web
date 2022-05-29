@@ -4,8 +4,10 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Document
+    title Home | {{ n2v:app.name }}
     link(rel="stylesheet", href="style.scss")
   body 
-
+    h1
+      .author {{ n2v:author.name }} ({{ n2v:author.gender}})
+      
     script(src="./index.ts", type="module") 
