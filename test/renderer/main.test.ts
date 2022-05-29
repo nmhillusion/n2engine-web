@@ -1,9 +1,9 @@
 import * as fs from "fs";
-import { Renderer } from "../../src/renderer/main";
+import { N2EngineRenderer } from "../../src/renderer/main";
 
 test("test renderer", function () {
   expect(() =>
-    new Renderer()
+    new N2EngineRenderer()
       .config({
         rootDir: fs.realpathSync(__dirname + "/../../sample"),
         outDir: fs.realpathSync(__dirname + "/../../sampleDist"),

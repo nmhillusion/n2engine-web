@@ -27,8 +27,6 @@ export class TypeScriptRenderer extends Renderable {
       tsConfig.compilerOptions.outDir = outDir;
       this.writeUserTsConfigFile(JSON.stringify(tsConfig));
 
-      console.log("PATH of WORKSPACE_DIR: ", WORKSPACE_DIR);
-
       shelljs.exec(
         `${WORKSPACE_DIR}/node_modules/.bin/tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`
       );

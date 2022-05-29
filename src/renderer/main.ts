@@ -6,7 +6,7 @@ import { ScssRenderer } from "./ScssRenderer";
 import { TraversalWorkspace } from "./TraversalWorkspace";
 import { TypeScriptRenderer } from "./TypeScriptRenderer";
 
-export class Renderer {
+export class N2EngineRenderer {
   private readonly traversalerRootDir: TraversalWorkspace;
   private readonly traversalerOutDir: TraversalWorkspace;
   private renderConfig: RenderConfig;
@@ -17,14 +17,14 @@ export class Renderer {
     this.traversalerOutDir = new TraversalWorkspace();
   }
 
-  public config(renderConfig: RenderConfig): Renderer {
+  public config(renderConfig: RenderConfig): N2EngineRenderer {
     if (renderConfig) {
       this.renderConfig = renderConfig;
     }
     return this;
   }
 
-  public setVariableFilePathToInject(path: string): Renderer {
+  public setVariableFilePathToInject(path: string): N2EngineRenderer {
     if (path) {
       this.__variableFilePathToInject = path;
     }
