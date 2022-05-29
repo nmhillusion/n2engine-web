@@ -5,3 +5,4 @@ export declare abstract class Renderable {
     registerRender(rootDir: string, outDir: string): void;
     protected abstract doRender(filePath: string, rootDir: string, outDir: string): any;
 }
+//# sourceMappingURL=Renderable.d.ts.map

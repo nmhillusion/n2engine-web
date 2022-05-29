@@ -4,3 +4,4 @@ export declare class ScssRenderer extends Renderable {
     constructor(traversaler: TraversalWorkspace);
     protected doRender(filePath: string, rootDir: string, outDir: string): void;
 }
+//# sourceMappingURL=ScssRenderer.d.ts.map

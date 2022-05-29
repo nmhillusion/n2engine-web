@@ -11,3 +11,4 @@ export interface RenderConfig {
         enabled: boolean;
     };
 }
+//# sourceMappingURL=RenderConfig.d.ts.map

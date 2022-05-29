@@ -6,3 +6,4 @@ export declare class TraversalWorkspace {
     registerCallback(callback: TraversalCallback): void;
     traversalPath(startDir: string): void;
 }
+//# sourceMappingURL=TraversalWorkspace.d.ts.map

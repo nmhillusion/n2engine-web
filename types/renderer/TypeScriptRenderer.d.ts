@@ -8,3 +8,4 @@ export declare class TypeScriptRenderer extends Renderable {
     private writeUserTsConfigFile;
     protected doRender(filePath: string, rootDir: string, outDir: string): void;
 }
+//# sourceMappingURL=TypeScriptRenderer.d.ts.map

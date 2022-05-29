@@ -7,3 +7,4 @@ export declare class Renderer {
     private registerForRenderer;
     render(): void;
 }
+//# sourceMappingURL=main.d.ts.map
