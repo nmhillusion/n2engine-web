@@ -1,9 +1,10 @@
+import * as fs from "fs";
 import { Renderer } from "../../src/renderer/main";
 
 new Renderer()
   .config({
-    rootDir: __dirname + "/../../sample",
-    outDir: __dirname + "/../../sampleDist",
+    rootDir: fs.realpathSync(__dirname + "/../../sample"),
+    outDir: fs.realpathSync(__dirname + "/../../sampleDist"),
     pug: {
       enabled: true,
     },
@@ -14,4 +15,7 @@ new Renderer()
       enabled: true,
     },
   })
+  .setVariableFilePathToInject(
+    fs.realpathSync(__dirname + "/../env/dev.env.json")
+  )
   .render();

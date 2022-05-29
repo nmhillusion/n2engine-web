@@ -8,7 +8,7 @@
     "./dist/"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "ts-node ./test/renderer/traversal.test.ts && ts-node ./test/renderer/main.test.ts",
     "build": "tsc"
   },
   "keywords": [

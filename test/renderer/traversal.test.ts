@@ -8,4 +8,4 @@ traversalWorkspace.registerCallback({
   },
 });
 
-traversalWorkspace.traversalPath("../../sample");
+traversalWorkspace.traversalPath(__dirname + "/../../sample");
