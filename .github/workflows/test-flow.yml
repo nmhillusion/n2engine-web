@@ -1,7 +1,7 @@
-name: tesk-task
+name: test-task
 on: [push]
 jobs:
-  check-bats-version:
+  test-task:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
