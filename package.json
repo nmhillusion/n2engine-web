@@ -1,11 +1,11 @@
 {
   "name": "@nmhillusion/n2engine-web",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Tool to render (pug|scss|typescript|assets) to (html|css|javascript|assets)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "./dist/**/*"
+    "dist/"
   ],
   "scripts": {
     "test": "jest",
