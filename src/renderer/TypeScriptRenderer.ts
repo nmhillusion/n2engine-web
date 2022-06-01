@@ -28,7 +28,8 @@ export class TypeScriptRenderer extends Renderable {
       this.writeUserTsConfigFile(JSON.stringify(tsConfig));
 
       shelljs.exec(
-        `${WORKSPACE_DIR}/node_modules/.bin/tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`
+        // `${WORKSPACE_DIR}/node_modules/.bin/tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`
+        `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`
       );
     }
   }
