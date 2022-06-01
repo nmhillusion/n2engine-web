@@ -1,7 +1,7 @@
-name: testing-project-task
-on: [push]
+name: publish-package-task
+on: [release]
 jobs:
-  testing-project-task:
+  publish-package-task:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -9,4 +9,5 @@ jobs:
         with:
           node-version: "16"
       - run: npm install
-      - run: npm test
+      - run: npm run build
+      - run: npm publish
