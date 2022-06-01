@@ -8,5 +8,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "16"
+          check-latest: true
       - run: npm install
       - run: npm test
