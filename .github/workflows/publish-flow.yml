@@ -8,11 +8,6 @@ on:
     types: [created]
 
 jobs:
-  prepare-env:
-    runs-on: ubuntu-latest
-    steps:
-    - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PUBLISH_TOKEN }}" > ./.npmrc
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -38,6 +33,7 @@ jobs:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
       - run: echo "Start publish package"
+      - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PUBLISH_TOKEN }}" > ./.npmrc
       - run: cat ./.npmrc
       - run: npm install
       - run: npm ci
