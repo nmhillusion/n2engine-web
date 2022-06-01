@@ -33,11 +33,11 @@ jobs:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
       - run: echo "Start publish package"
-      - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PUBLISH_TOKEN }}" > ./.npmrc
+      - run: echo "//npm.pkg.github.com/:_authToken=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" > ./.npmrc
       - run: cat ./.npmrc
       - run: npm install
       - run: npm ci
       - run: npm run build
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          NODE_AUTH_TOKEN: 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
