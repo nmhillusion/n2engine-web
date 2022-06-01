@@ -32,8 +32,10 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - run: echo "Start publish package"
-      - run: echo "//npm.pkg.github.com/:_authToken=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" > ./.npmrc
+      - run: |
+          echo "Start publish package"
+          echo "//npm.pkg.github.com/:_authToken=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" > .npmrc
+          echo "always-auth=true" >> .npmrc
       - run: cat ./.npmrc
       - run: npm install
       - run: npm ci
