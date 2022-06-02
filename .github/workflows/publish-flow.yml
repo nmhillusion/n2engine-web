@@ -45,4 +45,4 @@ jobs:
           npm publish
         env:
           # NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
-          NODE_AUTH_TOKEN: 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
+          NODE_AUTH_TOKEN: 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
