@@ -44,4 +44,4 @@ jobs:
           npm ci
           npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.publishEnvironment.PUBLISH_TOKEN }}
