@@ -9,5 +9,5 @@ jobs:
         with:
           node-version: "16"
           check-latest: true
-      - run: npm install
+      - run: npm ci
       - run: npm test
