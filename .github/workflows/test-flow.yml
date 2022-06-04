@@ -1,5 +1,9 @@
 name: testing-project-task
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - "releases/**"
 jobs:
   testing-project-task:
     runs-on: ubuntu-latest
@@ -9,5 +13,6 @@ jobs:
         with:
           node-version: "16"
           check-latest: true
+      - run: npm install
       - run: npm ci
       - run: npm test
