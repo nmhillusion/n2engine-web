@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { TraversalWorkspace } from "../../src/renderer/TraversalWorkspace";
+import { TraversalWorkspace } from "../../src/core/TraversalWorkspace";
 
 const traversalWorkspace = new TraversalWorkspace();
 const startDir = fs.realpathSync(__dirname + "/../../sample");

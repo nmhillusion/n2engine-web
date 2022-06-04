@@ -1,4 +1,4 @@
-import { TraversalWorkspace } from "./TraversalWorkspace";
+import { TraversalWorkspace } from "../core/TraversalWorkspace";
 
 export abstract class Renderable {
   constructor(private traversaler: TraversalWorkspace) {}

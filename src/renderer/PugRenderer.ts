@@ -1,5 +1,5 @@
 import * as pug from "pug";
-import { FileSystemHelper } from "./FileSystemHelper";
+import { FileSystemHelper } from "../helper/FileSystemHelper";
 import { Renderable } from "./Renderable";
 
 export class PugRenderer extends Renderable {

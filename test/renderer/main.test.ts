@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { N2EngineRenderer } from "../../src/renderer/main";
+import { BullEngine } from "../../src/core/BullEngine";
 
 test("test renderer", function () {
   const rootDir = __dirname + "/../../sample";
@@ -13,7 +13,7 @@ test("test renderer", function () {
   }
 
   expect(() =>
-    new N2EngineRenderer()
+    new BullEngine()
       .config({
         rootDir: fs.realpathSync(rootDir),
         outDir: fs.realpathSync(outDir),

@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { Renderable } from "./Renderable";
-import { TraversalWorkspace } from "./TraversalWorkspace";
+import { TraversalWorkspace } from "../core/TraversalWorkspace";
 
 export class InjectVariableRenderer extends Renderable {
   private variables = {};

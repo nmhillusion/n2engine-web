@@ -1,12 +1,12 @@
 import { RenderConfig } from "../model/RenderConfig";
-import { InjectVariableRenderer } from "./InjectVariableRenderer";
-import { PugRenderer } from "./PugRenderer";
-import { Renderable } from "./Renderable";
-import { ScssRenderer } from "./ScssRenderer";
+import { InjectVariableRenderer } from "../renderer/InjectVariableRenderer";
+import { PugRenderer } from "../renderer/PugRenderer";
+import { Renderable } from "../renderer/Renderable";
+import { ScssRenderer } from "../renderer/ScssRenderer";
 import { TraversalWorkspace } from "./TraversalWorkspace";
-import { TypeScriptRenderer } from "./TypeScriptRenderer";
+import { TypeScriptRenderer } from "../renderer/TypeScriptRenderer";
 
-export class N2EngineRenderer {
+export class BullEngine {
   private readonly traversalerRootDir: TraversalWorkspace;
   private readonly traversalerOutDir: TraversalWorkspace;
   private renderConfig: RenderConfig;
@@ -17,14 +17,14 @@ export class N2EngineRenderer {
     this.traversalerOutDir = new TraversalWorkspace();
   }
 
-  public config(renderConfig: RenderConfig): N2EngineRenderer {
+  public config(renderConfig: RenderConfig): BullEngine {
     if (renderConfig) {
       this.renderConfig = renderConfig;
     }
     return this;
   }
 
-  public setVariableFilePathToInject(path: string): N2EngineRenderer {
+  public setVariableFilePathToInject(path: string): BullEngine {
     if (path) {
       this.__variableFilePathToInject = path;
     }

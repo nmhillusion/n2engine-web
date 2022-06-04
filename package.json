@@ -1,7 +1,7 @@
 {
-  "name": "n2engine-web",
+  "name": "n2ngin-bull-engine",
   "version": "0.0.1",
-  "description": "Tool to render (pug|scss|typescript|assets) to (html|css|javascript|assets)",
+  "description": "n2engine series: BullEngine to render (pug|scss|typescript|assets|variables) to (html|css|javascript|assets)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsc",
-    "tag-version": "ts-node ./support/tag-version.ts"
+    "build": "ts-node ./support/generate-info.ts && tsc",
+    "tag-version": "npm run build && ts-node ./support/tag-version.ts"
   },
   "keywords": [
     "nmhillusion",
@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/nmhillusion/n2engine-web.git"
+    "url": "git://github.com/nmhillusion/n2ngin-bull-engine.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.com",

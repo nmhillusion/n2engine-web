@@ -1,5 +1,5 @@
 import * as sass from "node-sass";
-import { FileSystemHelper } from "./FileSystemHelper";
+import { FileSystemHelper } from "../helper/FileSystemHelper";
 import { Renderable } from "./Renderable";
 
 export class ScssRenderer extends Renderable {
