@@ -19,9 +19,15 @@ test("test renderer", function () {
         outDir: fs.realpathSync(outDir),
         pug: {
           enabled: true,
+          config: {
+            pretty: false,
+          },
         },
         scss: {
           enabled: true,
+          config: {
+            outputStyle: "compressed",
+          },
         },
         typescript: {
           enabled: true,

@@ -15,7 +15,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WORKSPACE_DIR = void 0;
-var fs = require("fs");
+const fs = require("fs");
 exports.WORKSPACE_DIR = fs.realpathSync(__dirname + "/..");
 __exportStar(require("./core/index"), exports);
 __exportStar(require("./model/index"), exports);

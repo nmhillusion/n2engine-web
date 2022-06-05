@@ -3,6 +3,7 @@ import * as shelljs from "shelljs";
 
 import { Renderable } from "./Renderable";
 import { WORKSPACE_DIR } from "../index";
+import { RenderConfig } from "../model";
 
 export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
@@ -18,19 +19,26 @@ export class TypeScriptRenderer extends Renderable {
     fs.writeFileSync(this.userTsConfigPath, data);
   }
 
-  protected doRender(filePath: string, rootDir: string, outDir: string) {
+  protected doRender(
+    filePath: string,
+    rootDir: string,
+    outDir: string,
+    renderConfig: RenderConfig
+  ) {
     if (filePath.endsWith(".ts")) {
       console.log("[typescript] render: ", filePath);
       const tsConfig = JSON.parse(this.readUserTsConfigFile());
       tsConfig.files = [filePath];
       tsConfig.compilerOptions.rootDir = rootDir;
       tsConfig.compilerOptions.outDir = outDir;
+
+      if (renderConfig?.typescript?.config) {
+        Object.assign(tsConfig, renderConfig?.typescript?.config);
+      }
+
       this.writeUserTsConfigFile(JSON.stringify(tsConfig));
 
-      shelljs.exec(
-        // `${WORKSPACE_DIR}/node_modules/.bin/tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`
-        `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`
-      );
+      shelljs.exec(`npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`);
     }
   }
 }

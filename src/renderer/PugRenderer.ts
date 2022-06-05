@@ -1,5 +1,6 @@
 import * as pug from "pug";
 import { FileSystemHelper } from "../helper/FileSystemHelper";
+import { RenderConfig } from "../model";
 import { Renderable } from "./Renderable";
 
 export class PugRenderer extends Renderable {
@@ -40,13 +41,24 @@ export class PugRenderer extends Renderable {
     return content;
   }
 
-  protected doRender(filePath: string, rootDir: string, outDir: string) {
+  protected doRender(
+    filePath: string,
+    rootDir: string,
+    outDir: string,
+    renderConfig: RenderConfig
+  ) {
     if (filePath.endsWith(".pug")) {
       console.log("[pug] render: ", filePath);
 
-      let rendered = pug.renderFile(filePath, {
+      const configToRender = {
         pretty: true,
-      });
+      };
+
+      if (renderConfig?.pug?.config) {
+        Object.assign(configToRender, renderConfig.pug.config);
+      }
+
+      let rendered = pug.renderFile(filePath, configToRender);
 
       rendered = this.renameForImportTs(rendered);
       rendered = this.renameForImportScss(rendered);

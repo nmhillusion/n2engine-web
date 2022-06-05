@@ -35,7 +35,8 @@ export class BullEngine {
   private registerForRenderer(renderer: Renderable) {
     renderer?.registerRender(
       this.renderConfig.rootDir,
-      this.renderConfig.outDir
+      this.renderConfig.outDir,
+      this.renderConfig
     );
   }
 
