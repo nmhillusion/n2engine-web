@@ -4,7 +4,7 @@ import { Renderable } from "./Renderable";
 
 export class ScssRenderer extends Renderable {
   protected doRender(filePath: string, rootDir: string, outDir: string) {
-    if (filePath.endsWith(".scss")) {
+    if (filePath.endsWith(".scss") || filePath.endsWith(".sass")) {
       console.log("[scss] render: ", filePath);
 
       const { css } = sass.renderSync({

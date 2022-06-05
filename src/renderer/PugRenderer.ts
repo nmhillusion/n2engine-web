@@ -4,7 +4,7 @@ import { Renderable } from "./Renderable";
 
 export class PugRenderer extends Renderable {
   private readonly PATTERN__LINK_SCSS =
-    /<link(?:.+?)href=(?:'|")(?:.+?)(\.scss)(?:'|")(?:.*?)>/;
+    /<link(?:.+?)href=(?:'|")(?:.+?)(\.scss|\.sass)(?:'|")(?:.*?)>/;
   private readonly PATTERN__LINK_TS =
     /<script(?:.+?)src=(?:'|")(?:.+?)(\.ts)(?:'|")(?:.*?)>/;
 
