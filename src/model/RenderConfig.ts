@@ -6,7 +6,7 @@ export interface RenderConfig {
   outDir: string;
   pug: {
     enabled: boolean;
-    config?: pug.PugOptions & pug.PugLocalsObject;
+    config?: pug.Options & pug.LocalsObject;
   };
   scss: {
     enabled: boolean;
