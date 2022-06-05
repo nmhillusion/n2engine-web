@@ -33,7 +33,10 @@ export class TypeScriptRenderer extends Renderable {
       tsConfig.compilerOptions.outDir = outDir;
 
       if (renderConfig?.typescript?.config) {
-        Object.assign(tsConfig, renderConfig?.typescript?.config);
+        const userTsConfig = renderConfig?.typescript?.config;
+        for (const configKey of Object.keys(userTsConfig)) {
+          Object.assign(tsConfig[configKey], userTsConfig[configKey]);
+        }
       }
 
       this.writeUserTsConfigFile(JSON.stringify(tsConfig));
