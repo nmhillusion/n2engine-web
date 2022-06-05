@@ -4,7 +4,8 @@ import { TraversalWorkspace } from "../core/TraversalWorkspace";
 
 export class InjectVariableRenderer extends Renderable {
   private variables = {};
-  private readonly PATTERN__VARIABLE_REPLACEMENT = /{{\s*n2v:(.+?)\s*}}/;
+  private readonly PATTERN__VARIABLE_REPLACEMENT: RegExp =
+    /{{\s*n2v:(.+?)\s*}}/gi;
 
   constructor(
     variableFilePathToInject: string,
@@ -55,21 +56,21 @@ export class InjectVariableRenderer extends Renderable {
     ) {
       let fileContent = fs.readFileSync(filePath).toString();
 
-      const matches = fileContent.matchAll(
-        new RegExp(this.PATTERN__VARIABLE_REPLACEMENT, "gi")
+      const matchingArray = fileContent.matchAll(
+        this.PATTERN__VARIABLE_REPLACEMENT
       );
 
-      let reg: IteratorResult<RegExpMatchArray, any> = null;
-      while ((reg = matches.next()) && !reg.done) {
+      for (const matching of matchingArray) {
+        const [matchedString, matchGroup] = matching;
         console.log(
           "[inject var]: var -> ",
-          reg.value[1],
+          matchGroup,
           "; file -> ",
           filePath
         );
 
-        fileContent = fileContent.replace(reg.value[0], (_) =>
-          this.obtainValueOfVariable(reg.value[1])
+        fileContent = fileContent.replace(matchedString, (_) =>
+          this.obtainValueOfVariable(matchGroup)
         );
       }
 

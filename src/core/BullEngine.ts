@@ -5,6 +5,7 @@ import { Renderable } from "../renderer/Renderable";
 import { ScssRenderer } from "../renderer/ScssRenderer";
 import { TraversalWorkspace } from "./TraversalWorkspace";
 import { TypeScriptRenderer } from "../renderer/TypeScriptRenderer";
+import { RewriteImportOfTsRenderer } from "../renderer/RewriteImportOfTsRenderer";
 
 export class BullEngine {
   private readonly traversalerRootDir: TraversalWorkspace;
@@ -44,14 +45,6 @@ export class BullEngine {
       return;
     }
 
-    if (!!this.__variableFilePathToInject) {
-      this.registerForRenderer(
-        new InjectVariableRenderer(
-          this.__variableFilePathToInject,
-          this.traversalerOutDir
-        )
-      );
-    }
     if (this.renderConfig.pug.enabled) {
       this.registerForRenderer(new PugRenderer(this.traversalerRootDir));
     }
@@ -60,6 +53,19 @@ export class BullEngine {
     }
     if (this.renderConfig.typescript.enabled) {
       this.registerForRenderer(new TypeScriptRenderer(this.traversalerRootDir));
+
+      this.registerForRenderer(
+        new RewriteImportOfTsRenderer(this.traversalerOutDir)
+      );
+    }
+
+    if (!!this.__variableFilePathToInject) {
+      this.registerForRenderer(
+        new InjectVariableRenderer(
+          this.__variableFilePathToInject,
+          this.traversalerOutDir
+        )
+      );
     }
 
     this.traversalerRootDir.traversalPath(this.renderConfig.rootDir);

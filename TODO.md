@@ -1,4 +1,3 @@
 - file watcher
-- test with export, import
 - support for sass file
 - able to override tsConfig, scss config, pugConfig

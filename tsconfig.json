@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
     "sourceRoot": "./src",
     "sourceMap": true,
-    "target": "ES5",
+    "target": "ES6",
     "charset": "utf8",
     "alwaysStrict": true,
     "declaration": true,
@@ -14,5 +13,8 @@
     "rootDir": "./src",
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules/**/*"
+  ]
 }
