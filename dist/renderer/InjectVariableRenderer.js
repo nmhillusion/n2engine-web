@@ -47,7 +47,7 @@ class InjectVariableRenderer extends Renderable_1.Renderable {
             const matchingArray = fileContent.matchAll(this.PATTERN__VARIABLE_REPLACEMENT);
             for (const matching of matchingArray) {
                 const [matchedString, matchGroup] = matching;
-                this.logger.info("[inject var]: var -> ", matchGroup, "; file -> ", filePath);
+                this.logger.info(`var -> ${matchGroup}; file -> ${filePath}`);
                 fileContent = fileContent.replace(matchedString, (_) => this.obtainValueOfVariable(matchGroup));
             }
             fs.writeFileSync(filePath, fileContent);

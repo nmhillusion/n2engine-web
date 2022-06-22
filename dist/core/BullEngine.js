@@ -7,6 +7,7 @@ const ScssRenderer_1 = require("../renderer/ScssRenderer");
 const TraversalWorkspace_1 = require("./TraversalWorkspace");
 const TypeScriptRenderer_1 = require("../renderer/TypeScriptRenderer");
 const RewriteImportOfTsRenderer_1 = require("../renderer/RewriteImportOfTsRenderer");
+const CopyResourceRenderer_1 = require("../renderer/CopyResourceRenderer");
 class BullEngine {
     constructor() {
         this.traversalerRootDir = new TraversalWorkspace_1.TraversalWorkspace();
@@ -41,6 +42,9 @@ class BullEngine {
         if (this.renderConfig.typescript.enabled) {
             this.registerForRenderer(new TypeScriptRenderer_1.TypeScriptRenderer(this.traversalerRootDir));
             this.registerForRenderer(new RewriteImportOfTsRenderer_1.RewriteImportOfTsRenderer(this.traversalerOutDir));
+        }
+        if (this.renderConfig.copyResource.enabled) {
+            this.registerForRenderer(new CopyResourceRenderer_1.CopyResourceRenderer(this.traversalerRootDir));
         }
         if (!!this.__variableFilePathToInject) {
             this.registerForRenderer(new InjectVariableRenderer_1.InjectVariableRenderer(this.__variableFilePathToInject, this.traversalerOutDir));

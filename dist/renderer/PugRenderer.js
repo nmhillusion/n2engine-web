@@ -33,7 +33,7 @@ class PugRenderer extends Renderable_1.Renderable {
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a;
         if (filePath.endsWith(".pug")) {
-            this.logger.info("[pug] render: ", filePath);
+            this.logger.info(filePath);
             const configToRender = {
                 pretty: true,
             };

@@ -16,7 +16,7 @@ class RewriteImportOfTsRenderer extends Renderable_1.Renderable {
     }
     jsRewriteImportFile(path = "") {
         if (path.endsWith(".js")) {
-            this.logger.info("rewriting for ", path);
+            this.logger.info(path);
             let fileContent = fs.readFileSync(path).toString();
             const matchArray = fileContent.matchAll(this.IMPORT_MODULE_PATTERN);
             for (const matching of matchArray) {

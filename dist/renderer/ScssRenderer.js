@@ -11,7 +11,7 @@ class ScssRenderer extends Renderable_1.Renderable {
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a;
         if (filePath.endsWith(".scss") || filePath.endsWith(".sass")) {
-            this.logger.info("[scss] render: ", filePath);
+            this.logger.info(filePath);
             const configToRender = {};
             if ((_a = renderConfig === null || renderConfig === void 0 ? void 0 : renderConfig.scss) === null || _a === void 0 ? void 0 : _a.config) {
                 Object.assign(configToRender, renderConfig.scss.config);

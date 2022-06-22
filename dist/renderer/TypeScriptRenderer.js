@@ -20,7 +20,7 @@ class TypeScriptRenderer extends Renderable_1.Renderable {
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a, _b;
         if (filePath.endsWith(".ts")) {
-            this.logger.info("[typescript] render: ", filePath);
+            this.logger.info(filePath);
             const tsConfig = JSON.parse(this.readUserTsConfigFile());
             tsConfig.files = [filePath];
             tsConfig.compilerOptions.rootDir = rootDir;

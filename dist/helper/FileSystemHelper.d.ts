@@ -1,5 +1,5 @@
 export declare class FileSystemHelper {
-    static getFileNameFromPath(path: string): string;
+    static getFileNameFromPath(path: string, ignoreExt?: boolean): string;
     static getDirFromPath(path: string): string;
     static writeOutFile({ data, sourceFilePath, rootDir, outDir, outExtension, }: {
         data: string;
@@ -10,6 +10,11 @@ export declare class FileSystemHelper {
          * Example: .jpg | .png | .txt
          */
         outExtension: string;
+    }): void;
+    static copyFile({ sourceFilePath, rootDir, outDir, }: {
+        sourceFilePath: string;
+        rootDir: string;
+        outDir: string;
     }): void;
 }
 //# sourceMappingURL=FileSystemHelper.d.ts.map

@@ -15,5 +15,9 @@ export interface RenderConfig {
         enabled: boolean;
         config?: Object;
     };
+    copyResource: {
+        enabled: boolean;
+        extsToCopy?: string[];
+    };
 }
 //# sourceMappingURL=RenderConfig.d.ts.map
