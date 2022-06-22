@@ -1,9 +1,14 @@
 import * as fs from "fs";
+import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { Renderable } from "./Renderable";
 
 export class RewriteImportOfTsRenderer extends Renderable {
   private readonly IMPORT_MODULE_PATTERN: RegExp =
     /import(?:.*?)from\s*(?:'|")(.+?)(?:'|")\s*;?/gi;
+
+    constructor(traversaller: TraversalWorkspace) {
+      super(traversaller, "RewriteImportOfTsRenderer");
+    }
 
   protected doRender(filePath: string, rootDir: string, outDir: string) {
     if (filePath.endsWith(".js")) {
@@ -15,7 +20,7 @@ export class RewriteImportOfTsRenderer extends Renderable {
 
   private jsRewriteImportFile(path = "") {
     if (path.endsWith(".js")) {
-      console.log("rewriting for ", path);
+      this.logger.info(path);
 
       let fileContent = fs.readFileSync(path).toString();
 

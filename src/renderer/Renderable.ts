@@ -1,8 +1,15 @@
+import { LogFactory, LoggerConfig, LOG_LEVELS, NodeLogger } from "n2log4web";
 import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { RenderConfig } from "../model";
 
 export abstract class Renderable {
-  constructor(private traversaler: TraversalWorkspace) {}
+  protected logger: NodeLogger;
+
+  constructor(private traversaler: TraversalWorkspace, logName: string) {
+    this.logger = LogFactory.fromConfig(
+      new LoggerConfig().setLoggableLevel(LOG_LEVELS.DEBUG)
+    ).getNodeLog(logName);
+  }
 
   public registerRender(
     rootDir: string,

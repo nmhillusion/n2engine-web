@@ -5,7 +5,7 @@ const fs = require("fs");
 const Renderable_1 = require("./Renderable");
 class InjectVariableRenderer extends Renderable_1.Renderable {
     constructor(variableFilePathToInject, traversaler) {
-        super(traversaler);
+        super(traversaler, "InjectVariableRenderer");
         this.variables = {};
         this.PATTERN__VARIABLE_REPLACEMENT = /{{\s*n2v:(.+?)\s*}}/gi;
         this.loadVariableFromFile(variableFilePathToInject);
@@ -16,7 +16,7 @@ class InjectVariableRenderer extends Renderable_1.Renderable {
             Object.assign(this.variables, JSON.parse(rawContent));
         }
         catch (e) {
-            console.error("Error when loading varibles from file: ", filePath, e);
+            this.logger.error("Error when loading varibles from file: ", filePath, e);
         }
     }
     obtainValueOfVariable(variableName) {
@@ -47,7 +47,7 @@ class InjectVariableRenderer extends Renderable_1.Renderable {
             const matchingArray = fileContent.matchAll(this.PATTERN__VARIABLE_REPLACEMENT);
             for (const matching of matchingArray) {
                 const [matchedString, matchGroup] = matching;
-                console.log("[inject var]: var -> ", matchGroup, "; file -> ", filePath);
+                this.logger.info("[inject var]: var -> ", matchGroup, "; file -> ", filePath);
                 fileContent = fileContent.replace(matchedString, (_) => this.obtainValueOfVariable(matchGroup));
             }
             fs.writeFileSync(filePath, fileContent);

@@ -5,10 +5,13 @@ const sass = require("node-sass");
 const FileSystemHelper_1 = require("../helper/FileSystemHelper");
 const Renderable_1 = require("./Renderable");
 class ScssRenderer extends Renderable_1.Renderable {
+    constructor(traversaller) {
+        super(traversaller, "ScssRenderer");
+    }
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a;
         if (filePath.endsWith(".scss") || filePath.endsWith(".sass")) {
-            console.log("[scss] render: ", filePath);
+            this.logger.info("[scss] render: ", filePath);
             const configToRender = {};
             if ((_a = renderConfig === null || renderConfig === void 0 ? void 0 : renderConfig.scss) === null || _a === void 0 ? void 0 : _a.config) {
                 Object.assign(configToRender, renderConfig.scss.config);

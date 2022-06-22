@@ -27,17 +27,18 @@
     "express": "^4.18.1",
     "jest": "^28.1.0",
     "ts-jest": "^28.0.3",
-    "ts-node": "^10.8.0"
+    "ts-node": "^10.8.0",
+    "nodemon": "^2.0.16"
   },
   "dependencies": {
     "@types/node-sass": "^4.11.2",
     "@types/pug": "^2.0.6",
     
     "node-sass": "^7.0.1",
-    "nodemon": "^2.0.16",
     "pug": "^3.0.2",
     "shelljs": "^0.8.5",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "n2log4web": "https://github.com/nmhillusion/n2log4web/tarball/v0.0.1"
   },
   "repository": {
     "type": "git",

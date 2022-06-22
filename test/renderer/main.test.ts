@@ -32,6 +32,9 @@ test("test renderer", function () {
         typescript: {
           enabled: true,
         },
+        copyResource: {
+          enabled: true
+        },
       })
       .setVariableFilePathToInject(
         fs.realpathSync(__dirname + "/../env/dev.env.json")

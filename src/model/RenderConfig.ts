@@ -16,4 +16,8 @@ export interface RenderConfig {
     enabled: boolean;
     config?: Object;
   };
+  copyResource: {
+    enabled: boolean;
+    extsToCopy?: string[];
+  };
 }

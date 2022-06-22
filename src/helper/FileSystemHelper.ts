@@ -1,7 +1,7 @@
 import * as fs from "fs";
 
 export class FileSystemHelper {
-  static getFileNameFromPath(path: string): string {
+  static getFileNameFromPath(path: string, ignoreExt = true): string {
     {
       const slashIndex = path.lastIndexOf("/");
       if (-1 < slashIndex && slashIndex < path.length - 1) {
@@ -11,7 +11,7 @@ export class FileSystemHelper {
 
     {
       const dotIndex = path.lastIndexOf(".");
-      if (0 < dotIndex) {
+      if (0 < dotIndex && ignoreExt) {
         path = path.substring(0, dotIndex);
       }
     }
@@ -55,5 +55,22 @@ export class FileSystemHelper {
     fs.writeFileSync(fullOutFilePath, data, {
       mode: 0o666,
     });
+  }
+
+  static copyFile({
+    sourceFilePath,
+    rootDir,
+    outDir,
+  }: {
+    sourceFilePath: string;
+    rootDir: string;
+    outDir: string;
+  }) {
+    const outFileName = FileSystemHelper.getFileNameFromPath(sourceFilePath, false);
+    const inputFileDir = FileSystemHelper.getDirFromPath(sourceFilePath);
+    const outFileDir = inputFileDir.replace(rootDir, outDir);
+    const fullOutFilePath = outFileDir + "/" + outFileName;
+
+    fs.copyFileSync(sourceFilePath, fullOutFilePath);
   }
 }

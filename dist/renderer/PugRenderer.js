@@ -5,8 +5,8 @@ const pug = require("pug");
 const FileSystemHelper_1 = require("../helper/FileSystemHelper");
 const Renderable_1 = require("./Renderable");
 class PugRenderer extends Renderable_1.Renderable {
-    constructor() {
-        super(...arguments);
+    constructor(traversaller) {
+        super(traversaller, "PugRenderer");
         this.PATTERN__LINK_SCSS = /<link(?:.+?)href=(?:'|")(?:.+?)(\.scss|\.sass)(?:'|")(?:.*?)>/;
         this.PATTERN__LINK_TS = /<script(?:.+?)src=(?:'|")(?:.+?)(\.ts)(?:'|")(?:.*?)>/;
     }
@@ -33,7 +33,7 @@ class PugRenderer extends Renderable_1.Renderable {
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a;
         if (filePath.endsWith(".pug")) {
-            console.log("[pug] render: ", filePath);
+            this.logger.info("[pug] render: ", filePath);
             const configToRender = {
                 pretty: true,
             };

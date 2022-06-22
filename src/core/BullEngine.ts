@@ -6,6 +6,7 @@ import { ScssRenderer } from "../renderer/ScssRenderer";
 import { TraversalWorkspace } from "./TraversalWorkspace";
 import { TypeScriptRenderer } from "../renderer/TypeScriptRenderer";
 import { RewriteImportOfTsRenderer } from "../renderer/RewriteImportOfTsRenderer";
+import { CopyResourceRenderer } from "../renderer/CopyResourceRenderer";
 
 export class BullEngine {
   private readonly traversalerRootDir: TraversalWorkspace;
@@ -57,6 +58,11 @@ export class BullEngine {
 
       this.registerForRenderer(
         new RewriteImportOfTsRenderer(this.traversalerOutDir)
+      );
+    }
+    if (this.renderConfig.copyResource.enabled) {
+      this.registerForRenderer(
+        new CopyResourceRenderer(this.traversalerRootDir)
       );
     }
 

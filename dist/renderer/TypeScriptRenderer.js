@@ -6,8 +6,8 @@ const shelljs = require("shelljs");
 const Renderable_1 = require("./Renderable");
 const index_1 = require("../index");
 class TypeScriptRenderer extends Renderable_1.Renderable {
-    constructor() {
-        super(...arguments);
+    constructor(traversaller) {
+        super(traversaller, "TypeScriptRenderer");
         this.userTsConfigPath = index_1.WORKSPACE_DIR + "/user.tsconfig.json";
         this.userBaseTsConfigPath = index_1.WORKSPACE_DIR + "/user.base.tsconfig.json";
     }
@@ -20,7 +20,7 @@ class TypeScriptRenderer extends Renderable_1.Renderable {
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a, _b;
         if (filePath.endsWith(".ts")) {
-            console.log("[typescript] render: ", filePath);
+            this.logger.info("[typescript] render: ", filePath);
             const tsConfig = JSON.parse(this.readUserTsConfigFile());
             tsConfig.files = [filePath];
             tsConfig.compilerOptions.rootDir = rootDir;

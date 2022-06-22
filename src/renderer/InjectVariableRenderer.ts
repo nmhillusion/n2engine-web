@@ -11,7 +11,7 @@ export class InjectVariableRenderer extends Renderable {
     variableFilePathToInject: string,
     traversaler: TraversalWorkspace
   ) {
-    super(traversaler);
+    super(traversaler, "InjectVariableRenderer");
     this.loadVariableFromFile(variableFilePathToInject);
   }
 
@@ -20,7 +20,7 @@ export class InjectVariableRenderer extends Renderable {
       const rawContent = fs.readFileSync(filePath).toString();
       Object.assign(this.variables, JSON.parse(rawContent));
     } catch (e) {
-      console.error("Error when loading varibles from file: ", filePath, e);
+      this.logger.error("Error when loading varibles from file: ", filePath, e);
     }
   }
 
@@ -62,12 +62,7 @@ export class InjectVariableRenderer extends Renderable {
 
       for (const matching of matchingArray) {
         const [matchedString, matchGroup] = matching;
-        console.log(
-          "[inject var]: var -> ",
-          matchGroup,
-          "; file -> ",
-          filePath
-        );
+        this.logger.info(`var -> ${matchGroup}; file -> ${filePath}`);
 
         fileContent = fileContent.replace(matchedString, (_) =>
           this.obtainValueOfVariable(matchGroup)

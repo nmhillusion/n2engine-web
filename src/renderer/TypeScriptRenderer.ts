@@ -4,12 +4,17 @@ import * as shelljs from "shelljs";
 import { Renderable } from "./Renderable";
 import { WORKSPACE_DIR } from "../index";
 import { RenderConfig } from "../model";
+import { TraversalWorkspace } from "../core/TraversalWorkspace";
 
 export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
     WORKSPACE_DIR + "/user.tsconfig.json";
   private readonly userBaseTsConfigPath: string =
     WORKSPACE_DIR + "/user.base.tsconfig.json";
+
+  constructor(traversaller: TraversalWorkspace) {
+    super(traversaller, "TypeScriptRenderer");
+  }
 
   private readUserTsConfigFile() {
     return fs.readFileSync(this.userBaseTsConfigPath).toString();
@@ -26,7 +31,7 @@ export class TypeScriptRenderer extends Renderable {
     renderConfig: RenderConfig
   ) {
     if (filePath.endsWith(".ts")) {
-      console.log("[typescript] render: ", filePath);
+      this.logger.info(filePath);
       const tsConfig = JSON.parse(this.readUserTsConfigFile());
       tsConfig.files = [filePath];
       tsConfig.compilerOptions.rootDir = rootDir;
