@@ -18,19 +18,19 @@ test("test renderer", function () {
         rootDir: fs.realpathSync(rootDir),
         outDir: fs.realpathSync(outDir),
         pug: {
-          enabled: true,
+          enabled: false,
           config: {
             pretty: false,
           },
         },
         scss: {
-          enabled: true,
+          enabled: false,
           config: {
             outputStyle: "compressed",
           },
         },
         typescript: {
-          enabled: true,
+          enabled: false,
         },
         copyResource: {
           enabled: true

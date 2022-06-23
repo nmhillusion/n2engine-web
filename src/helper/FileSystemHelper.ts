@@ -66,10 +66,17 @@ export class FileSystemHelper {
     rootDir: string;
     outDir: string;
   }) {
-    const outFileName = FileSystemHelper.getFileNameFromPath(sourceFilePath, false);
+    const outFileName = FileSystemHelper.getFileNameFromPath(
+      sourceFilePath,
+      false
+    );
     const inputFileDir = FileSystemHelper.getDirFromPath(sourceFilePath);
     const outFileDir = inputFileDir.replace(rootDir, outDir);
     const fullOutFilePath = outFileDir + "/" + outFileName;
+
+    if (!fs.existsSync(outFileDir)) {
+      fs.mkdirSync(outFileDir, { recursive: true });
+    }
 
     fs.copyFileSync(sourceFilePath, fullOutFilePath);
   }
