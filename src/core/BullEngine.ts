@@ -5,7 +5,7 @@ import { Renderable } from "../renderer/Renderable";
 import { ScssRenderer } from "../renderer/ScssRenderer";
 import { TraversalWorkspace } from "./TraversalWorkspace";
 import { TypeScriptRenderer } from "../renderer/TypeScriptRenderer";
-import { RewriteImportOfTsRenderer } from "../renderer/RewriteImportOfTsRenderer";
+import { RewriteJavascriptRenderer } from "../renderer/RewriteJavascriptRenderer";
 import { CopyResourceRenderer } from "../renderer/CopyResourceRenderer";
 
 export class BullEngine {
@@ -55,9 +55,10 @@ export class BullEngine {
     }
     if (this.renderConfig.typescript.enabled) {
       this.registerForRenderer(new TypeScriptRenderer(this.traversalerRootDir));
-
+    }
+    if (this.renderConfig.rewriteJavascript?.enabled) {
       this.registerForRenderer(
-        new RewriteImportOfTsRenderer(this.traversalerOutDir)
+        new RewriteJavascriptRenderer(this.traversalerOutDir)
       );
     }
     if (this.renderConfig.copyResource.enabled) {

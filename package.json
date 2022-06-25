@@ -24,21 +24,22 @@
     "@types/jest": "^27.5.1",
     "@types/node": "^17.0.35",
     "@types/shelljs": "^0.8.11",
+    "@types/uglify-js": "^3.16.0",
     "express": "^4.18.1",
     "jest": "^28.1.0",
+    "nodemon": "^2.0.16",
     "ts-jest": "^28.0.3",
-    "ts-node": "^10.8.0",
-    "nodemon": "^2.0.16"
+    "ts-node": "^10.8.0"
   },
   "dependencies": {
     "@types/node-sass": "^4.11.2",
     "@types/pug": "^2.0.6",
-    
+    "n2log4web": "https://github.com/nmhillusion/n2log4web/tarball/v0.0.1",
     "node-sass": "^7.0.1",
     "pug": "^3.0.2",
     "shelljs": "^0.8.5",
     "typescript": "^4.6.4",
-    "n2log4web": "https://github.com/nmhillusion/n2log4web/tarball/v0.0.1"
+    "uglify-js": "^3.16.1"
   },
   "repository": {
     "type": "git",

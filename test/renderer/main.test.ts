@@ -18,22 +18,27 @@ test("test renderer", function () {
         rootDir: fs.realpathSync(rootDir),
         outDir: fs.realpathSync(outDir),
         pug: {
-          enabled: false,
+          enabled: true,
           config: {
             pretty: false,
           },
         },
         scss: {
-          enabled: false,
+          enabled: true,
           config: {
             outputStyle: "compressed",
           },
         },
         typescript: {
-          enabled: false,
+          enabled: true,
         },
         copyResource: {
-          enabled: true
+          enabled: true,
+        },
+        rewriteJavascript: {
+          enabled: true,
+          rewriteImport: true,
+          compress: true,
         },
       })
       .setVariableFilePathToInject(

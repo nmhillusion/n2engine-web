@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RewriteImportOfTsRenderer = void 0;
 const fs = require("fs");
 const Renderable_1 = require("./Renderable");
+const uglify = require("uglify-js");
 class RewriteImportOfTsRenderer extends Renderable_1.Renderable {
     constructor(traversaller) {
         super(traversaller, "RewriteImportOfTsRenderer");
@@ -25,7 +26,15 @@ class RewriteImportOfTsRenderer extends Renderable_1.Renderable {
                 fileContent = fileContent.replace(matchedString, convertedString);
                 // logger.log({ matchedString, groupMatch, fileContent });
             }
-            fs.writeFileSync(path, fileContent);
+            const minifiedCode = uglify.minify(fileContent, {
+                compress: {
+                    passes: 2,
+                },
+                output: {
+                    beautify: false,
+                },
+            }).code;
+            fs.writeFileSync(path, minifiedCode);
         }
     }
 }
