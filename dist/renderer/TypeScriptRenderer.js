@@ -22,15 +22,18 @@ class TypeScriptRenderer extends Renderable_1.Renderable {
         if (filePath.endsWith(".ts")) {
             this.logger.info(filePath);
             const tsConfig = JSON.parse(this.readUserTsConfigFile());
-            tsConfig.files = [filePath];
-            tsConfig.compilerOptions.rootDir = rootDir;
-            tsConfig.compilerOptions.outDir = outDir;
             if ((_a = renderConfig === null || renderConfig === void 0 ? void 0 : renderConfig.typescript) === null || _a === void 0 ? void 0 : _a.config) {
                 const userTsConfig = (_b = renderConfig === null || renderConfig === void 0 ? void 0 : renderConfig.typescript) === null || _b === void 0 ? void 0 : _b.config;
                 for (const configKey of Object.keys(userTsConfig)) {
+                    if (!(configKey in tsConfig)) {
+                        tsConfig[configKey] = {};
+                    }
                     Object.assign(tsConfig[configKey], userTsConfig[configKey]);
                 }
             }
+            tsConfig.files = [filePath];
+            tsConfig.compilerOptions.rootDir = rootDir;
+            tsConfig.compilerOptions.outDir = outDir;
             this.writeUserTsConfigFile(JSON.stringify(tsConfig));
             shelljs.exec(`npx tsc --project ${index_1.WORKSPACE_DIR}/user.tsconfig.json`);
         }

@@ -28,16 +28,20 @@ export class TypeScriptRenderer extends Renderable {
     if (filePath.endsWith(".ts")) {
       this.logger.info(filePath);
       const tsConfig = JSON.parse(this.readUserTsConfigFile());
-      tsConfig.files = [filePath];
-      tsConfig.compilerOptions.rootDir = rootDir;
-      tsConfig.compilerOptions.outDir = outDir;
 
       if (renderConfig?.typescript?.config) {
         const userTsConfig = renderConfig?.typescript?.config;
         for (const configKey of Object.keys(userTsConfig)) {
+          if (!(configKey in tsConfig)) {
+            tsConfig[configKey] = {};
+          }
           Object.assign(tsConfig[configKey], userTsConfig[configKey]);
         }
       }
+
+      tsConfig.files = [filePath];
+      tsConfig.compilerOptions.rootDir = rootDir;
+      tsConfig.compilerOptions.outDir = outDir;
 
       this.writeUserTsConfigFile(JSON.stringify(tsConfig));
 
