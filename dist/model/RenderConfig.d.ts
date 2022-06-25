@@ -21,8 +21,10 @@ export interface RenderConfig {
     };
     rewriteJavascript?: {
         enabled?: boolean;
-        rewriteImport?: boolean;
-        compress?: boolean;
+        config?: {
+            rewriteImport?: boolean;
+            compress?: boolean;
+        };
     };
 }
 //# sourceMappingURL=RenderConfig.d.ts.map

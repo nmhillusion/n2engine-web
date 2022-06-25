@@ -23,7 +23,8 @@ export class RewriteJavascriptRenderer extends Renderable {
 
     let fileContent = fs.readFileSync(path).toString();
     {
-      const willRewriteImport = renderConfig.rewriteJavascript?.rewriteImport;
+      const willRewriteImport =
+        renderConfig.rewriteJavascript?.config?.rewriteImport;
       if (undefined == willRewriteImport || willRewriteImport) {
         this.logger.info("[rewriteImport] render: ", path);
 
@@ -40,7 +41,7 @@ export class RewriteJavascriptRenderer extends Renderable {
       }
     }
 
-    if (renderConfig.rewriteJavascript?.compress) {
+    if (renderConfig.rewriteJavascript?.config?.compress) {
       this.logger.info("[rewriteCompress] render: ", path);
 
       fileContent = uglify.minify(fileContent, {

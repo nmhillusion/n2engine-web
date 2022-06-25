@@ -37,8 +37,10 @@ test("test renderer", function () {
         },
         rewriteJavascript: {
           enabled: true,
-          rewriteImport: true,
-          compress: true,
+          config: {
+            rewriteImport: true,
+            compress: true,
+          },
         },
       })
       .setVariableFilePathToInject(

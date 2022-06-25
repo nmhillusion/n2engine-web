@@ -22,7 +22,9 @@ export interface RenderConfig {
   };
   rewriteJavascript?: {
     enabled?: boolean;
-    rewriteImport?: boolean;
-    compress?: boolean;
+    config?: {
+      rewriteImport?: boolean;
+      compress?: boolean;
+    };
   };
 }

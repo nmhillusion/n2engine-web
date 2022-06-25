@@ -15,11 +15,11 @@ class RewriteJavascriptRenderer extends Renderable_1.Renderable {
         }
     }
     jsRewriteImportFile(path = "", renderConfig) {
-        var _a, _b;
+        var _a, _b, _c, _d;
         this.logger.info(path);
         let fileContent = fs.readFileSync(path).toString();
         {
-            const willRewriteImport = (_a = renderConfig.rewriteJavascript) === null || _a === void 0 ? void 0 : _a.rewriteImport;
+            const willRewriteImport = (_b = (_a = renderConfig.rewriteJavascript) === null || _a === void 0 ? void 0 : _a.config) === null || _b === void 0 ? void 0 : _b.rewriteImport;
             if (undefined == willRewriteImport || willRewriteImport) {
                 this.logger.info("[rewriteImport] render: ", path);
                 const matchArray = fileContent.matchAll(this.IMPORT_MODULE_PATTERN);
@@ -30,7 +30,7 @@ class RewriteJavascriptRenderer extends Renderable_1.Renderable {
                 }
             }
         }
-        if ((_b = renderConfig.rewriteJavascript) === null || _b === void 0 ? void 0 : _b.compress) {
+        if ((_d = (_c = renderConfig.rewriteJavascript) === null || _c === void 0 ? void 0 : _c.config) === null || _d === void 0 ? void 0 : _d.compress) {
             this.logger.info("[rewriteCompress] render: ", path);
             fileContent = uglify.minify(fileContent, {
                 compress: {
