@@ -5,10 +5,10 @@ import { RenderConfig } from "../model";
 export abstract class Renderable {
   protected logger: NodeLogger;
 
-  constructor(private traversaler: TraversalWorkspace, logName: string) {
+  constructor(private traversaler: TraversalWorkspace) {
     this.logger = LogFactory.fromConfig(
       new LoggerConfig().setLoggableLevel(LOG_LEVELS.DEBUG)
-    ).getNodeLog(logName);
+    ).getNodeLog(this.constructor.name);
   }
 
   public registerRender(

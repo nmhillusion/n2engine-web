@@ -1,15 +1,9 @@
 import * as sass from "node-sass";
-import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { FileSystemHelper } from "../helper/FileSystemHelper";
 import { RenderConfig } from "../model/RenderConfig";
 import { Renderable } from "./Renderable";
 
 export class ScssRenderer extends Renderable {
-
-  constructor(traversaller: TraversalWorkspace) {
-    super(traversaller, "ScssRenderer");
-  }
-
   protected doRender(
     filePath: string,
     rootDir: string,

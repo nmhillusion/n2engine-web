@@ -5,9 +5,6 @@ const sass = require("node-sass");
 const FileSystemHelper_1 = require("../helper/FileSystemHelper");
 const Renderable_1 = require("./Renderable");
 class ScssRenderer extends Renderable_1.Renderable {
-    constructor(traversaller) {
-        super(traversaller, "ScssRenderer");
-    }
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a;
         if (filePath.endsWith(".scss") || filePath.endsWith(".sass")) {

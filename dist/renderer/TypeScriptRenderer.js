@@ -6,8 +6,8 @@ const shelljs = require("shelljs");
 const Renderable_1 = require("./Renderable");
 const index_1 = require("../index");
 class TypeScriptRenderer extends Renderable_1.Renderable {
-    constructor(traversaller) {
-        super(traversaller, "TypeScriptRenderer");
+    constructor() {
+        super(...arguments);
         this.userTsConfigPath = index_1.WORKSPACE_DIR + "/user.tsconfig.json";
         this.userBaseTsConfigPath = index_1.WORKSPACE_DIR + "/user.base.tsconfig.json";
     }

@@ -5,7 +5,7 @@ const fs = require("fs");
 const Renderable_1 = require("./Renderable");
 class InjectVariableRenderer extends Renderable_1.Renderable {
     constructor(variableFilePathToInject, traversaler) {
-        super(traversaler, "InjectVariableRenderer");
+        super(traversaler);
         this.variables = {};
         this.PATTERN__VARIABLE_REPLACEMENT = /{{\s*n2v:(.+?)\s*}}/gi;
         this.loadVariableFromFile(variableFilePathToInject);

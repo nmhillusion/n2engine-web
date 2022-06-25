@@ -4,9 +4,6 @@ exports.CopyResourceRenderer = void 0;
 const FileSystemHelper_1 = require("../helper/FileSystemHelper");
 const Renderable_1 = require("./Renderable");
 class CopyResourceRenderer extends Renderable_1.Renderable {
-    constructor(traversaller) {
-        super(traversaller, "CopyResourceRenderer");
-    }
     doRender(filePath, rootDir, outDir, renderConfig) {
         if ((renderConfig.copyResource.extsToCopy || [
             ".jpg",

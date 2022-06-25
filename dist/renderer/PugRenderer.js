@@ -5,8 +5,8 @@ const pug = require("pug");
 const FileSystemHelper_1 = require("../helper/FileSystemHelper");
 const Renderable_1 = require("./Renderable");
 class PugRenderer extends Renderable_1.Renderable {
-    constructor(traversaller) {
-        super(traversaller, "PugRenderer");
+    constructor() {
+        super(...arguments);
         this.PATTERN__LINK_SCSS = /<link(?:.+?)href=(?:'|")(?:.+?)(\.scss|\.sass)(?:'|")(?:.*?)>/;
         this.PATTERN__LINK_TS = /<script(?:.+?)src=(?:'|")(?:.+?)(\.ts)(?:'|")(?:.*?)>/;
     }

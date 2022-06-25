@@ -11,7 +11,7 @@ export class InjectVariableRenderer extends Renderable {
     variableFilePathToInject: string,
     traversaler: TraversalWorkspace
   ) {
-    super(traversaler, "InjectVariableRenderer");
+    super(traversaler);
     this.loadVariableFromFile(variableFilePathToInject);
   }
 

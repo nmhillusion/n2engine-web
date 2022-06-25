@@ -1,5 +1,4 @@
 import * as pug from "pug";
-import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { FileSystemHelper } from "../helper/FileSystemHelper";
 import { RenderConfig } from "../model";
 import { Renderable } from "./Renderable";
@@ -9,10 +8,6 @@ export class PugRenderer extends Renderable {
     /<link(?:.+?)href=(?:'|")(?:.+?)(\.scss|\.sass)(?:'|")(?:.*?)>/;
   private readonly PATTERN__LINK_TS =
     /<script(?:.+?)src=(?:'|")(?:.+?)(\.ts)(?:'|")(?:.*?)>/;
-
-  constructor(traversaller: TraversalWorkspace) {
-    super(traversaller, "PugRenderer");
-  }
 
   private renameForImportScss(content: string): string {
     const matches = content.matchAll(new RegExp(this.PATTERN__LINK_SCSS, "gi"));

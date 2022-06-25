@@ -1,12 +1,8 @@
-import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { FileSystemHelper } from "../helper/FileSystemHelper";
 import { RenderConfig } from "../model";
 import { Renderable } from "./Renderable";
 
 export class CopyResourceRenderer extends Renderable {
-  constructor(traversaller: TraversalWorkspace) {
-    super(traversaller, "CopyResourceRenderer");
-  }
 
   protected doRender(
     filePath: string,
