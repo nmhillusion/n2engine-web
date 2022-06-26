@@ -4,14 +4,14 @@ import { BullEngine } from "../../src/core/BullEngine";
 const isTesting = "function" === typeof test;
 
 if (isTesting) {
-  test("test renderer", function () {
-    expect(exec).not.toThrowError();
+  test("test renderer", async function () {
+    expect(async () => await exec()).not.toThrowError();
   });
 } else {
   exec();
 }
 
-function exec() {
+async function exec() {
   console.log(`-- TESTING: ${isTesting} --`);
 
   const rootDir = process.cwd() + "/sample";
@@ -24,7 +24,7 @@ function exec() {
     fs.mkdirSync(outDir, { recursive: true });
   }
 
-  new BullEngine()
+  await new BullEngine()
     .config({
       rootDir: fs.realpathSync(rootDir),
       outDir: fs.realpathSync(outDir),

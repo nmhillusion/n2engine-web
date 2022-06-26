@@ -10,10 +10,10 @@ export declare class TraversalWorkspace {
     set renderConfig(config: RenderConfig);
     private __traversal;
     private findFileMonitorOfFile;
-    private getAbleToTriggerFileWatch;
+    private ableToTriggerFileWatch;
     private handleFileWatch;
     private __callbackTraversal;
     registerCallback(callback: TraversalCallback): void;
-    traversalPath(startDir: string): void;
+    traversalPath(startDir: string): Promise<void>;
 }
 //# sourceMappingURL=TraversalWorkspace.d.ts.map

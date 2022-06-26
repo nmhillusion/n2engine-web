@@ -27,7 +27,10 @@ export class TraversalWorkspace {
     this.renderConfig_ = config;
   }
 
-  private __traversal(startDir: string, callback: (filePath: string) => any) {
+  private async __traversal(
+    startDir: string,
+    callback: (filePath: string) => Promise<void>
+  ) {
     const dirList = fs.readdirSync(startDir);
 
     for (const pItem of dirList) {
@@ -35,9 +38,9 @@ export class TraversalWorkspace {
 
       const itemState = fs.lstatSync(pItemPath);
       if (itemState.isDirectory()) {
-        this.__traversal(pItemPath, callback);
+        await this.__traversal(pItemPath, callback);
       } else if (itemState.isFile()) {
-        callback(pItemPath);
+        await callback(pItemPath);
 
         this.handleFileWatch(pItemPath, callback);
       }
@@ -48,7 +51,7 @@ export class TraversalWorkspace {
     return this.filesMonitor.find((fm) => fm.filePath === filePath);
   }
 
-  private getAbleToTriggerFileWatch(filePath: string) {
+  private ableToTriggerFileWatch(filePath: string) {
     const fileMonitor = this.findFileMonitorOfFile(filePath);
     const currentTime = new Date().getTime();
 
@@ -76,7 +79,11 @@ export class TraversalWorkspace {
     pItemPath: string,
     callback: (filePath: string) => any
   ) {
+    console.log("watcher enabled? ", this.renderConfig_?.watch?.enabled);
+
     if (this.renderConfig_?.watch?.enabled) {
+      console.log("START WATCHER");
+
       const MIN_INTERVAL =
         this.renderConfig_?.watch?.minIntervalInMs || this.DEFAULT_MIN_INTERVAL;
 
@@ -87,7 +94,7 @@ export class TraversalWorkspace {
           recursive: false,
         },
         (eventType, filename) => {
-          if (this.getAbleToTriggerFileWatch(pItemPath)) {
+          if (this.ableToTriggerFileWatch(pItemPath)) {
             this.logger.info("change file on: ", {
               pItemPath,
               eventType,
@@ -130,7 +137,7 @@ export class TraversalWorkspace {
     }
   }
 
-  public traversalPath(startDir: string) {
-    this.__traversal(startDir, this.__callbackTraversal.bind(this));
+  public traversalPath(startDir: string): Promise<void> {
+    return this.__traversal(startDir, this.__callbackTraversal.bind(this));
   }
 }

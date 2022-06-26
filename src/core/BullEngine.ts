@@ -23,9 +23,10 @@ export class BullEngine {
 
   public config(renderConfig: RenderConfig): BullEngine {
     if (renderConfig) {
-      this.renderConfig = renderConfig;
-      this.traversalerRootDir.renderConfig = renderConfig;
-      this.traversalerOutDir.renderConfig = renderConfig;
+      this.renderConfig =
+        this.traversalerRootDir.renderConfig =
+        this.traversalerOutDir.renderConfig =
+          renderConfig;
     }
     return this;
   }
@@ -45,7 +46,7 @@ export class BullEngine {
     );
   }
 
-  render() {
+  async render() {
     if (!this.renderConfig) {
       console.error("Does not exist config to run rendering");
       return;
@@ -60,17 +61,11 @@ export class BullEngine {
     if (this.renderConfig.typescript.enabled) {
       this.registerForRenderer(new TypeScriptRenderer(this.traversalerRootDir));
     }
-    if (this.renderConfig.rewriteJavascript?.enabled) {
-      this.registerForRenderer(
-        new RewriteJavascriptRenderer(this.traversalerOutDir)
-      );
-    }
     if (this.renderConfig.copyResource.enabled) {
       this.registerForRenderer(
         new CopyResourceRenderer(this.traversalerRootDir)
       );
     }
-
     if (!!this.variableFilePathToInject_) {
       this.registerForRenderer(
         new InjectVariableRenderer(
@@ -79,8 +74,13 @@ export class BullEngine {
         )
       );
     }
+    if (this.renderConfig.rewriteJavascript?.enabled) {
+      this.registerForRenderer(
+        new RewriteJavascriptRenderer(this.traversalerOutDir)
+      );
+    }
 
-    this.traversalerRootDir.traversalPath(this.renderConfig.rootDir);
-    this.traversalerOutDir.traversalPath(this.renderConfig.outDir);
+    await this.traversalerRootDir.traversalPath(this.renderConfig.rootDir);
+    await this.traversalerOutDir.traversalPath(this.renderConfig.outDir);
   }
 }

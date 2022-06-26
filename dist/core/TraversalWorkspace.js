@@ -25,23 +25,25 @@ class TraversalWorkspace {
         this.renderConfig_ = config;
     }
     __traversal(startDir, callback) {
-        const dirList = fs.readdirSync(startDir);
-        for (const pItem of dirList) {
-            const pItemPath = `${startDir}/${pItem}`;
-            const itemState = fs.lstatSync(pItemPath);
-            if (itemState.isDirectory()) {
-                this.__traversal(pItemPath, callback);
+        return __awaiter(this, void 0, void 0, function* () {
+            const dirList = fs.readdirSync(startDir);
+            for (const pItem of dirList) {
+                const pItemPath = `${startDir}/${pItem}`;
+                const itemState = fs.lstatSync(pItemPath);
+                if (itemState.isDirectory()) {
+                    yield this.__traversal(pItemPath, callback);
+                }
+                else if (itemState.isFile()) {
+                    yield callback(pItemPath);
+                    this.handleFileWatch(pItemPath, callback);
+                }
             }
-            else if (itemState.isFile()) {
-                callback(pItemPath);
-                this.handleFileWatch(pItemPath, callback);
-            }
-        }
+        });
     }
     findFileMonitorOfFile(filePath) {
         return this.filesMonitor.find((fm) => fm.filePath === filePath);
     }
-    getAbleToTriggerFileWatch(filePath) {
+    ableToTriggerFileWatch(filePath) {
         var _a, _b;
         const fileMonitor = this.findFileMonitorOfFile(filePath);
         const currentTime = new Date().getTime();
@@ -65,15 +67,17 @@ class TraversalWorkspace {
         }
     }
     handleFileWatch(pItemPath, callback) {
-        var _a, _b, _c, _d;
-        if ((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.enabled) {
-            const MIN_INTERVAL = ((_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.minIntervalInMs) || this.DEFAULT_MIN_INTERVAL;
+        var _a, _b, _c, _d, _e, _f;
+        console.log("watcher enabled? ", (_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.enabled);
+        if ((_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.enabled) {
+            console.log("START WATCHER");
+            const MIN_INTERVAL = ((_f = (_e = this.renderConfig_) === null || _e === void 0 ? void 0 : _e.watch) === null || _f === void 0 ? void 0 : _f.minIntervalInMs) || this.DEFAULT_MIN_INTERVAL;
             const watcher = fs.watch(pItemPath, {
                 persistent: true,
                 recursive: false,
             }, (eventType, filename) => {
                 var _a, _b, _c, _d;
-                if (this.getAbleToTriggerFileWatch(pItemPath)) {
+                if (this.ableToTriggerFileWatch(pItemPath)) {
                     this.logger.info("change file on: ", {
                         pItemPath,
                         eventType,
@@ -109,7 +113,7 @@ class TraversalWorkspace {
         }
     }
     traversalPath(startDir) {
-        this.__traversal(startDir, this.__callbackTraversal.bind(this));
+        return this.__traversal(startDir, this.__callbackTraversal.bind(this));
     }
 }
 exports.TraversalWorkspace = TraversalWorkspace;

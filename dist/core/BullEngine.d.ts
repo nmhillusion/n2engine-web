@@ -8,6 +8,6 @@ export declare class BullEngine {
     config(renderConfig: RenderConfig): BullEngine;
     setVariableFilePathToInject(path: string): BullEngine;
     private registerForRenderer;
-    render(): void;
+    render(): Promise<void>;
 }
 //# sourceMappingURL=BullEngine.d.ts.map
