@@ -7,5 +7,5 @@ export function adder(init: number) {
 }
 
 export function version() {
-  return "{{n2v:app.version}}";
+  return "{{ n2v:app.version }}";
 }

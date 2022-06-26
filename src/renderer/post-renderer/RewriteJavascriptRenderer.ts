@@ -1,7 +1,7 @@
 import * as fs from "fs";
-import { Renderable } from "./Renderable";
+import { Renderable } from "../Renderable";
 import * as uglify from "uglify-js";
-import { RenderConfig } from "../model";
+import { RenderConfig } from "../../model";
 
 export class RewriteJavascriptRenderer extends Renderable {
   private readonly IMPORT_MODULE_PATTERN: RegExp =
@@ -14,11 +14,13 @@ export class RewriteJavascriptRenderer extends Renderable {
     renderConfig: RenderConfig
   ) {
     if (filePath.endsWith(".js")) {
-      this.jsRewriteImportFile(filePath, renderConfig);
+      return this.jsRewriteImportFile(filePath, renderConfig);
+    } else {
+      return Promise.resolve();
     }
   }
 
-  private jsRewriteImportFile(path = "", renderConfig: RenderConfig) {
+  private async jsRewriteImportFile(path = "", renderConfig: RenderConfig) {
     this.logger.info(path);
 
     let fileContent = fs.readFileSync(path).toString();
@@ -29,31 +31,37 @@ export class RewriteJavascriptRenderer extends Renderable {
         this.logger.info("[rewriteImport] render: ", path);
 
         const matchArray = fileContent.matchAll(this.IMPORT_MODULE_PATTERN);
+
         for (const matching of matchArray) {
           const [matchedString, groupMatch] = matching;
-          const convertedString = matchedString.replace(
-            groupMatch,
-            `${groupMatch}.js`
-          );
+          if (!groupMatch.endsWith(".js")) {
+            const convertedString = matchedString.replace(
+              groupMatch,
+              `${groupMatch}.js`
+            );
 
-          fileContent = fileContent.replace(matchedString, convertedString);
+            fileContent = fileContent.replace(matchedString, convertedString);
+          }
         }
       }
     }
 
     if (renderConfig.rewriteJavascript?.config?.compress) {
       this.logger.info("[rewriteCompress] render: ", path);
-
-      fileContent = uglify.minify(fileContent, {
+      const { code, error } = uglify.minify(fileContent, {
         compress: {
           passes: 2,
         },
         output: {
           beautify: false,
         },
-      }).code;
+      });
+      if (error) {
+        this.logger.error(" error when uglify compress: ", error);
+      } else {
+        fileContent = code;
+      }
     }
-
     fs.writeFileSync(path, fileContent);
   }
 }

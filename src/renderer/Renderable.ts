@@ -19,7 +19,7 @@ export abstract class Renderable {
     const self = this;
     this.traversaler.registerCallback({
       invoke(filePath: string) {
-        self.doRender(filePath, rootDir, outDir, renderConfig);
+        return self.doRender(filePath, rootDir, outDir, renderConfig);
       },
     });
   }
@@ -29,5 +29,5 @@ export abstract class Renderable {
     rootDir: string,
     outDir: string,
     renderConfig: RenderConfig
-  );
+  ): Promise<void>;
 }

@@ -6,6 +6,6 @@ export declare abstract class Renderable {
     protected logger: NodeLogger;
     constructor(traversaler: TraversalWorkspace);
     registerRender(rootDir: string, outDir: string, renderConfig: RenderConfig): void;
-    protected abstract doRender(filePath: string, rootDir: string, outDir: string, renderConfig: RenderConfig): any;
+    protected abstract doRender(filePath: string, rootDir: string, outDir: string, renderConfig: RenderConfig): Promise<void>;
 }
 //# sourceMappingURL=Renderable.d.ts.map

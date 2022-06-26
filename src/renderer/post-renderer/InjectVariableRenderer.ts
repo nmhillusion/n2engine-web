@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import { Renderable } from "./Renderable";
-import { TraversalWorkspace } from "../core/TraversalWorkspace";
+import { Renderable } from "../Renderable";
+import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 
 export class InjectVariableRenderer extends Renderable {
   private variables = {};
@@ -47,13 +47,15 @@ export class InjectVariableRenderer extends Renderable {
     }
   }
 
-  protected doRender(filePath: string, rootDir: string, outDir: string) {
+  protected async doRender(filePath: string, rootDir: string, outDir: string) {
     if (
       filePath &&
       (filePath.endsWith(".html") ||
         filePath.endsWith(".css") ||
         filePath.endsWith(".js"))
     ) {
+      this.logger.info("inject var for file: ", filePath);
+
       let fileContent = fs.readFileSync(filePath).toString();
 
       const matchingArray = fileContent.matchAll(

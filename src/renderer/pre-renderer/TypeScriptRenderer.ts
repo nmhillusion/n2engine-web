@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import * as shelljs from "shelljs";
 
-import { Renderable } from "./Renderable";
-import { WORKSPACE_DIR } from "../index";
-import { RenderConfig } from "../model";
+import { Renderable } from "../Renderable";
+import { WORKSPACE_DIR } from "../../index";
+import { RenderConfig } from "../../model";
 
 export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
@@ -19,7 +19,7 @@ export class TypeScriptRenderer extends Renderable {
     fs.writeFileSync(this.userTsConfigPath, data);
   }
 
-  protected doRender(
+  protected async doRender(
     filePath: string,
     rootDir: string,
     outDir: string,
@@ -45,7 +45,14 @@ export class TypeScriptRenderer extends Renderable {
 
       this.writeUserTsConfigFile(JSON.stringify(tsConfig));
 
-      shelljs.exec(`npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`);
+      const { code, stderr, stdout } = shelljs.exec(
+        `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`,
+        {
+          async: false,
+        }
+      );
+
+      this.logger.debug({ code, stderr, stdout });
     }
   }
 }

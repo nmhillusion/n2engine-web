@@ -1,7 +1,7 @@
 import * as pug from "pug";
-import { FileSystemHelper } from "../helper/FileSystemHelper";
-import { RenderConfig } from "../model";
-import { Renderable } from "./Renderable";
+import { FileSystemHelper } from "../../helper/FileSystemHelper";
+import { RenderConfig } from "../../model";
+import { Renderable } from "../Renderable";
 
 export class PugRenderer extends Renderable {
   private readonly PATTERN__LINK_SCSS =
@@ -41,7 +41,7 @@ export class PugRenderer extends Renderable {
     return content;
   }
 
-  protected doRender(
+  protected async doRender(
     filePath: string,
     rootDir: string,
     outDir: string,

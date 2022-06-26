@@ -4,7 +4,21 @@ import * as pug from "pug";
 export interface RenderConfig {
   rootDir: string;
   outDir: string;
-  watch?: boolean;
+  watch?: {
+    enabled: boolean;
+    /**
+     * default: `1000ms`
+     */
+    minIntervalInMs?: number;
+    /**
+     * default: `false`
+     */
+    handleRenameEvent?: boolean;
+    /**
+     * default: `true`
+     */
+    handleChangeEvent?: boolean;
+  };
   pug: {
     enabled: boolean;
     config?: pug.Options & pug.LocalsObject;

@@ -1,10 +1,9 @@
-import { FileSystemHelper } from "../helper/FileSystemHelper";
-import { RenderConfig } from "../model";
-import { Renderable } from "./Renderable";
+import { FileSystemHelper } from "../../helper/FileSystemHelper";
+import { RenderConfig } from "../../model";
+import { Renderable } from "../Renderable";
 
 export class CopyResourceRenderer extends Renderable {
-
-  protected doRender(
+  protected async doRender(
     filePath: string,
     rootDir: string,
     outDir: string,

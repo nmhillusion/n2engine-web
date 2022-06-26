@@ -11,7 +11,7 @@ class Renderable {
         const self = this;
         this.traversaler.registerCallback({
             invoke(filePath) {
-                self.doRender(filePath, rootDir, outDir, renderConfig);
+                return self.doRender(filePath, rootDir, outDir, renderConfig);
             },
         });
     }

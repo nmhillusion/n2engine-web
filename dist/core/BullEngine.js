@@ -1,13 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BullEngine = void 0;
-const InjectVariableRenderer_1 = require("../renderer/InjectVariableRenderer");
-const PugRenderer_1 = require("../renderer/PugRenderer");
-const ScssRenderer_1 = require("../renderer/ScssRenderer");
 const TraversalWorkspace_1 = require("./TraversalWorkspace");
-const TypeScriptRenderer_1 = require("../renderer/TypeScriptRenderer");
-const RewriteJavascriptRenderer_1 = require("../renderer/RewriteJavascriptRenderer");
-const CopyResourceRenderer_1 = require("../renderer/CopyResourceRenderer");
+const renderer_1 = require("../renderer");
 class BullEngine {
     constructor() {
         this.traversalerRootDir = new TraversalWorkspace_1.TraversalWorkspace();
@@ -16,12 +11,14 @@ class BullEngine {
     config(renderConfig) {
         if (renderConfig) {
             this.renderConfig = renderConfig;
+            this.traversalerRootDir.renderConfig = renderConfig;
+            this.traversalerOutDir.renderConfig = renderConfig;
         }
         return this;
     }
     setVariableFilePathToInject(path) {
         if (path) {
-            this.__variableFilePathToInject = path;
+            this.variableFilePathToInject_ = path;
         }
         return this;
     }
@@ -35,22 +32,22 @@ class BullEngine {
             return;
         }
         if (this.renderConfig.pug.enabled) {
-            this.registerForRenderer(new PugRenderer_1.PugRenderer(this.traversalerRootDir));
+            this.registerForRenderer(new renderer_1.PugRenderer(this.traversalerRootDir));
         }
         if (this.renderConfig.scss.enabled) {
-            this.registerForRenderer(new ScssRenderer_1.ScssRenderer(this.traversalerRootDir));
+            this.registerForRenderer(new renderer_1.ScssRenderer(this.traversalerRootDir));
         }
         if (this.renderConfig.typescript.enabled) {
-            this.registerForRenderer(new TypeScriptRenderer_1.TypeScriptRenderer(this.traversalerRootDir));
+            this.registerForRenderer(new renderer_1.TypeScriptRenderer(this.traversalerRootDir));
         }
         if ((_a = this.renderConfig.rewriteJavascript) === null || _a === void 0 ? void 0 : _a.enabled) {
-            this.registerForRenderer(new RewriteJavascriptRenderer_1.RewriteJavascriptRenderer(this.traversalerOutDir));
+            this.registerForRenderer(new renderer_1.RewriteJavascriptRenderer(this.traversalerOutDir));
         }
         if (this.renderConfig.copyResource.enabled) {
-            this.registerForRenderer(new CopyResourceRenderer_1.CopyResourceRenderer(this.traversalerRootDir));
+            this.registerForRenderer(new renderer_1.CopyResourceRenderer(this.traversalerRootDir));
         }
-        if (!!this.__variableFilePathToInject) {
-            this.registerForRenderer(new InjectVariableRenderer_1.InjectVariableRenderer(this.__variableFilePathToInject, this.traversalerOutDir));
+        if (!!this.variableFilePathToInject_) {
+            this.registerForRenderer(new renderer_1.InjectVariableRenderer(this.variableFilePathToInject_, this.traversalerOutDir));
         }
         this.traversalerRootDir.traversalPath(this.renderConfig.rootDir);
         this.traversalerOutDir.traversalPath(this.renderConfig.outDir);

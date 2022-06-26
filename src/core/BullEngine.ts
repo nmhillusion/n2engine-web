@@ -1,18 +1,20 @@
 import { RenderConfig } from "../model/RenderConfig";
-import { InjectVariableRenderer } from "../renderer/InjectVariableRenderer";
-import { PugRenderer } from "../renderer/PugRenderer";
-import { Renderable } from "../renderer/Renderable";
-import { ScssRenderer } from "../renderer/ScssRenderer";
 import { TraversalWorkspace } from "./TraversalWorkspace";
-import { TypeScriptRenderer } from "../renderer/TypeScriptRenderer";
-import { RewriteJavascriptRenderer } from "../renderer/RewriteJavascriptRenderer";
-import { CopyResourceRenderer } from "../renderer/CopyResourceRenderer";
+import {
+  Renderable,
+  CopyResourceRenderer,
+  RewriteJavascriptRenderer,
+  PugRenderer,
+  ScssRenderer,
+  TypeScriptRenderer,
+  InjectVariableRenderer,
+} from "../renderer";
 
 export class BullEngine {
   private readonly traversalerRootDir: TraversalWorkspace;
   private readonly traversalerOutDir: TraversalWorkspace;
   private renderConfig: RenderConfig;
-  private __variableFilePathToInject: string;
+  private variableFilePathToInject_: string;
 
   constructor() {
     this.traversalerRootDir = new TraversalWorkspace();
@@ -22,13 +24,15 @@ export class BullEngine {
   public config(renderConfig: RenderConfig): BullEngine {
     if (renderConfig) {
       this.renderConfig = renderConfig;
+      this.traversalerRootDir.renderConfig = renderConfig;
+      this.traversalerOutDir.renderConfig = renderConfig;
     }
     return this;
   }
 
   public setVariableFilePathToInject(path: string): BullEngine {
     if (path) {
-      this.__variableFilePathToInject = path;
+      this.variableFilePathToInject_ = path;
     }
     return this;
   }
@@ -67,10 +71,10 @@ export class BullEngine {
       );
     }
 
-    if (!!this.__variableFilePathToInject) {
+    if (!!this.variableFilePathToInject_) {
       this.registerForRenderer(
         new InjectVariableRenderer(
-          this.__variableFilePathToInject,
+          this.variableFilePathToInject_,
           this.traversalerOutDir
         )
       );

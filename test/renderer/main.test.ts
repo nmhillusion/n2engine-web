@@ -1,9 +1,21 @@
 import * as fs from "fs";
 import { BullEngine } from "../../src/core/BullEngine";
 
-test("test renderer", function () {
-  const rootDir = __dirname + "/../../sample";
-  const outDir = __dirname + "/../../sampleDist";
+const isTesting = "function" === typeof test;
+
+if (isTesting) {
+  test("test renderer", function () {
+    expect(exec).not.toThrowError();
+  });
+} else {
+  exec();
+}
+
+function exec() {
+  console.log(`-- TESTING: ${isTesting} --`);
+
+  const rootDir = process.cwd() + "/sample";
+  const outDir = process.cwd() + "/sampleDist";
 
   if (!fs.existsSync(rootDir)) {
     fs.mkdirSync(rootDir, { recursive: true });
@@ -12,47 +24,51 @@ test("test renderer", function () {
     fs.mkdirSync(outDir, { recursive: true });
   }
 
-  expect(() =>
-    new BullEngine()
-      .config({
-        rootDir: fs.realpathSync(rootDir),
-        outDir: fs.realpathSync(outDir),
-        pug: {
-          enabled: true,
-          config: {
-            pretty: false,
+  new BullEngine()
+    .config({
+      rootDir: fs.realpathSync(rootDir),
+      outDir: fs.realpathSync(outDir),
+      watch: {
+        enabled: !isTesting,
+        handleRenameEvent: true,
+        handleChangeEvent: true,
+        minIntervalInMs: 2_000,
+      },
+      pug: {
+        enabled: true,
+        config: {
+          pretty: false,
+        },
+      },
+      scss: {
+        enabled: true,
+        config: {
+          outputStyle: "compressed",
+        },
+      },
+      typescript: {
+        enabled: true,
+        config: {
+          compilerOptions: {
+            declaration: false,
+            declarationMap: false,
+            sourceMap: false,
           },
         },
-        scss: {
-          enabled: true,
-          config: {
-            outputStyle: "compressed",
-          },
+      },
+      copyResource: {
+        enabled: true,
+      },
+      rewriteJavascript: {
+        enabled: true,
+        config: {
+          rewriteImport: true,
+          compress: true,
         },
-        typescript: {
-          enabled: true,
-          config: {
-            compilerOptions: {
-              declaration: false,
-              declarationMap: false,
-              sourceMap: false,
-            },
-          },
-        },
-        copyResource: {
-          enabled: true,
-        },
-        rewriteJavascript: {
-          enabled: true,
-          config: {
-            rewriteImport: true,
-            compress: true,
-          },
-        },
-      })
-      .setVariableFilePathToInject(
-        fs.realpathSync(__dirname + "/../env/dev.env.json")
-      )
-      .render()
-  ).not.toThrowError();
-});
+      },
+    })
+    .setVariableFilePathToInject(
+      fs.realpathSync(process.cwd() + "/test/env/dev.env.json")
+    )
+    .render();
+}

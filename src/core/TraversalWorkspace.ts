@@ -1,8 +1,31 @@
 import * as fs from "fs";
+import { LogFactory, LoggerConfig, LOG_LEVELS, NodeLogger } from "n2log4web";
+import { RenderConfig } from "../model";
 import { TraversalCallback } from "../model/TraversalCallback";
+
+interface FileMonitor {
+  filePath: string;
+  latestModifiedTime: number;
+}
 
 export class TraversalWorkspace {
   private listeners: TraversalCallback[] = [];
+  private renderConfig_: RenderConfig;
+  private DEFAULT_MIN_INTERVAL: number = 1000;
+  private logger: NodeLogger;
+  private filesMonitor: FileMonitor[] = [];
+
+  constructor() {
+    this.logger = LogFactory.fromConfig(
+      new LoggerConfig()
+        .setFocusType("color")
+        .setLoggableLevel(LOG_LEVELS.DEBUG)
+    ).getNodeLog(this.constructor.name);
+  }
+
+  public set renderConfig(config: RenderConfig) {
+    this.renderConfig_ = config;
+  }
 
   private __traversal(startDir: string, callback: (filePath: string) => any) {
     const dirList = fs.readdirSync(startDir);
@@ -15,14 +38,88 @@ export class TraversalWorkspace {
         this.__traversal(pItemPath, callback);
       } else if (itemState.isFile()) {
         callback(pItemPath);
+
+        this.handleFileWatch(pItemPath, callback);
       }
     }
   }
 
-  private __callbackTraversal(filePath: string) {
+  private findFileMonitorOfFile(filePath: string): FileMonitor | undefined {
+    return this.filesMonitor.find((fm) => fm.filePath === filePath);
+  }
+
+  private getAbleToTriggerFileWatch(filePath: string) {
+    const fileMonitor = this.findFileMonitorOfFile(filePath);
+    const currentTime = new Date().getTime();
+
+    if (fileMonitor) {
+      const deltaTime = currentTime - fileMonitor.latestModifiedTime;
+      const MIN_INTERVAL =
+        this.renderConfig_?.watch?.minIntervalInMs || this.DEFAULT_MIN_INTERVAL;
+
+      if (Number.isNaN(deltaTime) || deltaTime < MIN_INTERVAL) {
+        return false;
+      } else {
+        fileMonitor.latestModifiedTime = currentTime;
+        return true;
+      }
+    } else {
+      this.filesMonitor.push({
+        filePath,
+        latestModifiedTime: currentTime,
+      });
+      return true;
+    }
+  }
+
+  private handleFileWatch(
+    pItemPath: string,
+    callback: (filePath: string) => any
+  ) {
+    if (this.renderConfig_?.watch?.enabled) {
+      const MIN_INTERVAL =
+        this.renderConfig_?.watch?.minIntervalInMs || this.DEFAULT_MIN_INTERVAL;
+
+      const watcher = fs.watch(
+        pItemPath,
+        {
+          persistent: true,
+          recursive: false,
+        },
+        (eventType, filename) => {
+          if (this.getAbleToTriggerFileWatch(pItemPath)) {
+            this.logger.info("change file on: ", {
+              pItemPath,
+              eventType,
+              filename,
+            });
+
+            if (
+              ("change" === eventType &&
+                this.renderConfig_?.watch?.handleChangeEvent) ||
+              ("rename" === eventType &&
+                this.renderConfig_?.watch?.handleRenameEvent)
+            ) {
+              watcher.close();
+
+              callback(pItemPath);
+
+              const timer = setTimeout(() => {
+                this.handleFileWatch(pItemPath, callback);
+
+                clearTimeout(timer);
+              }, MIN_INTERVAL);
+            }
+          }
+        }
+      );
+    }
+  }
+
+  private async __callbackTraversal(filePath: string) {
     if (this.listeners) {
       for (const listener of this.listeners) {
-        listener?.invoke(filePath);
+        await listener?.invoke(filePath);
       }
     }
   }

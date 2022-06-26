@@ -35,6 +35,7 @@ class TypeScriptRenderer extends Renderable_1.Renderable {
             tsConfig.compilerOptions.rootDir = rootDir;
             tsConfig.compilerOptions.outDir = outDir;
             this.writeUserTsConfigFile(JSON.stringify(tsConfig));
+            console.log("log tsConfig: ", tsConfig);
             shelljs.exec(`npx tsc --project ${index_1.WORKSPACE_DIR}/user.tsconfig.json`);
         }
     }

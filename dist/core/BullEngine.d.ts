@@ -3,7 +3,7 @@ export declare class BullEngine {
     private readonly traversalerRootDir;
     private readonly traversalerOutDir;
     private renderConfig;
-    private __variableFilePathToInject;
+    private variableFilePathToInject_;
     constructor();
     config(renderConfig: RenderConfig): BullEngine;
     setVariableFilePathToInject(path: string): BullEngine;

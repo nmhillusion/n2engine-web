@@ -1,10 +1,11 @@
 import * as sass from "node-sass";
-import { FileSystemHelper } from "../helper/FileSystemHelper";
-import { RenderConfig } from "../model/RenderConfig";
-import { Renderable } from "./Renderable";
+import * as fs from "fs";
+import { FileSystemHelper } from "../../helper/FileSystemHelper";
+import { RenderConfig } from "../../model/RenderConfig";
+import { Renderable } from "../Renderable";
 
 export class ScssRenderer extends Renderable {
-  protected doRender(
+  protected async doRender(
     filePath: string,
     rootDir: string,
     outDir: string,
@@ -18,7 +19,11 @@ export class ScssRenderer extends Renderable {
         Object.assign(configToRender, renderConfig.scss.config);
       }
 
-      Object.assign(configToRender, { file: filePath });
+      const fileContent = fs.readFileSync(filePath).toString();
+
+      Object.assign(configToRender, {
+        data: fileContent,
+      });
       const { css } = sass.renderSync(configToRender);
 
       let rendered = css.toString();
