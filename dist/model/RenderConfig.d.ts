@@ -3,6 +3,7 @@ import * as pug from "pug";
 export interface RenderConfig {
     rootDir: string;
     outDir: string;
+    watch?: boolean;
     pug: {
         enabled: boolean;
         config?: pug.Options & pug.LocalsObject;
@@ -13,7 +14,7 @@ export interface RenderConfig {
     };
     typescript: {
         enabled: boolean;
-        config?: Object;
+        config?: object;
     };
     copyResource: {
         enabled: boolean;

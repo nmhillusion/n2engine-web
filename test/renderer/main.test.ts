@@ -31,6 +31,13 @@ test("test renderer", function () {
         },
         typescript: {
           enabled: true,
+          config: {
+            compilerOptions: {
+              declaration: false,
+              declarationMap: false,
+              sourceMap: false,
+            },
+          },
         },
         copyResource: {
           enabled: true,
