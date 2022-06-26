@@ -72,18 +72,24 @@ class TraversalWorkspace {
                 persistent: true,
                 recursive: false,
             }, (eventType, filename) => {
+                var _a, _b, _c, _d;
                 if (this.getAbleToTriggerFileWatch(pItemPath)) {
-                    watcher.close();
                     this.logger.info("change file on: ", {
                         pItemPath,
                         eventType,
                         filename,
                     });
-                    callback(pItemPath);
-                    const timer = setTimeout(() => {
-                        this.handleFileWatch(pItemPath, callback);
-                        clearTimeout(timer);
-                    }, MIN_INTERVAL);
+                    if (("change" === eventType &&
+                        ((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.handleChangeEvent)) ||
+                        ("rename" === eventType &&
+                            ((_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.handleRenameEvent))) {
+                        watcher.close();
+                        callback(pItemPath);
+                        const timer = setTimeout(() => {
+                            this.handleFileWatch(pItemPath, callback);
+                            clearTimeout(timer);
+                        }, MIN_INTERVAL);
+                    }
                 }
             });
         }
