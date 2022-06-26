@@ -67,11 +67,9 @@ class TraversalWorkspace {
         }
     }
     handleFileWatch(pItemPath, callback) {
-        var _a, _b, _c, _d, _e, _f;
-        console.log("watcher enabled? ", (_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.enabled);
-        if ((_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.enabled) {
-            console.log("START WATCHER");
-            const MIN_INTERVAL = ((_f = (_e = this.renderConfig_) === null || _e === void 0 ? void 0 : _e.watch) === null || _f === void 0 ? void 0 : _f.minIntervalInMs) || this.DEFAULT_MIN_INTERVAL;
+        var _a, _b, _c, _d;
+        if ((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.enabled) {
+            const MIN_INTERVAL = ((_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.minIntervalInMs) || this.DEFAULT_MIN_INTERVAL;
             const watcher = fs.watch(pItemPath, {
                 persistent: true,
                 recursive: false,

@@ -79,11 +79,7 @@ export class TraversalWorkspace {
     pItemPath: string,
     callback: (filePath: string) => any
   ) {
-    console.log("watcher enabled? ", this.renderConfig_?.watch?.enabled);
-
     if (this.renderConfig_?.watch?.enabled) {
-      console.log("START WATCHER");
-
       const MIN_INTERVAL =
         this.renderConfig_?.watch?.minIntervalInMs || this.DEFAULT_MIN_INTERVAL;
 

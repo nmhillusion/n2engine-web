@@ -46,7 +46,7 @@ export class BullEngine {
     );
   }
 
-  async render() {
+  public async render() {
     if (!this.renderConfig) {
       console.error("Does not exist config to run rendering");
       return;
