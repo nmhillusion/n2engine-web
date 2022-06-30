@@ -35,9 +35,11 @@ async function exec(): Promise<boolean> {
         outDir: fs.realpathSync(outDir),
         watch: {
           enabled: !isTesting,
-          handleRenameEvent: true,
-          handleChangeEvent: true,
-          minIntervalInMs: 2_000,
+          config: {
+            handleRenameEvent: true,
+            handleChangeEvent: true,
+            minIntervalInMs: 2_000,
+          },
         },
         pug: {
           enabled: true,

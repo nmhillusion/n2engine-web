@@ -44,12 +44,13 @@ class TraversalWorkspace {
         return this.filesMonitor.find((fm) => fm.filePath === filePath);
     }
     ableToTriggerFileWatch(filePath) {
-        var _a, _b;
+        var _a, _b, _c;
         const fileMonitor = this.findFileMonitorOfFile(filePath);
         const currentTime = new Date().getTime();
         if (fileMonitor) {
             const deltaTime = currentTime - fileMonitor.latestModifiedTime;
-            const MIN_INTERVAL = ((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.minIntervalInMs) || this.DEFAULT_MIN_INTERVAL;
+            const MIN_INTERVAL = ((_c = (_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.config) === null || _c === void 0 ? void 0 : _c.minIntervalInMs) ||
+                this.DEFAULT_MIN_INTERVAL;
             if (Number.isNaN(deltaTime) || deltaTime < MIN_INTERVAL) {
                 return false;
             }
@@ -67,14 +68,15 @@ class TraversalWorkspace {
         }
     }
     handleFileWatch(pItemPath, callback) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
         if ((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.enabled) {
-            const MIN_INTERVAL = ((_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.minIntervalInMs) || this.DEFAULT_MIN_INTERVAL;
+            const MIN_INTERVAL = ((_e = (_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.config) === null || _e === void 0 ? void 0 : _e.minIntervalInMs) ||
+                this.DEFAULT_MIN_INTERVAL;
             const watcher = fs.watch(pItemPath, {
                 persistent: true,
                 recursive: false,
             }, (eventType, filename) => {
-                var _a, _b, _c, _d;
+                var _a, _b, _c, _d, _e, _f;
                 if (this.ableToTriggerFileWatch(pItemPath)) {
                     this.logger.info("change file on: ", {
                         pItemPath,
@@ -82,9 +84,9 @@ class TraversalWorkspace {
                         filename,
                     });
                     if (("change" === eventType &&
-                        ((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.handleChangeEvent)) ||
+                        ((_c = (_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.config) === null || _c === void 0 ? void 0 : _c.handleChangeEvent)) ||
                         ("rename" === eventType &&
-                            ((_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.handleRenameEvent))) {
+                            ((_f = (_e = (_d = this.renderConfig_) === null || _d === void 0 ? void 0 : _d.watch) === null || _e === void 0 ? void 0 : _e.config) === null || _f === void 0 ? void 0 : _f.handleRenameEvent))) {
                         watcher.close();
                         callback(pItemPath);
                         const timer = setTimeout(() => {

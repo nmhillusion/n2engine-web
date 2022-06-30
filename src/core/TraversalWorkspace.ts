@@ -58,7 +58,8 @@ export class TraversalWorkspace {
     if (fileMonitor) {
       const deltaTime = currentTime - fileMonitor.latestModifiedTime;
       const MIN_INTERVAL =
-        this.renderConfig_?.watch?.minIntervalInMs || this.DEFAULT_MIN_INTERVAL;
+        this.renderConfig_?.watch?.config?.minIntervalInMs ||
+        this.DEFAULT_MIN_INTERVAL;
 
       if (Number.isNaN(deltaTime) || deltaTime < MIN_INTERVAL) {
         return false;
@@ -81,7 +82,8 @@ export class TraversalWorkspace {
   ) {
     if (this.renderConfig_?.watch?.enabled) {
       const MIN_INTERVAL =
-        this.renderConfig_?.watch?.minIntervalInMs || this.DEFAULT_MIN_INTERVAL;
+        this.renderConfig_?.watch?.config?.minIntervalInMs ||
+        this.DEFAULT_MIN_INTERVAL;
 
       const watcher = fs.watch(
         pItemPath,
@@ -99,9 +101,9 @@ export class TraversalWorkspace {
 
             if (
               ("change" === eventType &&
-                this.renderConfig_?.watch?.handleChangeEvent) ||
+                this.renderConfig_?.watch?.config?.handleChangeEvent) ||
               ("rename" === eventType &&
-                this.renderConfig_?.watch?.handleRenameEvent)
+                this.renderConfig_?.watch?.config?.handleRenameEvent)
             ) {
               watcher.close();
 

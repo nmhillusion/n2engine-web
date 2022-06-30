@@ -6,18 +6,20 @@ export interface RenderConfig {
   outDir: string;
   watch?: {
     enabled: boolean;
-    /**
-     * default: `1000ms`
-     */
-    minIntervalInMs?: number;
-    /**
-     * default: `false`
-     */
-    handleRenameEvent?: boolean;
-    /**
-     * default: `true`
-     */
-    handleChangeEvent?: boolean;
+    config?: {
+      /**
+       * default: `1000ms`
+       */
+      minIntervalInMs?: number;
+      /**
+       * default: `false`
+       */
+      handleRenameEvent?: boolean;
+      /**
+       * default: `true`
+       */
+      handleChangeEvent?: boolean;
+    };
   };
   pug: {
     enabled: boolean;

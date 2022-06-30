@@ -44,6 +44,7 @@ new BullEngine()
     },
     copyResource: {
       enabled: true,
+      // default of extsToCopy: [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"]
       extsToCopy: [".png", ".jpg", ".tff", ".json"],
     },
     rewriteJavascript: {
@@ -60,12 +61,33 @@ new BullEngine()
   .render();
 ```
 
+## Notes:
+
+- Purpose to use for client mainly, so when use `<script>` tag, it should be type of `type="module"` to use feature module of ECMA Script. Eg: `<script src="./main.js" type="module" ></script>`
+- Links in script tag or link tag with css, will auto replace path ends with `.scss` to `.css` and `.ts` to `.js`.
+  Example:
+
+```pug
+link(href="./style.scss", rel="stylesheet")
+script(src="./main.ts", type="module")
+```
+
+will render to:
+
+```html
+<link href="./style.css" rel="stylesheet">
+<script src="./main.js" type="module></script>
+```
+
 ## Caveats:
+
 - SCSS: Only support SCSS file, not support SASS file
 - Root Dir and Out Dir: must be the real path (full path), not support relative path (start with `./`, `../`)
 
 ## Variables:
+
 Structure of a variable environment file must look like:
+
 ```json
 {
   "app": {
@@ -80,9 +102,10 @@ Structure of a variable environment file must look like:
 }
 ```
 
-Then, you can use these variables in code by synctax: `{{\s*n2v:<variable.path>\s*}}`
+Then, you can use these variables in code by syntax: `{{\s*n2v:<variable.path>\s*}}`
 
 ### Example of usage:
+
 ```pug
 html
   head

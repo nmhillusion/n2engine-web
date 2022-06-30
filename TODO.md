@@ -1,3 +1,1 @@
-- file watcher
 - support for sass file
-- able to override tsConfig, scss config, pugConfig
