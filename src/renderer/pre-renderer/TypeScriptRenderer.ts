@@ -4,12 +4,27 @@ import * as shelljs from "shelljs";
 import { Renderable } from "../Renderable";
 import { WORKSPACE_DIR } from "../../index";
 import { RenderConfig } from "../../model";
+import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 
 export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
     WORKSPACE_DIR + "/user.tsconfig.json";
   private readonly userBaseTsConfigPath: string =
     WORKSPACE_DIR + "/user.base.tsconfig.json";
+
+  private ableToExecution = true;
+
+  constructor(traversal: TraversalWorkspace) {
+    super(traversal);
+    const npxWhich = shelljs.which("npx");
+    if (!npxWhich || 0 == String(npxWhich).trim().length) {
+      this.logger.error(
+        "Required to install command `npx` to use Typescript renderer."
+      );
+
+      this.ableToExecution = false;
+    }
+  }
 
   private readUserTsConfigFile() {
     return fs.readFileSync(this.userBaseTsConfigPath).toString();
@@ -25,7 +40,12 @@ export class TypeScriptRenderer extends Renderable {
     outDir: string,
     renderConfig: RenderConfig
   ) {
-    if (filePath.endsWith(".ts")) {
+    if (
+      this.ableToExecution &&
+      filePath.endsWith(".ts") &&
+      // not compile declaration file of typescript
+      !filePath.endsWith(".d.ts")
+    ) {
       this.logger.info(filePath);
       const tsConfig = JSON.parse(this.readUserTsConfigFile());
 

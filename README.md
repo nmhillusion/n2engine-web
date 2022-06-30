@@ -80,7 +80,7 @@ will render to:
 ```
 
 ## Caveats:
-
+- Required to install command `npx` to use Typescript renderer.
 - SCSS: Only support SCSS file, not support SASS file
 - Root Dir and Out Dir: must be the real path (full path), not support relative path (start with `./`, `../`)
 
