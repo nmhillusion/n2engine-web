@@ -35,7 +35,10 @@ export interface RenderConfig {
   };
   copyResource: {
     enabled: boolean;
-    extsToCopy?: string[];
+    config?: {
+      // default of extsToCopy: [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"]
+      extsToCopy?: string[];
+    };
   };
   rewriteJavascript?: {
     enabled?: boolean;

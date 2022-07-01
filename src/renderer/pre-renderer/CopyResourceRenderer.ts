@@ -11,7 +11,7 @@ export class CopyResourceRenderer extends Renderable {
   ) {
     if (
       (
-        renderConfig.copyResource.extsToCopy || [
+        renderConfig.copyResource?.config?.extsToCopy || [
           ".jpg",
           ".jpeg",
           ".png",

@@ -14,8 +14,9 @@ const FileSystemHelper_1 = require("../../helper/FileSystemHelper");
 const Renderable_1 = require("../Renderable");
 class CopyResourceRenderer extends Renderable_1.Renderable {
     doRender(filePath, rootDir, outDir, renderConfig) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
-            if ((renderConfig.copyResource.extsToCopy || [
+            if ((((_b = (_a = renderConfig.copyResource) === null || _a === void 0 ? void 0 : _a.config) === null || _b === void 0 ? void 0 : _b.extsToCopy) || [
                 ".jpg",
                 ".jpeg",
                 ".png",

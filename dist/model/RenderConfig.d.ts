@@ -34,7 +34,9 @@ export interface RenderConfig {
     };
     copyResource: {
         enabled: boolean;
-        extsToCopy?: string[];
+        config?: {
+            extsToCopy?: string[];
+        };
     };
     rewriteJavascript?: {
         enabled?: boolean;
