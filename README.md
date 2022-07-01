@@ -46,8 +46,10 @@ new BullEngine()
     },
     copyResource: {
       enabled: true,
-      // default of extsToCopy: [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"]
-      extsToCopy: [".png", ".jpg", ".tff", ".json"],
+      config: {
+        // default of extsToCopy: [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"]
+        extsToCopy: [".png", ".jpg", ".tff", ".json"],
+      },
     },
     rewriteJavascript: {
       enabled: true,
