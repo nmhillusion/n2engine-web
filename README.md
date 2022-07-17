@@ -14,9 +14,9 @@ new BullEngine()
     watch: {
       enabled: !isTesting,
       config: {
-        handleRenameEvent: true,
-        handleChangeEvent: true,
-        minIntervalInMs: 2_000,
+        handleRenameEvent: true, // default `true`
+        handleChangeEvent: true, // default `true`
+        minIntervalInMs: 2_000, // default 1000ms
       },
     },
     pug: {

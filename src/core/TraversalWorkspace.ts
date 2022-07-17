@@ -80,7 +80,11 @@ export class TraversalWorkspace {
     pItemPath: string,
     callback: (filePath: string) => any
   ) {
-    if (this.renderConfig_?.watch?.enabled) {
+    if (
+      this.renderConfig_?.watch?.enabled &&
+      (false !== this.renderConfig_?.watch?.config?.handleChangeEvent ||
+        false !== this.renderConfig_?.watch?.config?.handleRenameEvent)
+    ) {
       const MIN_INTERVAL =
         this.renderConfig_?.watch?.config?.minIntervalInMs ||
         this.DEFAULT_MIN_INTERVAL;
@@ -101,10 +105,12 @@ export class TraversalWorkspace {
 
             if (
               ("change" === eventType &&
-                this.renderConfig_?.watch?.config?.handleChangeEvent) ||
+                false !==
+                  this.renderConfig_?.watch?.config?.handleChangeEvent) ||
               ("rename" === eventType &&
-                this.renderConfig_?.watch?.config?.handleRenameEvent)
+                false !== this.renderConfig_?.watch?.config?.handleRenameEvent)
             ) {
+              this.logger.info("running watcher");
               watcher.close();
 
               callback(pItemPath);

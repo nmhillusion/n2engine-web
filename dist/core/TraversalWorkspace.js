@@ -68,9 +68,11 @@ class TraversalWorkspace {
         }
     }
     handleFileWatch(pItemPath, callback) {
-        var _a, _b, _c, _d, _e;
-        if ((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.enabled) {
-            const MIN_INTERVAL = ((_e = (_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.config) === null || _e === void 0 ? void 0 : _e.minIntervalInMs) ||
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+        if (((_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.enabled) &&
+            (false !== ((_e = (_d = (_c = this.renderConfig_) === null || _c === void 0 ? void 0 : _c.watch) === null || _d === void 0 ? void 0 : _d.config) === null || _e === void 0 ? void 0 : _e.handleChangeEvent) ||
+                false !== ((_h = (_g = (_f = this.renderConfig_) === null || _f === void 0 ? void 0 : _f.watch) === null || _g === void 0 ? void 0 : _g.config) === null || _h === void 0 ? void 0 : _h.handleRenameEvent))) {
+            const MIN_INTERVAL = ((_l = (_k = (_j = this.renderConfig_) === null || _j === void 0 ? void 0 : _j.watch) === null || _k === void 0 ? void 0 : _k.config) === null || _l === void 0 ? void 0 : _l.minIntervalInMs) ||
                 this.DEFAULT_MIN_INTERVAL;
             const watcher = fs.watch(pItemPath, {
                 persistent: true,
@@ -84,9 +86,11 @@ class TraversalWorkspace {
                         filename,
                     });
                     if (("change" === eventType &&
-                        ((_c = (_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.config) === null || _c === void 0 ? void 0 : _c.handleChangeEvent)) ||
+                        false !==
+                            ((_c = (_b = (_a = this.renderConfig_) === null || _a === void 0 ? void 0 : _a.watch) === null || _b === void 0 ? void 0 : _b.config) === null || _c === void 0 ? void 0 : _c.handleChangeEvent)) ||
                         ("rename" === eventType &&
-                            ((_f = (_e = (_d = this.renderConfig_) === null || _d === void 0 ? void 0 : _d.watch) === null || _e === void 0 ? void 0 : _e.config) === null || _f === void 0 ? void 0 : _f.handleRenameEvent))) {
+                            false !== ((_f = (_e = (_d = this.renderConfig_) === null || _d === void 0 ? void 0 : _d.watch) === null || _e === void 0 ? void 0 : _e.config) === null || _f === void 0 ? void 0 : _f.handleRenameEvent))) {
+                        this.logger.info("running watcher");
                         watcher.close();
                         callback(pItemPath);
                         const timer = setTimeout(() => {

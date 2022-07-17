@@ -12,7 +12,7 @@ export interface RenderConfig {
        */
       minIntervalInMs?: number;
       /**
-       * default: `false`
+       * default: `true`
        */
       handleRenameEvent?: boolean;
       /**
