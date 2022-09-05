@@ -1,4 +1,4 @@
-import { SyncOptions } from "node-sass";
+import { Options } from "sass";
 import * as pug from "pug";
 
 export interface RenderConfig {
@@ -27,7 +27,7 @@ export interface RenderConfig {
   };
   scss: {
     enabled: boolean;
-    config?: SyncOptions;
+    config?: Options<"sync">;
   };
   typescript: {
     enabled: boolean;

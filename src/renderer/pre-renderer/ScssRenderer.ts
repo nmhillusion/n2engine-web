@@ -1,4 +1,4 @@
-import * as sass from "node-sass";
+import * as sass from "sass";
 import * as fs from "fs";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
 import { RenderConfig } from "../../model/RenderConfig";
@@ -14,19 +14,16 @@ export class ScssRenderer extends Renderable {
     if (filePath.endsWith(".scss") || filePath.endsWith(".sass")) {
       this.logger.info(filePath);
 
-      const configToRender: sass.SyncOptions = {};
+      const configToRender: sass.Options<"sync"> = {};
       if (renderConfig?.scss?.config) {
         Object.assign(configToRender, renderConfig.scss.config);
       }
 
-      const fileContent = fs.readFileSync(filePath).toString();
+      const { css } = sass.compile(filePath, configToRender);
 
-      Object.assign(configToRender, {
-        data: fileContent,
-      });
-      const { css } = sass.renderSync(configToRender);
+      console.log("TEST SCSS: ", css);
 
-      let rendered = css.toString();
+      let rendered: string = css;
 
       FileSystemHelper.writeOutFile({
         data: rendered,

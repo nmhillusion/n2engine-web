@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { Logger } from "sass";
 import { BullEngine } from "../../src/core/BullEngine";
 
 const isTesting = "function" === typeof test;
@@ -50,7 +51,12 @@ async function exec(): Promise<boolean> {
         scss: {
           enabled: true,
           config: {
-            outputStyle: "compressed",
+            style: "compressed",
+            logger: {
+              debug(message, options) {
+                console.log("sass compile: ", message);
+              },
+            },
           },
         },
         typescript: {
