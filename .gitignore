@@ -1,5 +1,5 @@
 node_modules/
 sampleDist/
-# dist/
+dist/
 package-lock.json
 user.tsconfig.json
