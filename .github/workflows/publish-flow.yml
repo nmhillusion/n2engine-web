@@ -16,10 +16,11 @@ jobs:
         with:
           node-version: 18
       - run: npm i && npm ci
+      - run: echo '' > dist/package.json
       - run: npm run build
       - run: npm test
 
-  publish-gpr:
+  publish-to-npm:
     needs: build
     runs-on: ubuntu-latest
     permissions:
