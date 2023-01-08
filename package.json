@@ -1,6 +1,6 @@
 {
   "name": "n2ngin-bull-engine",
-  "version": "2023.1.8.1",
+  "version": "2023.0108.1",
   "description": "n2engine series: BullEngine to render (pug|scss|typescript|assets|variables) to (html|css|javascript|assets)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "ts-node": "^10.8.1"
   },
   "dependencies": {
-    "@nmhillusion/n2log4web": "^2022.0.2",
+    "@nmhillusion/n2log4web": "^2023.0108.1",
     "@types/pug": "^2.0.6",
     "pug": "^3.0.2",
     "sass": "^1.57.1",
