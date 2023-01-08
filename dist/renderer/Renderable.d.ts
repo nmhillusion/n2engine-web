@@ -1,4 +1,4 @@
-import { NodeLogger } from "n2log4web";
+import { NodeLogger } from "@nmhillusion/n2log4web";
 import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { RenderConfig } from "../model";
 export declare abstract class Renderable {

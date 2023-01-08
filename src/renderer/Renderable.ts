@@ -1,4 +1,9 @@
-import { LogFactory, LoggerConfig, LOG_LEVELS, NodeLogger } from "n2log4web";
+import {
+  LogFactory,
+  LoggerConfig,
+  NodeLogger,
+  LogLevel,
+} from "@nmhillusion/n2log4web";
 import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { RenderConfig } from "../model";
 
@@ -7,7 +12,7 @@ export abstract class Renderable {
 
   constructor(private traversaler: TraversalWorkspace) {
     this.logger = LogFactory.fromConfig(
-      new LoggerConfig().setLoggableLevel(LOG_LEVELS.DEBUG)
+      new LoggerConfig().setLoggableLevel(LogLevel.DEBUG)
     ).getNodeLog(this.constructor.name);
   }
 

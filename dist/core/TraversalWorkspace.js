@@ -11,15 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TraversalWorkspace = void 0;
 const fs = require("fs");
-const n2log4web_1 = require("n2log4web");
+const n2log4web_1 = require("@nmhillusion/n2log4web");
 class TraversalWorkspace {
     constructor() {
         this.listeners = [];
         this.DEFAULT_MIN_INTERVAL = 1000;
         this.filesMonitor = [];
-        this.logger = n2log4web_1.LogFactory.fromConfig(new n2log4web_1.LoggerConfig()
-            .setFocusType("color")
-            .setLoggableLevel(n2log4web_1.LOG_LEVELS.DEBUG)).getNodeLog(this.constructor.name);
+        this.logger = n2log4web_1.LogFactory.fromConfig(new n2log4web_1.LoggerConfig().setFocusType("color").setLoggableLevel(n2log4web_1.LogLevel.DEBUG)).getNodeLog(this.constructor.name);
     }
     set renderConfig(config) {
         this.renderConfig_ = config;

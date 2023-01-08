@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import { Logger } from "sass";
 import { BullEngine } from "../../src/core/BullEngine";
 
 const isTesting = "function" === typeof test;

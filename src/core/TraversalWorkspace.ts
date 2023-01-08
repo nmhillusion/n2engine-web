@@ -1,5 +1,10 @@
 import * as fs from "fs";
-import { LogFactory, LoggerConfig, LOG_LEVELS, NodeLogger } from "n2log4web";
+import {
+  LogFactory,
+  LoggerConfig,
+  LogLevel,
+  NodeLogger,
+} from "@nmhillusion/n2log4web";
 import { RenderConfig } from "../model";
 import { TraversalCallback } from "../model/TraversalCallback";
 
@@ -17,9 +22,7 @@ export class TraversalWorkspace {
 
   constructor() {
     this.logger = LogFactory.fromConfig(
-      new LoggerConfig()
-        .setFocusType("color")
-        .setLoggableLevel(LOG_LEVELS.DEBUG)
+      new LoggerConfig().setFocusType("color").setLoggableLevel(LogLevel.DEBUG)
     ).getNodeLog(this.constructor.name);
   }
 

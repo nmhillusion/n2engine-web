@@ -11,21 +11,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ScssRenderer = void 0;
 const sass = require("sass");
+const fs = require("fs");
 const FileSystemHelper_1 = require("../../helper/FileSystemHelper");
 const Renderable_1 = require("../Renderable");
 class ScssRenderer extends Renderable_1.Renderable {
     doRender(filePath, rootDir, outDir, renderConfig) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            // filePath = path.resolve(filePath);
             if (filePath.endsWith(".scss") || filePath.endsWith(".sass")) {
                 this.logger.info(filePath);
-                const configToRender = {};
+                const scssContent = fs.readFileSync(filePath).toString();
+                // this.logger.debug("TEST SCSS: file: ", filePath, scssContent);
+                const configToRender = {
+                    logger: {
+                        debug: (message, options) => {
+                            this.logger.debug(message, options);
+                        },
+                        warn: (message, options) => {
+                            this.logger.warn(message, options);
+                        },
+                    },
+                };
                 if ((_a = renderConfig === null || renderConfig === void 0 ? void 0 : renderConfig.scss) === null || _a === void 0 ? void 0 : _a.config) {
                     Object.assign(configToRender, renderConfig.scss.config);
                 }
-                const { css } = sass.compile(filePath, configToRender);
-                console.log("TEST SCSS: ", css);
-                let rendered = css;
+                const { css: cssBuffer } = sass.compileString(scssContent, configToRender);
+                let rendered = String(cssBuffer);
+                // this.logger.debug("TEST SCSS: css: ", { rendered });
                 FileSystemHelper_1.FileSystemHelper.writeOutFile({
                     data: rendered,
                     outDir,
