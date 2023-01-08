@@ -1,1 +1,0 @@
-{"version":3,"file":"ScssRenderer.d.ts","sourceRoot":"./src/","sources":["renderer/ScssRenderer.ts"],"names":[],"mappings":"AAGA,OAAO,EAAE,YAAY,EAAE,MAAM,uBAAuB,CAAC;AACrD,OAAO,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAE1C,qBAAa,YAAa,SAAQ,UAAU;IAC1C,SAAS,CAAC,QAAQ,CAChB,QAAQ,EAAE,MAAM,EAChB,OAAO,EAAE,MAAM,EACf,MAAM,EAAE,MAAM,EACd,YAAY,EAAE,YAAY;CA4B7B"}

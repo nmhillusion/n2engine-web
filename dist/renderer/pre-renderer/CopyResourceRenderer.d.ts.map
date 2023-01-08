@@ -1,1 +1,0 @@
-{"version":3,"file":"CopyResourceRenderer.d.ts","sourceRoot":"./src/","sources":["renderer/pre-renderer/CopyResourceRenderer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,YAAY,EAAE,MAAM,aAAa,CAAC;AAC3C,OAAO,EAAE,UAAU,EAAE,MAAM,eAAe,CAAC;AAE3C,qBAAa,oBAAqB,SAAQ,UAAU;cAClC,QAAQ,CACtB,QAAQ,EAAE,MAAM,EAChB,OAAO,EAAE,MAAM,EACf,MAAM,EAAE,MAAM,EACd,YAAY,EAAE,YAAY;CAuB7B"}
