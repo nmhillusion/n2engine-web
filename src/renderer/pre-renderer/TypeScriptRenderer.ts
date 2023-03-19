@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as shelljs from "shelljs";
+import { CompilerOptions } from "typescript";
 
 import { Renderable } from "../Renderable";
 import { WORKSPACE_DIR } from "../../index";
@@ -47,15 +48,20 @@ export class TypeScriptRenderer extends Renderable {
       !filePath.endsWith(".d.ts")
     ) {
       this.logger.info(filePath);
-      const tsConfig = JSON.parse(this.readUserTsConfigFile());
+      const tsConfig: {
+        files: string[];
+        compilerOptions: CompilerOptions;
+      } = JSON.parse(this.readUserTsConfigFile());
 
       if (renderConfig?.typescript?.config) {
         const userTsConfig = renderConfig?.typescript?.config;
-        for (const configKey of Object.keys(userTsConfig)) {
-          if (!(configKey in tsConfig)) {
-            tsConfig[configKey] = {};
+
+        if (renderConfig?.typescript?.overwriteAllConfig) {
+          tsConfig.compilerOptions = renderConfig?.typescript?.config;
+        } else {
+          for (const configKey of Object.keys(userTsConfig)) {
+            tsConfig.compilerOptions[configKey] = userTsConfig[configKey];
           }
-          Object.assign(tsConfig[configKey], userTsConfig[configKey]);
         }
       }
 

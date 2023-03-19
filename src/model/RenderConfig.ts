@@ -1,5 +1,6 @@
 import { Options } from "sass";
 import * as pug from "pug";
+import { CompilerOptions } from "typescript";
 
 export interface RenderConfig {
   rootDir: string;
@@ -31,12 +32,18 @@ export interface RenderConfig {
   };
   typescript: {
     enabled: boolean;
-    config?: object;
+    /**
+     * default `true`
+     */
+    overwriteAllConfig?: boolean;
+    config?: CompilerOptions;
   };
   copyResource: {
     enabled: boolean;
     config?: {
-      // default of extsToCopy: [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"]
+      /**
+       * default of extsToCopy: [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"]
+       */
       extsToCopy?: string[];
     };
   };

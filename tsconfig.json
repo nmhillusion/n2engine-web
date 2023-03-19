@@ -3,7 +3,6 @@
     "sourceRoot": "./src",
     "sourceMap": true,
     "target": "ES6",
-    "charset": "utf8",
     "alwaysStrict": true,
     "declaration": true,
     "declarationMap": true,
@@ -14,7 +13,5 @@
     "resolveJsonModule": true
   },
   "include": ["src/**/*"],
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "exclude": ["node_modules/**/*"]
 }

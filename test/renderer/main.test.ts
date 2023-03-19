@@ -60,12 +60,11 @@ async function exec(): Promise<boolean> {
         },
         typescript: {
           enabled: true,
+          overwriteAllConfig: false,
           config: {
-            compilerOptions: {
-              declaration: false,
-              declarationMap: false,
-              sourceMap: false,
-            },
+            declaration: false,
+            declarationMap: false,
+            sourceMap: false,
           },
         },
         copyResource: {

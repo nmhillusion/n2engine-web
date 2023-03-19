@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "sourceMap": true,
+    "sourceMap": false,
     "target": "ES6",
     "alwaysStrict": true,
-    "declaration": true,
+    "declaration": false,
+    "declarationMap": false,
     "module": "ES6",
     "outDir": "./dist",
     "pretty": true,
