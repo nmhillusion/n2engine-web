@@ -1,6 +1,6 @@
 {
   "name": "@nmhillusion/n2ngin-bull-engine",
-  "version": "2023.319.1",
+  "version": "2023.319.2",
   "description": "n2engine series: BullEngine to render (pug|scss|typescript|assets|variables) to (html|css|javascript|assets)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest",
     "watch": "ts-node ./test/renderer/main.test.ts",
-    "build": "ts-node ./support/generate-info.ts && tsc && cp ./user.base.tsconfig.json dist && cp ./package.json dist && ts-node ./support/build-publish-package-json.ts",
+    "build": "ts-node ./support/generate-info.ts && tsc && cp ./src/user.base.tsconfig.json ./package.json dist && ts-node ./support/build-publish-package-json.ts",
     "serve": "nodemon -w ./sampleDist sample.server.mjs",
     "tag-version": "npm run build && ts-node ./support/tag-version.ts"
   },
