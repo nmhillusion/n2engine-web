@@ -3,6 +3,7 @@ $fontSize: 15px;
 h1 {
   background-color: darkgray;
   border: solid 1px #f0f;
-  font-size: $fontSize * 2;
+  font-size: $fontSize * 3;
   color: purple;
+  padding: 1em;
 }
