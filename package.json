@@ -1,6 +1,6 @@
 {
   "name": "@nmhillusion/n2ngin-bull-engine",
-  "version": "2023.0108.9",
+  "version": "2023.319.1",
   "description": "n2engine series: BullEngine to render (pug|scss|typescript|assets|variables) to (html|css|javascript|assets)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,24 +21,24 @@
   "author": "nmhillusion",
   "license": "MIT",
   "devDependencies": {
-    "@types/express": "^4.17.13",
-    "@types/jest": "^29.2.5",
-    "@types/node": "^18.11.18",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.3",
     "@types/shelljs": "^0.8.11",
-    "@types/uglify-js": "^3.16.0",
-    "express": "^4.18.1",
-    "jest": "^29.3.1",
-    "nodemon": "^2.0.18",
-    "ts-jest": "^29.0.3",
-    "ts-node": "^10.8.1"
+    "@types/uglify-js": "^3.17.1",
+    "express": "^4.18.2",
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.21",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "@nmhillusion/n2log4web": "^2023.0108.1",
     "@types/pug": "^2.0.6",
     "pug": "^3.0.2",
-    "sass": "^1.57.1",
+    "sass": "^1.59.3",
     "shelljs": "^0.8.5",
-    "typescript": "^4.9.4",
+    "typescript": "^5.0.2",
     "uglify-js": "^3.17.4"
   },
   "repository": {

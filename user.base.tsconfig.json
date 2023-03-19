@@ -2,7 +2,6 @@
   "compilerOptions": {
     "sourceMap": true,
     "target": "ES6",
-    "charset": "utf8",
     "alwaysStrict": true,
     "declaration": true,
     "module": "ES6",
