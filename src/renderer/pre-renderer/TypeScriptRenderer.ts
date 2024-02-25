@@ -79,14 +79,17 @@ export class TypeScriptRenderer {
       ? "--watch"
       : "";
 
+    if (!tsConfig.files || 0 == tsConfig.files.length) {
+      delete tsConfig.files;
+    }
     this.writeUserTsConfigFile(JSON.stringify(tsConfig));
 
-    const { code, stderr, stdout } = shelljs.exec(
-      `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchConfigCmd}`,
-      {
-        async: false,
-      }
-    );
+    const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchConfigCmd}`;
+    this.logger.info("ts command: ", command_);
+
+    const { code, stderr, stdout } = shelljs.exec(command_, {
+      async: false,
+    });
 
     this.logger.debug({ code, stderr, stdout });
   }
