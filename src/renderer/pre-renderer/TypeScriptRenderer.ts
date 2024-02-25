@@ -2,21 +2,37 @@ import * as fs from "fs";
 import * as shelljs from "shelljs";
 import { CompilerOptions } from "typescript";
 
-import { Renderable } from "../Renderable";
 import { WORKSPACE_DIR } from "../../index";
 import { RenderConfig } from "../../model";
 import { TraversalWorkspace } from "../../core/TraversalWorkspace";
+import {
+  LogFactory,
+  LogLevel,
+  LoggerConfig,
+  NodeLogger,
+} from "@nmhillusion/n2log4web";
+import path = require("path");
 
-export class TypeScriptRenderer extends Renderable {
+export class TypeScriptRenderer {
   private readonly userTsConfigPath: string =
     WORKSPACE_DIR + "/user.tsconfig.json";
   private readonly userBaseTsConfigPath: string =
     WORKSPACE_DIR + "/user.base.tsconfig.json";
+  private logger: NodeLogger = null;
 
   private ableToExecution = true;
 
-  constructor(traversal: TraversalWorkspace) {
-    super(traversal);
+  constructor(
+    private config: {
+      rootDir: string;
+      outDir: string;
+      renderConfig: RenderConfig;
+    }
+  ) {
+    this.logger = LogFactory.fromConfig(
+      new LoggerConfig().setLoggableLevel(LogLevel.DEBUG)
+    ).getNodeLog(this.constructor.name);
+
     const npxWhich = shelljs.which("npx");
     if (!npxWhich || 0 == String(npxWhich).trim().length) {
       this.logger.error(
@@ -35,50 +51,43 @@ export class TypeScriptRenderer extends Renderable {
     fs.writeFileSync(this.userTsConfigPath, data);
   }
 
-  protected async doRender(
-    filePath: string,
-    rootDir: string,
-    outDir: string,
-    renderConfig: RenderConfig
-  ) {
-    if (
-      this.ableToExecution &&
-      filePath.endsWith(".ts") &&
-      // not compile declaration file of typescript
-      !filePath.endsWith(".d.ts")
-    ) {
-      this.logger.info(filePath);
-      const tsConfig: {
-        files: string[];
-        compilerOptions: CompilerOptions;
-      } = JSON.parse(this.readUserTsConfigFile());
+  async render() {
+    const tsConfig: {
+      files: string[];
+      include: string[];
+      exclude: string[];
+      compilerOptions: CompilerOptions;
+    } = JSON.parse(this.readUserTsConfigFile());
 
-      if (renderConfig?.typescript?.config) {
-        const userTsConfig = renderConfig?.typescript?.config;
+    if (this.config.renderConfig?.typescript?.config) {
+      const userTsConfig = this.config.renderConfig?.typescript?.config;
 
-        if (renderConfig?.typescript?.overwriteAllConfig) {
-          tsConfig.compilerOptions = renderConfig?.typescript?.config;
-        } else {
-          for (const configKey of Object.keys(userTsConfig)) {
-            tsConfig.compilerOptions[configKey] = userTsConfig[configKey];
-          }
+      if (this.config.renderConfig?.typescript?.overwriteAllConfig) {
+        tsConfig.compilerOptions = this.config.renderConfig?.typescript?.config;
+      } else {
+        for (const configKey of Object.keys(userTsConfig)) {
+          tsConfig.compilerOptions[configKey] = userTsConfig[configKey];
         }
       }
-
-      tsConfig.files = [filePath];
-      tsConfig.compilerOptions.rootDir = rootDir;
-      tsConfig.compilerOptions.outDir = outDir;
-
-      this.writeUserTsConfigFile(JSON.stringify(tsConfig));
-
-      const { code, stderr, stdout } = shelljs.exec(
-        `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`,
-        {
-          async: false,
-        }
-      );
-
-      this.logger.debug({ code, stderr, stdout });
     }
+
+    tsConfig.include = [`${path.posix.join(this.config.rootDir, "**", "*")}`];
+    tsConfig.compilerOptions.rootDir = this.config.rootDir;
+    tsConfig.compilerOptions.outDir = this.config.outDir;
+
+    const watchConfigCmd = this.config.renderConfig.watch?.enabled
+      ? "--watch"
+      : "";
+
+    this.writeUserTsConfigFile(JSON.stringify(tsConfig));
+
+    const { code, stderr, stdout } = shelljs.exec(
+      `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchConfigCmd}`,
+      {
+        async: false,
+      }
+    );
+
+    this.logger.debug({ code, stderr, stdout });
   }
 }
