@@ -11,21 +11,21 @@ import {
 } from "../renderer";
 
 export class BullEngine {
-  private readonly traversalerRootDir: TraversalWorkspace;
-  private readonly traversalerOutDir: TraversalWorkspace;
+  private readonly rootDirTraversaler: TraversalWorkspace;
+  private readonly outDirTraversaler: TraversalWorkspace;
   private renderConfig: RenderConfig;
   private variableFilePathToInject_: string;
 
   constructor() {
-    this.traversalerRootDir = new TraversalWorkspace();
-    this.traversalerOutDir = new TraversalWorkspace();
+    this.rootDirTraversaler = new TraversalWorkspace();
+    this.outDirTraversaler = new TraversalWorkspace();
   }
 
   public config(renderConfig: RenderConfig): BullEngine {
     if (renderConfig) {
       this.renderConfig =
-        this.traversalerRootDir.renderConfig =
-        this.traversalerOutDir.renderConfig =
+        this.rootDirTraversaler.renderConfig =
+        this.outDirTraversaler.renderConfig =
           renderConfig;
     }
     return this;
@@ -53,34 +53,34 @@ export class BullEngine {
     }
 
     if (this.renderConfig.pug.enabled) {
-      this.registerForRenderer(new PugRenderer(this.traversalerRootDir));
+      this.registerForRenderer(new PugRenderer(this.rootDirTraversaler));
     }
     if (this.renderConfig.scss.enabled) {
-      this.registerForRenderer(new ScssRenderer(this.traversalerRootDir));
+      this.registerForRenderer(new ScssRenderer(this.rootDirTraversaler));
     }
     if (this.renderConfig.typescript.enabled) {
-      this.registerForRenderer(new TypeScriptRenderer(this.traversalerRootDir));
+      this.registerForRenderer(new TypeScriptRenderer(this.rootDirTraversaler));
     }
     if (this.renderConfig.copyResource.enabled) {
       this.registerForRenderer(
-        new CopyResourceRenderer(this.traversalerRootDir)
+        new CopyResourceRenderer(this.rootDirTraversaler)
       );
     }
     if (!!this.variableFilePathToInject_) {
       this.registerForRenderer(
         new InjectVariableRenderer(
           this.variableFilePathToInject_,
-          this.traversalerOutDir
+          this.outDirTraversaler
         )
       );
     }
     if (this.renderConfig.rewriteJavascript?.enabled) {
       this.registerForRenderer(
-        new RewriteJavascriptRenderer(this.traversalerOutDir)
+        new RewriteJavascriptRenderer(this.outDirTraversaler)
       );
     }
 
-    await this.traversalerRootDir.traversalPath(this.renderConfig.rootDir);
-    await this.traversalerOutDir.traversalPath(this.renderConfig.outDir);
+    await this.rootDirTraversaler.traversalPath(this.renderConfig.rootDir);
+    await this.outDirTraversaler.traversalPath(this.renderConfig.outDir);
   }
 }
