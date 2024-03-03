@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as shelljs from "shelljs";
 import { CompilerOptions } from "typescript";
 
-import { WORKSPACE_DIR } from "../../index";
+import { BullEngineState, WORKSPACE_DIR } from "../../index";
 import { RenderConfig } from "../../model";
 import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import {
@@ -29,8 +29,8 @@ export class TypeScriptRenderer extends Renderable {
     compilerOptions: CompilerOptions;
   };
 
-  constructor(traversal: TraversalWorkspace) {
-    super(traversal);
+  constructor(traversal: TraversalWorkspace, engineState: BullEngineState) {
+    super(traversal, engineState);
     const npxWhich = shelljs.which("npx");
     if (!npxWhich || 0 == String(npxWhich).trim().length) {
       this.logger.error(

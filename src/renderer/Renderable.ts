@@ -6,11 +6,15 @@ import {
 } from "@nmhillusion/n2log4web";
 import { TraversalWorkspace } from "../core/TraversalWorkspace";
 import { RenderConfig } from "../model";
+import { BullEngineState } from "../core";
 
 export abstract class Renderable {
   protected logger: NodeLogger;
 
-  constructor(private traversaler: TraversalWorkspace) {
+  constructor(
+    private traversaler: TraversalWorkspace,
+    private engineState: BullEngineState
+  ) {
     this.logger = LogFactory.fromConfig(
       new LoggerConfig().setLoggableLevel(LogLevel.DEBUG)
     ).getNodeLog(this.constructor.name);

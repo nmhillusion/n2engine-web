@@ -10,11 +10,17 @@ import {
   InjectVariableRenderer,
 } from "../renderer";
 
+export interface BullEngineState {
+  latestCompileTsTime?: Date;
+}
+
 export class BullEngine {
   private readonly rootDirTraversaler: TraversalWorkspace;
   private readonly outDirTraversaler: TraversalWorkspace;
   private renderConfig: RenderConfig;
   private variableFilePathToInject_: string;
+
+  private readonly STATE: BullEngineState = {};
 
   constructor() {
     this.rootDirTraversaler = new TraversalWorkspace();
@@ -53,17 +59,23 @@ export class BullEngine {
     }
 
     if (this.renderConfig.pug.enabled) {
-      this.registerForRenderer(new PugRenderer(this.rootDirTraversaler));
+      this.registerForRenderer(
+        new PugRenderer(this.rootDirTraversaler, this.STATE)
+      );
     }
     if (this.renderConfig.scss.enabled) {
-      this.registerForRenderer(new ScssRenderer(this.rootDirTraversaler));
+      this.registerForRenderer(
+        new ScssRenderer(this.rootDirTraversaler, this.STATE)
+      );
     }
     if (this.renderConfig.typescript.enabled) {
-      this.registerForRenderer(new TypeScriptRenderer(this.rootDirTraversaler));
+      this.registerForRenderer(
+        new TypeScriptRenderer(this.rootDirTraversaler, this.STATE)
+      );
     }
     if (this.renderConfig.copyResource.enabled) {
       this.registerForRenderer(
-        new CopyResourceRenderer(this.rootDirTraversaler)
+        new CopyResourceRenderer(this.rootDirTraversaler, this.STATE)
       );
     }
     if (!!this.variableFilePathToInject_) {
@@ -76,7 +88,7 @@ export class BullEngine {
     }
     if (this.renderConfig.rewriteJavascript?.enabled) {
       this.registerForRenderer(
-        new RewriteJavascriptRenderer(this.outDirTraversaler)
+        new RewriteJavascriptRenderer(this.outDirTraversaler, this.STATE)
       );
     }
 
