@@ -82,7 +82,8 @@ export class BullEngine {
       this.registerForRenderer(
         new InjectVariableRenderer(
           this.variableFilePathToInject_,
-          this.outDirTraversaler
+          this.outDirTraversaler,
+          this.STATE
         )
       );
     }

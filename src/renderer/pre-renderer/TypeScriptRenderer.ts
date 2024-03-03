@@ -28,6 +28,7 @@ export class TypeScriptRenderer extends Renderable {
     exclude: string[];
     compilerOptions: CompilerOptions;
   };
+  private DELAY_FOR_EACH_RUNTIME: number = 5000;
 
   constructor(traversal: TraversalWorkspace, engineState: BullEngineState) {
     super(traversal, engineState);
@@ -61,6 +62,11 @@ export class TypeScriptRenderer extends Renderable {
 
     this.tsConfig = JSON.parse(this.readUserTsConfigFile());
 
+    if (renderConfig.typescript.delayForEachRuntimeInMillis) {
+      this.DELAY_FOR_EACH_RUNTIME =
+        renderConfig.typescript.delayForEachRuntimeInMillis;
+    }
+
     if (renderConfig?.typescript?.config) {
       const userTsConfig = renderConfig?.typescript?.config;
 
@@ -93,6 +99,18 @@ export class TypeScriptRenderer extends Renderable {
       this.initForTsConfig(filePath, rootDir, outDir, renderConfig);
     }
 
+    if (
+      this.engineState.latestCompileTsTime &&
+      new Date().getTime() - this.engineState.latestCompileTsTime.getTime() <
+        this.DELAY_FOR_EACH_RUNTIME
+    ) {
+      this.logger.info(
+        "ignore this runtime because of inside of DELAY_FOR_EACH_RUNTIME = ",
+        this.DELAY_FOR_EACH_RUNTIME
+      );
+      return;
+    }
+
     const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`;
     this.logger.info("ts command: ", command_);
 
@@ -101,5 +119,7 @@ export class TypeScriptRenderer extends Renderable {
     });
 
     this.logger.debug({ code, stderr, stdout });
+
+    this.engineState.latestCompileTsTime = new Date();
   }
 }

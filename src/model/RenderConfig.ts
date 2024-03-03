@@ -31,6 +31,10 @@ export interface RenderConfig {
     config?: Options<"sync">;
   };
   typescript: {
+    /**
+     * default: 5000ms
+     */
+    delayForEachRuntimeInMillis?: number;
     enabled: boolean;
     /**
      * default `true`

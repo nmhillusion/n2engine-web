@@ -1,5 +1,5 @@
 export function greet(message: string) {
-  return `Hi you, ${message}`;
+  return `Hello you, ${message}`;
 }
 
 export function adder(init: number) {

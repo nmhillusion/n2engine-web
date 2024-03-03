@@ -13,7 +13,7 @@ export abstract class Renderable {
 
   constructor(
     private traversaler: TraversalWorkspace,
-    private engineState: BullEngineState
+    protected engineState: BullEngineState
   ) {
     this.logger = LogFactory.fromConfig(
       new LoggerConfig().setLoggableLevel(LogLevel.DEBUG)

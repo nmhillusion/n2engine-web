@@ -61,6 +61,7 @@ async function exec(): Promise<boolean> {
         typescript: {
           enabled: true,
           overwriteAllConfig: false,
+          delayForEachRuntimeInMillis: 10000,
           config: {
             declaration: false,
             declarationMap: false,
