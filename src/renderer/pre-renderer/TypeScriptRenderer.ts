@@ -12,27 +12,25 @@ import {
   NodeLogger,
 } from "@nmhillusion/n2log4web";
 import path = require("path");
+import { Renderable } from "../Renderable";
 
-export class TypeScriptRenderer {
+export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
     WORKSPACE_DIR + "/user.tsconfig.json";
   private readonly userBaseTsConfigPath: string =
     WORKSPACE_DIR + "/user.base.tsconfig.json";
-  private logger: NodeLogger = null;
 
   private ableToExecution = true;
 
-  constructor(
-    private config: {
-      rootDir: string;
-      outDir: string;
-      renderConfig: RenderConfig;
-    }
-  ) {
-    this.logger = LogFactory.fromConfig(
-      new LoggerConfig().setLoggableLevel(LogLevel.DEBUG)
-    ).getNodeLog(this.constructor.name);
+  private tsConfig: {
+    files: string[];
+    include: string[];
+    exclude: string[];
+    compilerOptions: CompilerOptions;
+  };
 
+  constructor(traversal: TraversalWorkspace) {
+    super(traversal);
     const npxWhich = shelljs.which("npx");
     if (!npxWhich || 0 == String(npxWhich).trim().length) {
       this.logger.error(
@@ -51,40 +49,51 @@ export class TypeScriptRenderer {
     fs.writeFileSync(this.userTsConfigPath, data);
   }
 
-  async render() {
-    const tsConfig: {
-      files: string[];
-      include: string[];
-      exclude: string[];
-      compilerOptions: CompilerOptions;
-    } = JSON.parse(this.readUserTsConfigFile());
+  private initForTsConfig(
+    filePath: string,
+    rootDir: string,
+    outDir: string,
+    renderConfig: RenderConfig
+  ) {
+    if (!this.ableToExecution) {
+      throw Error("Unable to execute typescript due to missing npx command");
+    }
 
-    if (this.config.renderConfig?.typescript?.config) {
-      const userTsConfig = this.config.renderConfig?.typescript?.config;
+    this.tsConfig = JSON.parse(this.readUserTsConfigFile());
 
-      if (this.config.renderConfig?.typescript?.overwriteAllConfig) {
-        tsConfig.compilerOptions = this.config.renderConfig?.typescript?.config;
+    if (renderConfig?.typescript?.config) {
+      const userTsConfig = renderConfig?.typescript?.config;
+
+      if (renderConfig?.typescript?.overwriteAllConfig) {
+        this.tsConfig.compilerOptions = renderConfig?.typescript?.config;
       } else {
         for (const configKey of Object.keys(userTsConfig)) {
-          tsConfig.compilerOptions[configKey] = userTsConfig[configKey];
+          this.tsConfig.compilerOptions[configKey] = userTsConfig[configKey];
         }
       }
     }
 
-    tsConfig.include = [`${path.posix.join(this.config.rootDir, "**", "*")}`];
-    tsConfig.compilerOptions.rootDir = this.config.rootDir;
-    tsConfig.compilerOptions.outDir = this.config.outDir;
+    this.tsConfig.include = [`${path.posix.join(rootDir, "**", "*")}`];
+    this.tsConfig.compilerOptions.rootDir = rootDir;
+    this.tsConfig.compilerOptions.outDir = outDir;
 
-    const watchConfigCmd = this.config.renderConfig.watch?.enabled
-      ? "--watch"
-      : "";
-
-    if (!tsConfig.files || 0 == tsConfig.files.length) {
-      delete tsConfig.files;
+    if (!this.tsConfig.files || 0 == this.tsConfig.files.length) {
+      delete this.tsConfig.files;
     }
-    this.writeUserTsConfigFile(JSON.stringify(tsConfig));
+    this.writeUserTsConfigFile(JSON.stringify(this.tsConfig));
+  }
 
-    const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchConfigCmd}`;
+  protected async doRender(
+    filePath: string,
+    rootDir: string,
+    outDir: string,
+    renderConfig: RenderConfig
+  ): Promise<void> {
+    if (!this.tsConfig) {
+      this.initForTsConfig(filePath, rootDir, outDir, renderConfig);
+    }
+
+    const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`;
     this.logger.info("ts command: ", command_);
 
     const { code, stderr, stdout } = shelljs.exec(command_, {

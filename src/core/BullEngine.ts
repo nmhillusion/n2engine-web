@@ -59,12 +59,7 @@ export class BullEngine {
       this.registerForRenderer(new ScssRenderer(this.traversalerRootDir));
     }
     if (this.renderConfig.typescript.enabled) {
-      // this.registerForRenderer(new TypeScriptRenderer(this.traversalerRootDir));
-      new TypeScriptRenderer({
-        rootDir: this.renderConfig.rootDir,
-        outDir: this.renderConfig.outDir,
-        renderConfig: this.renderConfig,
-      }).render();
+      this.registerForRenderer(new TypeScriptRenderer(this.traversalerRootDir));
     }
     if (this.renderConfig.copyResource.enabled) {
       this.registerForRenderer(
