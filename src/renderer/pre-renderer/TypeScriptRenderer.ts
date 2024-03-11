@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import * as shelljs from "shelljs";
 import { CompilerOptions } from "typescript";
 
 import { BullEngineState, WORKSPACE_DIR } from "../../index";
@@ -13,6 +12,7 @@ import {
 } from "@nmhillusion/n2log4web";
 import path = require("path");
 import { Renderable } from "../Renderable";
+import { exec } from "child_process";
 
 export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
@@ -28,18 +28,17 @@ export class TypeScriptRenderer extends Renderable {
     exclude: string[];
     compilerOptions: CompilerOptions;
   };
-  private DELAY_FOR_EACH_RUNTIME: number = 5000;
 
   constructor(traversal: TraversalWorkspace, engineState: BullEngineState) {
     super(traversal, engineState);
-    const npxWhich = shelljs.which("npx");
-    if (!npxWhich || 0 == String(npxWhich).trim().length) {
-      this.logger.error(
-        "Required to install command `npx` to use Typescript renderer."
-      );
+    // const npxWhich = shelljs.which("npx");
+    // if (!npxWhich || 0 == String(npxWhich).trim().length) {
+    //   this.logger.error(
+    //     "Required to install command `npx` to use Typescript renderer."
+    //   );
 
-      this.ableToExecution = false;
-    }
+    //   this.ableToExecution = false;
+    // }
   }
 
   private readUserTsConfigFile() {
@@ -61,11 +60,6 @@ export class TypeScriptRenderer extends Renderable {
     }
 
     this.tsConfig = JSON.parse(this.readUserTsConfigFile());
-
-    if (renderConfig.typescript.delayForEachRuntimeInMillis) {
-      this.DELAY_FOR_EACH_RUNTIME =
-        renderConfig.typescript.delayForEachRuntimeInMillis;
-    }
 
     if (renderConfig?.typescript?.config) {
       const userTsConfig = renderConfig?.typescript?.config;
@@ -97,29 +91,41 @@ export class TypeScriptRenderer extends Renderable {
   ): Promise<void> {
     if (!this.tsConfig) {
       this.initForTsConfig(filePath, rootDir, outDir, renderConfig);
+      // }
+
+      // if (
+      //   this.engineState.latestCompileTsTime &&
+      //   new Date().getTime() - this.engineState.latestCompileTsTime.getTime() <
+      //     this.DELAY_FOR_EACH_RUNTIME
+      // ) {
+      //   this.logger.info(
+      //     "ignore this runtime because of inside of DELAY_FOR_EACH_RUNTIME = ",
+      //     this.DELAY_FOR_EACH_RUNTIME
+      //   );
+      //   return;
+      // }
+
+      const watchStatement = renderConfig.watch?.enabled ? "--watch" : "";
+
+      const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchStatement}`;
+      this.logger.info("ts command: ", command_);
+
+      // const { code, stderr, stdout } = shelljs.exec(command_, {
+      //   async: false,
+      // });
+
+      // this.logger.debug({ code, stderr, stdout });
+
+      const process_ = exec(command_, (error_, stdout_, stderr_) => {
+        if (error_) {
+          this.logger.error(`exec error: ${error_}`);
+          return;
+        }
+        this.logger.info(`stdout: ${stdout_}`);
+        this.logger.error(`stderr: ${stderr_}`);
+      });
+
+      this.engineState.latestCompileTsTime = new Date();
     }
-
-    if (
-      this.engineState.latestCompileTsTime &&
-      new Date().getTime() - this.engineState.latestCompileTsTime.getTime() <
-        this.DELAY_FOR_EACH_RUNTIME
-    ) {
-      this.logger.info(
-        "ignore this runtime because of inside of DELAY_FOR_EACH_RUNTIME = ",
-        this.DELAY_FOR_EACH_RUNTIME
-      );
-      return;
-    }
-
-    const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json`;
-    this.logger.info("ts command: ", command_);
-
-    const { code, stderr, stdout } = shelljs.exec(command_, {
-      async: false,
-    });
-
-    this.logger.debug({ code, stderr, stdout });
-
-    this.engineState.latestCompileTsTime = new Date();
   }
 }
