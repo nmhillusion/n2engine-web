@@ -106,6 +106,8 @@ export class TypeScriptRenderer extends Renderable {
           this.logger.info(`stdout: ${stdout_}`);
           this.logger.error(`stderr: ${stderr_}`);
         });
+
+        this.logger.info("start watching process on PID: ", process_.pid);
       } else {
         const output = execSync(command_).toString();
 
