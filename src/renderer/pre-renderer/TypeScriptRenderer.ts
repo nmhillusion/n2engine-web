@@ -97,14 +97,20 @@ export class TypeScriptRenderer extends Renderable {
       const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchStatement}`;
       this.logger.info("ts command: ", command_);
 
-      const process_ = exec(command_, (error_, stdout_, stderr_) => {
-        if (error_) {
-          this.logger.error(`exec error: ${error_}`);
-          return;
-        }
-        this.logger.info(`stdout: ${stdout_}`);
-        this.logger.error(`stderr: ${stderr_}`);
-      });
+      if (renderConfig.watch?.enabled) {
+        const process_ = exec(command_, (error_, stdout_, stderr_) => {
+          if (error_) {
+            this.logger.error(`exec error: ${error_}`);
+            return;
+          }
+          this.logger.info(`stdout: ${stdout_}`);
+          this.logger.error(`stderr: ${stderr_}`);
+        });
+      } else {
+        const output = execSync(command_).toString();
+
+        this.logger.info("stdout: ", output);
+      }
     }
   }
 }
