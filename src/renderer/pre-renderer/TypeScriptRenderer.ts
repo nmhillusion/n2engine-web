@@ -12,7 +12,7 @@ import {
 } from "@nmhillusion/n2log4web";
 import path = require("path");
 import { Renderable } from "../Renderable";
-import { exec } from "child_process";
+import { exec, execSync } from "child_process";
 
 export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
@@ -91,30 +91,11 @@ export class TypeScriptRenderer extends Renderable {
   ): Promise<void> {
     if (!this.tsConfig) {
       this.initForTsConfig(filePath, rootDir, outDir, renderConfig);
-      // }
-
-      // if (
-      //   this.engineState.latestCompileTsTime &&
-      //   new Date().getTime() - this.engineState.latestCompileTsTime.getTime() <
-      //     this.DELAY_FOR_EACH_RUNTIME
-      // ) {
-      //   this.logger.info(
-      //     "ignore this runtime because of inside of DELAY_FOR_EACH_RUNTIME = ",
-      //     this.DELAY_FOR_EACH_RUNTIME
-      //   );
-      //   return;
-      // }
 
       const watchStatement = renderConfig.watch?.enabled ? "--watch" : "";
 
       const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchStatement}`;
       this.logger.info("ts command: ", command_);
-
-      // const { code, stderr, stdout } = shelljs.exec(command_, {
-      //   async: false,
-      // });
-
-      // this.logger.debug({ code, stderr, stdout });
 
       const process_ = exec(command_, (error_, stdout_, stderr_) => {
         if (error_) {
@@ -124,8 +105,6 @@ export class TypeScriptRenderer extends Renderable {
         this.logger.info(`stdout: ${stdout_}`);
         this.logger.error(`stderr: ${stderr_}`);
       });
-
-      this.engineState.latestCompileTsTime = new Date();
     }
   }
 }
