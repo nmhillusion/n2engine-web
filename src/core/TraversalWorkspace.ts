@@ -7,6 +7,7 @@ import {
 } from "@nmhillusion/n2log4web";
 import { RenderConfig } from "../model";
 import { TraversalCallback } from "../model/TraversalCallback";
+import path = require("path");
 
 interface FileMonitor {
   filePath: string;
@@ -42,6 +43,8 @@ export class TraversalWorkspace {
       const itemState = fs.lstatSync(pItemPath);
       if (itemState.isDirectory()) {
         await this.__traversal(pItemPath, callback);
+
+        this.handleFolderWatch(pItemPath, callback);
       } else if (itemState.isFile()) {
         await callback(pItemPath);
 
@@ -76,6 +79,61 @@ export class TraversalWorkspace {
         latestModifiedTime: currentTime,
       });
       return true;
+    }
+  }
+
+  private handleFolderWatch(
+    pItemPath: string,
+    callback: (filePath: string) => Promise<void>
+  ) {
+    const callbackForFolder = (itemPath: string) => {
+      callback(itemPath);
+      this.handleFileWatch(itemPath, callback);
+    };
+
+    if (this.renderConfig_?.watch?.enabled) {
+      const watcher = fs.watch(
+        pItemPath,
+        {
+          persistent: true,
+          recursive: false,
+        },
+        (eventType, filename) => {
+          if (this.ableToTriggerFileWatch(pItemPath)) {
+            this.logger.info("change folder on: ", {
+              pItemPath,
+              eventType,
+              filename,
+            });
+
+            const fullFilePath = path.join(pItemPath, filename);
+
+            if (eventType === "rename") {
+              // Check for 'rename' event
+              // New files appear as rename events during creation on some systems
+              this.logger.info(`New file created: ${fullFilePath}`);
+
+              callbackForFolder(fullFilePath);
+            } else if (eventType === "change") {
+              // Alternative for some systems
+              // For some OSes, 'change' might indicate creation
+              fs.stat(fullFilePath, (err, stats) => {
+                if (err) {
+                  this.logger.error("Error checking file stats:", err);
+                } else if (stats.isFile()) {
+                  this.logger.info(`New file created: ${fullFilePath}`);
+
+                  callbackForFolder(fullFilePath);
+                }
+              });
+            }
+          }
+        }
+      );
+
+      watcher.on("error", (error) => {
+        this.logger.error("Watcher error: ", error);
+      });
     }
   }
 

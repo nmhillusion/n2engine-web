@@ -1,5 +1,5 @@
 export function greet(message: string) {
-  return `Hello you, ${message}`;
+  return `Hi you, ${message}`;
 }
 
 export function adder(init: number) {
@@ -7,5 +7,5 @@ export function adder(init: number) {
 }
 
 export function version() {
-  return "{{ n2v:app.version }}";
+  return "v{{ n2v:app.version }}";
 }
