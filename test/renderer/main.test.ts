@@ -1,5 +1,10 @@
 import * as fs from "fs";
 import { BullEngine } from "../../src/core/BullEngine";
+import { parser } from "@nmhillusion/n2mix";
+
+const isWatching = Boolean(
+  parser.cliParamsParser(process.argv).get("watch") ?? false
+);
 
 const isTesting = "function" === typeof test;
 
@@ -17,7 +22,7 @@ if (isTesting) {
 }
 
 async function exec(): Promise<boolean> {
-  console.log(`-- TESTING: ${isTesting} --`);
+  console.log(`-- TESTING: ${isTesting}; WATCHING: ${isWatching} --`);
   try {
     const rootDir = process.cwd() + "/sample";
     const outDir = process.cwd() + "/sampleDist";
@@ -34,7 +39,7 @@ async function exec(): Promise<boolean> {
         rootDir: fs.realpathSync(rootDir),
         outDir: fs.realpathSync(outDir),
         watch: {
-          enabled: !isTesting,
+          enabled: !isTesting && isWatching,
           config: {
             handleRenameEvent: true,
             handleChangeEvent: true,

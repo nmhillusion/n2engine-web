@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "jest",
-    "watch": "ts-node ./test/renderer/main.test.ts",
+    "watch": "ts-node ./test/renderer/main.test.ts --watch",
     "build": "ts-node ./support/generate-info.ts && tsc && cp ./src/user.base.tsconfig.json ./package.json dist && ts-node ./support/build-publish-package-json.ts",
     "serve": "nodemon -w ./sampleDist sample.server.mjs",
     "tag-version": "npm run build && ts-node ./support/tag-version.ts"
@@ -30,7 +30,8 @@
     "jest": "^29.5.0",
     "nodemon": "^2.0.21",
     "ts-jest": "^29.0.5",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "@nmhillusion/n2mix": "^2023.129.4"
   },
   "dependencies": {
     "@nmhillusion/n2log4web": "^2023.0108.1",
