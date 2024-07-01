@@ -1,5 +1,4 @@
 import sass = require("sass");
-import * as fs from "fs";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
 import { RenderConfig } from "../../model/RenderConfig";
 import { Renderable } from "../Renderable";
@@ -15,7 +14,7 @@ export class ScssRenderer extends Renderable {
     if (filePath.endsWith(".scss") || filePath.endsWith(".sass")) {
       this.logger.info(filePath);
 
-      const scssContent = fs.readFileSync(filePath).toString();
+      // const scssContent = fs.readFileSync(filePath).toString();
       // this.logger.debug("TEST SCSS: file: ", filePath, scssContent);
 
       const configToRender: sass.Options<"sync"> = {
@@ -33,10 +32,7 @@ export class ScssRenderer extends Renderable {
         Object.assign(configToRender, renderConfig.scss.config);
       }
 
-      const { css: cssBuffer } = sass.compileString(
-        scssContent,
-        configToRender
-      );
+      const { css: cssBuffer } = sass.compile(filePath, configToRender);
 
       let rendered: string = String(cssBuffer);
 
