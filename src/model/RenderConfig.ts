@@ -1,6 +1,7 @@
 import { Options } from "sass";
 import * as pug from "pug";
 import { CompilerOptions } from "typescript";
+import * as markdownit from "markdown-it";
 
 export interface RenderConfig {
   rootDir: string;
@@ -25,6 +26,10 @@ export interface RenderConfig {
   pug: {
     enabled: boolean;
     config?: pug.Options & pug.LocalsObject;
+  };
+  markdown: {
+    enabled: boolean;
+    config?:  markdownit.Options;
   };
   scss: {
     enabled: boolean;

@@ -37,6 +37,7 @@
   "dependencies": {
     "@nmhillusion/n2log4web": "^2023.0108.1",
     "@types/pug": "^2.0.6",
+    "highlight.js": "^11.10.0",
     "markdown-it": "^14.1.0",
     "pug": "^3.0.2",
     "sass": "^1.59.3",

@@ -1,33 +1,40 @@
 import * as fs from "fs";
+import * as path from "path";
 
 export class FileSystemHelper {
-  static getFileNameFromPath(path: string, ignoreExt = true): string {
-    {
-      const slashIndex = path.lastIndexOf("/");
-      if (-1 < slashIndex && slashIndex < path.length - 1) {
-        path = path.substring(slashIndex + 1);
-      }
-    }
+  static getFileNameFromPath(path_: string, ignoreExt = true): string {
+    // {
+    //   const slashIndex = path_.lastIndexOf("/");
+    //   if (-1 < slashIndex && slashIndex < path_.length - 1) {
+    //     path_ = path_.substring(slashIndex + 1);
+    //   }
+    // }
 
-    {
-      const dotIndex = path.lastIndexOf(".");
-      if (0 < dotIndex && ignoreExt) {
-        path = path.substring(0, dotIndex);
-      }
-    }
+    // {
+    //   const dotIndex = path_.lastIndexOf(".");
+    //   if (0 < dotIndex && ignoreExt) {
+    //     path_ = path_.substring(0, dotIndex);
+    //   }
+    // }
 
-    return path;
+    // return path_;
+    const baseName = path.basename(path_);
+    return baseName.includes(".")
+      ? baseName.substring(0, baseName.lastIndexOf("."))
+      : baseName;
   }
 
-  static getDirFromPath(path: string) {
-    const fileState = fs.lstatSync(path);
-    if (fileState.isFile()) {
-      const slashIndex = path.lastIndexOf("/");
-      if (-1 < slashIndex && slashIndex < path.length - 1) {
-        path = path.substring(0, slashIndex);
-      }
-    }
-    return path;
+  static getDirFromPath(path_: string) {
+    // const fileState = fs.lstatSync(path_);
+    // if (fileState.isFile()) {
+    //   const slashIndex = path_.lastIndexOf("/");
+    //   if (-1 < slashIndex && slashIndex < path_.length - 1) {
+    //     path_ = path_.substring(0, slashIndex);
+    //   }
+    // }
+    // return path_;
+
+    return path.dirname(path_);
   }
 
   static writeOutFile({

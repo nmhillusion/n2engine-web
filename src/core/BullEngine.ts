@@ -7,6 +7,7 @@ import {
   PugRenderer,
   ScssRenderer,
   TypeScriptRenderer,
+  MarkdownRenderer,
   InjectVariableRenderer,
 } from "../renderer";
 
@@ -61,6 +62,11 @@ export class BullEngine {
     if (this.renderConfig.pug.enabled) {
       this.registerForRenderer(
         new PugRenderer(this.rootDirTraversaler, this.STATE)
+      );
+    }
+    if (this.renderConfig.markdown.enabled) {
+      this.registerForRenderer(
+        new MarkdownRenderer(this.rootDirTraversaler, this.STATE)
       );
     }
     if (this.renderConfig.scss.enabled) {

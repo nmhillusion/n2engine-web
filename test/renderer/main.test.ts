@@ -52,6 +52,9 @@ async function exec(): Promise<boolean> {
             pretty: false,
           },
         },
+        markdown: {
+          enabled: true,
+        },
         scss: {
           enabled: true,
           config: {
