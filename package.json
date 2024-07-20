@@ -21,8 +21,10 @@
   "author": "nmhillusion",
   "license": "MIT",
   "devDependencies": {
+    "@nmhillusion/n2mix": "^2023.129.4",
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.0",
+    "@types/markdown-it": "^14.1.1",
     "@types/node": "^18.15.3",
     "@types/shelljs": "^0.8.11",
     "@types/uglify-js": "^3.17.1",
@@ -30,12 +32,12 @@
     "jest": "^29.5.0",
     "nodemon": "^2.0.21",
     "ts-jest": "^29.0.5",
-    "ts-node": "^10.9.1",
-    "@nmhillusion/n2mix": "^2023.129.4"
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "@nmhillusion/n2log4web": "^2023.0108.1",
     "@types/pug": "^2.0.6",
+    "markdown-it": "^14.1.0",
     "pug": "^3.0.2",
     "sass": "^1.59.3",
     "shelljs": "^0.8.5",
