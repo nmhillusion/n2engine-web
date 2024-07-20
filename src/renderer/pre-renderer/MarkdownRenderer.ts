@@ -109,7 +109,7 @@ export class MarkdownRenderer extends Renderable {
         outDir
       );
 
-      outContentWithHighlightCssAndHTML = `<link rel="stylesheet" href="${highlightCssHref}">${renderedContent}`;
+      outContentWithHighlightCssAndHTML = `<link rel="stylesheet" type="text/css" class="markdown-highlight" href="${highlightCssHref}">${renderedContent}`;
     }
 
     FileSystemHelper.writeOutFile({

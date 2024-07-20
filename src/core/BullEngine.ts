@@ -5,9 +5,9 @@ import {
   CopyResourceRenderer,
   RewriteJavascriptRenderer,
   PugRenderer,
+  MarkdownRenderer,
   ScssRenderer,
   TypeScriptRenderer,
-  MarkdownRenderer,
   InjectVariableRenderer,
 } from "../renderer";
 
