@@ -11,6 +11,8 @@ import path = require("path");
 export class MarkdownRenderer extends Renderable {
   private readonly HIGHLIGHT_CSS_FILE_NAME = "markdown.highlight.css";
 
+  private readonly USING_HIGHLIGHT_JS_STORE: Set<string> = new Set<string>();
+
   constructor(traversal: TraversalWorkspace, engineState: BullEngineState) {
     super(traversal, engineState);
   }
@@ -72,6 +74,8 @@ export class MarkdownRenderer extends Renderable {
         highlight: (str: string, lang: string) => {
           if (lang && hljs.getLanguage(lang)) {
             try {
+              this.USING_HIGHLIGHT_JS_STORE.add(filePath);
+
               return hljs.highlight(str, {
                 language: lang,
                 ignoreIllegals: true,
@@ -95,13 +99,18 @@ export class MarkdownRenderer extends Renderable {
       fs.readFileSync(filePath).toString()
     );
 
-    const highlightCssHref = this.prepareHighlightCssFile(
-      filePath,
-      rootDir,
-      outDir
-    );
+    let outContentWithHighlightCssAndHTML = renderedContent;
+    if (this.USING_HIGHLIGHT_JS_STORE.has(filePath)) {
+      this.logger.info("highlight js: ", filePath);
 
-    const outContentWithHighlightCssAndHTML = `<link rel="stylesheet" href="${highlightCssHref}">${renderedContent}`;
+      const highlightCssHref = this.prepareHighlightCssFile(
+        filePath,
+        rootDir,
+        outDir
+      );
+
+      outContentWithHighlightCssAndHTML = `<link rel="stylesheet" href="${highlightCssHref}">${renderedContent}`;
+    }
 
     FileSystemHelper.writeOutFile({
       data: outContentWithHighlightCssAndHTML,
