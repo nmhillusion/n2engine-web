@@ -12,3 +12,5 @@ fight("Ohama")
 fight("Messsy)
 
 ```
+
+Also, in another battlefield, the king had led an empire against the monsters which is very dangerous.
