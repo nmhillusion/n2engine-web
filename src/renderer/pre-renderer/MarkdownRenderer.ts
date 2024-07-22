@@ -22,7 +22,7 @@ export class MarkdownRenderer extends Renderable {
     rootDir: string,
     outDir: string,
     renderConfig: RenderConfig
-  ): string {
+  ) {
     const highlightCssTargetFilePath = path.join(
       path.dirname(filePath),
       this.HIGHLIGHT_CSS_FILE_NAME
@@ -51,7 +51,14 @@ export class MarkdownRenderer extends Renderable {
       }
     }
 
-    return path.relative(path.dirname(filePath), highlightCssTargetFilePath);
+    return {
+      cssFilePath: path.relative(
+        path.dirname(filePath),
+        highlightCssTargetFilePath
+      ),
+      highlightStyleName,
+      isDarkMode: !!highlightStyleName.match(/-dark-?/),
+    };
   }
 
   protected async doRender(
@@ -107,14 +114,31 @@ export class MarkdownRenderer extends Renderable {
     if (this.USING_HIGHLIGHT_JS_STORE.has(filePath)) {
       this.logger.info("highlight js: ", filePath);
 
-      const highlightCssHref = this.prepareHighlightCssFile(
+      const highlightCssInfo = this.prepareHighlightCssFile(
         filePath,
         rootDir,
         outDir,
         renderConfig
       );
 
-      outContentWithHighlightCssAndHTML = `<link rel="stylesheet" type="text/css" class="markdown-highlight" href="${highlightCssHref}">${renderedContent}`;
+      const isDarkMode = highlightCssInfo.isDarkMode;
+
+      outContentWithHighlightCssAndHTML = `
+      <link rel="stylesheet" type="text/css" class="markdown-highlight" href="${
+        highlightCssInfo.cssFilePath
+      }">
+      <style>
+        pre:has(code[class*="language-"]) {
+          padding: 1em;
+          background-color: ${isDarkMode ? "#333" : "#eee"};
+          color: ${isDarkMode ? "#ccc" : "#333"};
+          border-radius: 0.25em;
+        }
+      </style>
+
+      ${renderedContent}
+      
+      `;
     }
 
     FileSystemHelper.writeOutFile({
