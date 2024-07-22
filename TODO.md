@@ -1,3 +1,3 @@
 - initialize config at the constructor of renderer
 - add support for different types of highlight.js styles
-- upgrade typescript version
+- upgrade typescript version /

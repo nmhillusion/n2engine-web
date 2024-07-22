@@ -8,10 +8,12 @@
     "dist/"
   ],
   "scripts": {
+    "///1": "/// dev test commands",
     "test": "jest",
     "watch": "ts-node ./test/renderer/main.test.ts --watch",
-    "build": "ts-node ./support/generate-info.ts && tsc && cp ./src/user.base.tsconfig.json ./package.json dist && ts-node ./support/build-publish-package-json.ts",
     "serve": "nodemon -w ./sampleDist sample.server.mjs",
+    "///2": "/// build commands",
+    "build": "ts-node ./buildCommand.ts",
     "tag-version": "npm run build && ts-node ./support/tag-version.ts"
   },
   "keywords": [
