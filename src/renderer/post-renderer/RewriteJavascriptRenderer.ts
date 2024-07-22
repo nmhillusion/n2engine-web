@@ -1,18 +1,25 @@
 import * as fs from "fs";
-import { Renderable } from "../Renderable";
 import * as uglify from "uglify-js";
+import { BullEngineState } from "../../core";
+import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { RenderConfig } from "../../model";
+import { Renderable } from "../Renderable";
 
 export class RewriteJavascriptRenderer extends Renderable {
   private readonly IMPORT_MODULE_PATTERN: RegExp =
     /import(?:.*?)from\s*(?:'|")(.+?)(?:'|")\s*;?/gi;
 
-  protected doRender(
-    filePath: string,
-    rootDir: string,
-    outDir: string,
+  constructor(
+    traversaler: TraversalWorkspace,
+    engineState: BullEngineState,
     renderConfig: RenderConfig
   ) {
+    super(traversaler, engineState, renderConfig);
+  }
+
+  protected doRender(filePath: string, rootDir: string, outDir: string) {
+    const renderConfig = this.renderConfig;
+
     if (filePath.endsWith(".js")) {
       return this.jsRewriteImportFile(filePath, renderConfig);
     } else {

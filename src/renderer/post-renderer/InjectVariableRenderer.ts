@@ -2,6 +2,7 @@ import * as fs from "fs";
 import { Renderable } from "../Renderable";
 import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { BullEngineState } from "../../core";
+import { RenderConfig } from "../../model/RenderConfig";
 
 export class InjectVariableRenderer extends Renderable {
   private variables = {};
@@ -11,9 +12,10 @@ export class InjectVariableRenderer extends Renderable {
   constructor(
     variableFilePathToInject: string,
     traversaler: TraversalWorkspace,
-    engineState: BullEngineState
+    engineState: BullEngineState,
+    renderConfig: RenderConfig
   ) {
-    super(traversaler, engineState);
+    super(traversaler, engineState, renderConfig);
     this.loadVariableFromFile(variableFilePathToInject);
   }
 

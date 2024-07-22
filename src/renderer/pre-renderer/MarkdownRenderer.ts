@@ -1,20 +1,24 @@
-import * as markdownit from "markdown-it";
 import * as fs from "fs";
 import hljs from "highlight.js";
-import { RenderConfig } from "../../model";
-import { Renderable } from "../Renderable";
+import * as markdownit from "markdown-it";
+import * as path from "path";
 import { BullEngineState } from "../../core";
 import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
-import path = require("path");
+import { RenderConfig } from "../../model";
+import { Renderable } from "../Renderable";
 
 export class MarkdownRenderer extends Renderable {
   private readonly HIGHLIGHT_CSS_FILE_NAME = "markdown.highlight.css";
 
   private readonly USING_HIGHLIGHT_JS_STORE: Set<string> = new Set<string>();
 
-  constructor(traversal: TraversalWorkspace, engineState: BullEngineState) {
-    super(traversal, engineState);
+  constructor(
+    traversal: TraversalWorkspace,
+    engineState: BullEngineState,
+    renderConfig: RenderConfig
+  ) {
+    super(traversal, engineState, renderConfig);
   }
 
   private prepareHighlightCssFile(
@@ -64,14 +68,14 @@ export class MarkdownRenderer extends Renderable {
   protected async doRender(
     filePath: string,
     rootDir: string,
-    outDir: string,
-    renderConfig: RenderConfig
+    outDir: string
   ): Promise<void> {
     if (!filePath.endsWith(".md")) {
       return;
     }
 
     this.logger.info(filePath);
+    const renderConfig = this.renderConfig;
 
     const config_: markdownit.Options = Object.assign(
       {},

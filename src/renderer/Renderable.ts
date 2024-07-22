@@ -13,22 +13,19 @@ export abstract class Renderable {
 
   constructor(
     private traversaler: TraversalWorkspace,
-    protected engineState: BullEngineState
+    protected engineState: BullEngineState,
+    protected renderConfig: RenderConfig
   ) {
     this.logger = LogFactory.fromConfig(
       new LoggerConfig().setLoggableLevel(LogLevel.DEBUG)
     ).getNodeLog(this.constructor.name);
   }
 
-  public registerRender(
-    rootDir: string,
-    outDir: string,
-    renderConfig: RenderConfig
-  ): void {
+  public registerRender(rootDir: string, outDir: string): void {
     const self = this;
     this.traversaler.registerCallback({
       invoke(filePath: string) {
-        return self.doRender(filePath, rootDir, outDir, renderConfig);
+        return self.doRender(filePath, rootDir, outDir);
       },
     });
   }
@@ -36,7 +33,6 @@ export abstract class Renderable {
   protected abstract doRender(
     filePath: string,
     rootDir: string,
-    outDir: string,
-    renderConfig: RenderConfig
+    outDir: string
   ): Promise<void>;
 }

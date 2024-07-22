@@ -48,8 +48,7 @@ export class BullEngine {
   private registerForRenderer(renderer: Renderable) {
     renderer?.registerRender(
       this.renderConfig.rootDir,
-      this.renderConfig.outDir,
-      this.renderConfig
+      this.renderConfig.outDir
     );
   }
 
@@ -61,27 +60,39 @@ export class BullEngine {
 
     if (this.renderConfig.pug.enabled) {
       this.registerForRenderer(
-        new PugRenderer(this.rootDirTraversaler, this.STATE)
+        new PugRenderer(this.rootDirTraversaler, this.STATE, this.renderConfig)
       );
     }
     if (this.renderConfig.markdown.enabled) {
       this.registerForRenderer(
-        new MarkdownRenderer(this.rootDirTraversaler, this.STATE)
+        new MarkdownRenderer(
+          this.rootDirTraversaler,
+          this.STATE,
+          this.renderConfig
+        )
       );
     }
     if (this.renderConfig.scss.enabled) {
       this.registerForRenderer(
-        new ScssRenderer(this.rootDirTraversaler, this.STATE)
+        new ScssRenderer(this.rootDirTraversaler, this.STATE, this.renderConfig)
       );
     }
     if (this.renderConfig.typescript.enabled) {
       this.registerForRenderer(
-        new TypeScriptRenderer(this.rootDirTraversaler, this.STATE)
+        new TypeScriptRenderer(
+          this.rootDirTraversaler,
+          this.STATE,
+          this.renderConfig
+        )
       );
     }
     if (this.renderConfig.copyResource.enabled) {
       this.registerForRenderer(
-        new CopyResourceRenderer(this.rootDirTraversaler, this.STATE)
+        new CopyResourceRenderer(
+          this.rootDirTraversaler,
+          this.STATE,
+          this.renderConfig
+        )
       );
     }
     if (!!this.variableFilePathToInject_) {
@@ -89,13 +100,18 @@ export class BullEngine {
         new InjectVariableRenderer(
           this.variableFilePathToInject_,
           this.outDirTraversaler,
-          this.STATE
+          this.STATE,
+          this.renderConfig
         )
       );
     }
     if (this.renderConfig.rewriteJavascript?.enabled) {
       this.registerForRenderer(
-        new RewriteJavascriptRenderer(this.outDirTraversaler, this.STATE)
+        new RewriteJavascriptRenderer(
+          this.outDirTraversaler,
+          this.STATE,
+          this.renderConfig
+        )
       );
     }
 

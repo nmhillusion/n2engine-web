@@ -1,18 +1,12 @@
 import * as fs from "fs";
 import { CompilerOptions } from "typescript";
 
+import { exec, execSync } from "child_process";
+import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { BullEngineState, WORKSPACE_DIR } from "../../index";
 import { RenderConfig } from "../../model";
-import { TraversalWorkspace } from "../../core/TraversalWorkspace";
-import {
-  LogFactory,
-  LogLevel,
-  LoggerConfig,
-  NodeLogger,
-} from "@nmhillusion/n2log4web";
-import path = require("path");
 import { Renderable } from "../Renderable";
-import { exec, execSync } from "child_process";
+import path = require("path");
 
 export class TypeScriptRenderer extends Renderable {
   private readonly userTsConfigPath: string =
@@ -29,16 +23,12 @@ export class TypeScriptRenderer extends Renderable {
     compilerOptions: CompilerOptions;
   };
 
-  constructor(traversal: TraversalWorkspace, engineState: BullEngineState) {
-    super(traversal, engineState);
-    // const npxWhich = shelljs.which("npx");
-    // if (!npxWhich || 0 == String(npxWhich).trim().length) {
-    //   this.logger.error(
-    //     "Required to install command `npx` to use Typescript renderer."
-    //   );
-
-    //   this.ableToExecution = false;
-    // }
+  constructor(
+    traversal: TraversalWorkspace,
+    engineState: BullEngineState,
+    renderConfig: RenderConfig
+  ) {
+    super(traversal, engineState, renderConfig);
   }
 
   private readUserTsConfigFile() {
@@ -86,10 +76,11 @@ export class TypeScriptRenderer extends Renderable {
   protected async doRender(
     filePath: string,
     rootDir: string,
-    outDir: string,
-    renderConfig: RenderConfig
+    outDir: string
   ): Promise<void> {
     if (!this.tsConfig) {
+      const renderConfig = this.renderConfig;
+
       this.initForTsConfig(filePath, rootDir, outDir, renderConfig);
 
       const watchStatement = renderConfig.watch?.enabled ? "--watch" : "";

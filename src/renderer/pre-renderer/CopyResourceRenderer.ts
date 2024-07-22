@@ -1,14 +1,21 @@
+import { BullEngineState } from "../../core";
+import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
 import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
 
 export class CopyResourceRenderer extends Renderable {
-  protected async doRender(
-    filePath: string,
-    rootDir: string,
-    outDir: string,
+  constructor(
+    traversal: TraversalWorkspace,
+    engineState: BullEngineState,
     renderConfig: RenderConfig
   ) {
+    super(traversal, engineState, renderConfig);
+  }
+
+  protected async doRender(filePath: string, rootDir: string, outDir: string) {
+    const renderConfig = this.renderConfig;
+
     let extsToCopy = [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"];
     if (Array.isArray(renderConfig.copyResource?.config?.extsToCopy)) {
       extsToCopy = renderConfig.copyResource?.config?.extsToCopy;

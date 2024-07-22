@@ -2,12 +2,22 @@ import * as pug from "pug";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
 import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
+import { BullEngineState } from "../../core";
+import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 
 export class PugRenderer extends Renderable {
   private readonly PATTERN__LINK_SCSS =
     /<link(?:.+?)href=(?:'|")(?:.+?)(\.scss|\.sass)(?:'|")(?:.*?)>/;
   private readonly PATTERN__LINK_TS =
     /<script(?:.+?)src=(?:'|")(?:.+?)(\.ts)(?:'|")(?:.*?)>/;
+
+  constructor(
+    traversaler: TraversalWorkspace,
+    engineState: BullEngineState,
+    renderConfig: RenderConfig
+  ) {
+    super(traversaler, engineState, renderConfig);
+  }
 
   private renameForImportScss(content: string): string {
     const matches = content.matchAll(new RegExp(this.PATTERN__LINK_SCSS, "gi"));
@@ -41,14 +51,10 @@ export class PugRenderer extends Renderable {
     return content;
   }
 
-  protected async doRender(
-    filePath: string,
-    rootDir: string,
-    outDir: string,
-    renderConfig: RenderConfig
-  ) {
+  protected async doRender(filePath: string, rootDir: string, outDir: string) {
     if (filePath.endsWith(".pug")) {
       this.logger.info(filePath);
+      const renderConfig = this.renderConfig;
 
       const configToRender = {
         pretty: true,
