@@ -25,7 +25,12 @@ export abstract class Renderable {
     const self = this;
     this.traversaler.registerCallback({
       invoke(filePath: string) {
-        return self.doRender(filePath, rootDir, outDir);
+        try {
+          return self.doRender(filePath, rootDir, outDir);
+        } catch (err_) {
+          this.logger.error(err_);
+          return Promise.resolve();
+        }
       },
     });
   }
