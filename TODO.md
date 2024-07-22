@@ -1,1 +1,2 @@
-- initialize config at the constructor of renderer
+- switch initialize config of render from constructor to config
+- trycatch for renderer and watcher
