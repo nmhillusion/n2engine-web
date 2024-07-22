@@ -54,6 +54,7 @@ async function exec(): Promise<boolean> {
         },
         markdown: {
           enabled: true,
+          highlightStyleName: "a11y-dark",
         },
         scss: {
           enabled: true,

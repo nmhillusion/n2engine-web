@@ -2,6 +2,7 @@ import { Options } from "sass";
 import * as pug from "pug";
 import { CompilerOptions } from "typescript";
 import * as markdownit from "markdown-it";
+import { AVAILABLE_HIGHLIGHT_STYLE_NAMES } from "./highlight-style-names";
 
 export interface RenderConfig {
   rootDir: string;
@@ -29,7 +30,11 @@ export interface RenderConfig {
   };
   markdown: {
     enabled: boolean;
-    config?:  markdownit.Options;
+    config?: markdownit.Options;
+    /**
+     * default: `github`
+     */
+    highlightStyleName?: AVAILABLE_HIGHLIGHT_STYLE_NAMES;
   };
   scss: {
     enabled: boolean;

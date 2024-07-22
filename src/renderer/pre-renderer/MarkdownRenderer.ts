@@ -20,16 +20,20 @@ export class MarkdownRenderer extends Renderable {
   private prepareHighlightCssFile(
     filePath: string,
     rootDir: string,
-    outDir: string
+    outDir: string,
+    renderConfig: RenderConfig
   ): string {
     const highlightCssTargetFilePath = path.join(
       path.dirname(filePath),
       this.HIGHLIGHT_CSS_FILE_NAME
     );
 
+    const highlightStyleName =
+      renderConfig.markdown?.highlightStyleName ?? "github";
+
     if (!fs.existsSync(highlightCssTargetFilePath)) {
       const highlightCssPath = path.resolve(
-        "node_modules/highlight.js/styles/github.css"
+        `node_modules/highlight.js/styles/${highlightStyleName}.min.css`
       );
 
       if (fs.existsSync(highlightCssPath)) {
@@ -106,7 +110,8 @@ export class MarkdownRenderer extends Renderable {
       const highlightCssHref = this.prepareHighlightCssFile(
         filePath,
         rootDir,
-        outDir
+        outDir,
+        renderConfig
       );
 
       outContentWithHighlightCssAndHTML = `<link rel="stylesheet" type="text/css" class="markdown-highlight" href="${highlightCssHref}">${renderedContent}`;

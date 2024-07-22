@@ -8,9 +8,9 @@ function listStyleFileNames(path_: string) {
 function saveTypeForHighlightStyleNames(path_: string, styleNames: string[]) {
   fs.writeFileSync(
     path_,
-    `export const AVAILABLE_HIGHLIGHT_STYLE_NAMES = ${JSON.stringify(
-      styleNames
-    )};`
+    `export type AVAILABLE_HIGHLIGHT_STYLE_NAMES = ${styleNames
+      .map((s) => `"${s}"`)
+      .join(" |")};`
   );
 }
 
