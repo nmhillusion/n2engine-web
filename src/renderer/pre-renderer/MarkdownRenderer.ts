@@ -106,7 +106,7 @@ export class MarkdownRenderer extends Renderable {
       renderConfig.markdown.config
     );
 
-    this.logger.info("config: ", config_);
+    // this.logger.info("config: ", config_);
 
     const mdProcesser = markdownit(config_);
 

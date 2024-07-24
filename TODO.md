@@ -1,2 +1,4 @@
 - switch initialize config of render from constructor to config
 - trycatch for renderer and watcher
+- add default style for markdown
+- update docs for rebuild this project

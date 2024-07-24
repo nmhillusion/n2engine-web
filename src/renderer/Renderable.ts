@@ -24,13 +24,9 @@ export abstract class Renderable {
   public registerRender(rootDir: string, outDir: string): void {
     const self = this;
     this.traversaler.registerCallback({
+      name: self.constructor.name,
       invoke(filePath: string) {
-        try {
-          return self.doRender(filePath, rootDir, outDir);
-        } catch (err_) {
-          this.logger.error(err_);
-          return Promise.resolve();
-        }
+        return self.doRender(filePath, rootDir, outDir);
       },
     });
   }

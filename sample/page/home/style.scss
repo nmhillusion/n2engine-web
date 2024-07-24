@@ -1,11 +1,11 @@
 $fontSize: 15px;
 
 h1 {
-  $shadowColor: #f0f;
+  $shadowColor: goldenrod;
 
   background-color: darkgray;
   border: solid 1px $shadowColor;
-  font-size: $fontSize * 4;
+  font-size: $fontSize * 3;
   color: darkcyan;
   padding: 1em;
   border-radius: 0.25em;

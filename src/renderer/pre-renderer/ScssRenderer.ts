@@ -39,23 +39,19 @@ export class ScssRenderer extends Renderable {
         Object.assign(configToRender, renderConfig.scss.config);
       }
 
-      try {
-        const { css: cssBuffer } = sass.compile(filePath, configToRender);
+      const { css: cssBuffer } = sass.compile(filePath, configToRender);
 
-        let rendered: string = String(cssBuffer);
+      let rendered: string = String(cssBuffer);
 
-        // this.logger.debug("TEST SCSS: css: ", { rendered });
+      // this.logger.debug("TEST SCSS: css: ", { rendered });
 
-        FileSystemHelper.writeOutFile({
-          data: rendered,
-          outDir,
-          rootDir,
-          sourceFilePath: filePath,
-          outExtension: ".css",
-        });
-      } catch (ex) {
-        this.logger.error("Error when rendering file SCSS: ", filePath, ex);
-      }
+      FileSystemHelper.writeOutFile({
+        data: rendered,
+        outDir,
+        rootDir,
+        sourceFilePath: filePath,
+        outExtension: ".css",
+      });
     }
   }
 }

@@ -14,4 +14,11 @@ function liftUpTheStone(stoneWeight: number, liftForce: number) {
     logger.info("stone is too heavy, he can't lift it");
   }
 }
+
+liftUpTheStone(10, 20);
+liftUpTheStone(10, 5);
+liftUpTheStone(10, 30);
+
 ```
+
+He does practice day by day, and his power increase over time.

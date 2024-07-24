@@ -191,7 +191,11 @@ export class TraversalWorkspace {
   private async __callbackTraversal(filePath: string) {
     if (this.listeners) {
       for (const listener of this.listeners) {
-        await listener?.invoke(filePath);
+        try {
+          await listener?.invoke(filePath);
+        } catch (err) {
+          this.logger.error(`[${listener.name}]`, err);
+        }
       }
     }
   }
