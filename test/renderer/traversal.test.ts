@@ -6,6 +6,7 @@ const startDir = fs.realpathSync(__dirname + "/../../sample");
 
 test("test traversal", function () {
   traversalWorkspace.registerCallback({
+    name: "TraversalTester",
     async invoke(filePath: string) {
       expect(filePath).toBeTruthy();
       expect(filePath.startsWith(startDir)).toBeTruthy();
