@@ -7,12 +7,17 @@ import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
 import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
+import { WORKSPACE_DIR } from "../..";
 
 export class MarkdownRenderer extends Renderable {
   private readonly HIGHLIGHT_CSS_FILE_NAME = "markdown.highlight.css";
 
   private readonly USING_HIGHLIGHT_JS_STORE: Set<string> = new Set<string>();
 
+  private defaultStylePath = path.join(
+    WORKSPACE_DIR,
+    "/resources/DefaultCSS_Markdown.css"
+  );
   private selfConfig_: markdownit.Options = {};
 
   constructor(
@@ -36,6 +41,41 @@ export class MarkdownRenderer extends Renderable {
       },
       this.renderConfig.markdown.config || {}
     );
+  }
+
+  private prepareDefaultMarkdownStyleFile(
+    filePath: string,
+    rootDir: string,
+    outDir: string,
+    renderConfig: RenderConfig
+  ) {
+    this.logger.info("default css path: ", this.defaultStylePath);
+
+    const cssTargetFilePath = path.join(
+      path.dirname(filePath),
+      path.basename(this.defaultStylePath)
+    );
+
+    if (!fs.existsSync(cssTargetFilePath)) {
+      if (fs.existsSync(this.defaultStylePath)) {
+        const highlightCss = fs.readFileSync(this.defaultStylePath).toString();
+
+        FileSystemHelper.writeOutFile({
+          data: highlightCss,
+          outDir,
+          rootDir,
+          sourceFilePath: cssTargetFilePath,
+          outExtension: ".css",
+        });
+
+        this.logger.info(`saved ${cssTargetFilePath}`);
+      }
+    }
+
+    return {
+      cssFilePath: path.relative(path.dirname(filePath), cssTargetFilePath),
+      styleName: path.basename(cssTargetFilePath),
+    };
   }
 
   private prepareHighlightCssFile(
@@ -125,7 +165,19 @@ export class MarkdownRenderer extends Renderable {
       fs.readFileSync(filePath).toString()
     );
 
-    let outContentWithHighlightCssAndHTML = renderedContent;
+    const defaultStyleConfig = this.prepareDefaultMarkdownStyleFile(
+      filePath,
+      rootDir,
+      outDir,
+      renderConfig
+    );
+
+    let outContentWithHighlightCssAndHTML = `
+      <link rel="stylesheet" type="text/css" class="default-markdown-style" href="${defaultStyleConfig.cssFilePath}">
+
+      ${renderedContent}
+    `;
+
     if (this.USING_HIGHLIGHT_JS_STORE.has(filePath)) {
       this.logger.info("highlight js: ", filePath);
 
@@ -151,7 +203,7 @@ export class MarkdownRenderer extends Renderable {
         }
       </style>
 
-      ${renderedContent}
+      ${outContentWithHighlightCssAndHTML}
       
       `;
     }
