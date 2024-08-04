@@ -9,12 +9,7 @@ import { Renderable } from "../Renderable";
 import path = require("path");
 
 export class TypeScriptRenderer extends Renderable {
-  private readonly userTsConfigPath: string =
-    WORKSPACE_DIR + "/user.tsconfig.json";
-  private readonly userBaseTsConfigPath: string =
-    WORKSPACE_DIR + "/user.base.tsconfig.json";
-
-  private ableToExecution = true;
+  private buildCommand_: string;
 
   private tsConfig: {
     files: string[];
@@ -31,24 +26,36 @@ export class TypeScriptRenderer extends Renderable {
     super(traversal, engineState, renderConfig);
   }
 
+  protected setupSelfConfig(): void {
+    const renderConfig = this.renderConfig;
+
+    this.initForTsConfig(
+      renderConfig.rootDir,
+      renderConfig.outDir,
+      renderConfig
+    );
+
+    const watchStatement = renderConfig.watch?.enabled ? "--watch" : "";
+
+    this.buildCommand_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchStatement}`;
+  }
+
   private readUserTsConfigFile() {
-    return fs.readFileSync(this.userBaseTsConfigPath).toString();
+    const userBaseTsConfigPath: string =
+      WORKSPACE_DIR + "/user.base.tsconfig.json";
+    return fs.readFileSync(userBaseTsConfigPath).toString();
   }
 
   private writeUserTsConfigFile(data: string) {
-    fs.writeFileSync(this.userTsConfigPath, data);
+    const userTsConfigPath: string = WORKSPACE_DIR + "/user.tsconfig.json";
+    fs.writeFileSync(userTsConfigPath, data);
   }
 
   private initForTsConfig(
-    filePath: string,
     rootDir: string,
     outDir: string,
     renderConfig: RenderConfig
   ) {
-    if (!this.ableToExecution) {
-      throw Error("Unable to execute typescript due to missing npx command");
-    }
-
     this.tsConfig = JSON.parse(this.readUserTsConfigFile());
 
     if (renderConfig?.typescript?.config) {
@@ -79,28 +86,24 @@ export class TypeScriptRenderer extends Renderable {
     outDir: string
   ): Promise<void> {
     if (!this.tsConfig) {
-      const renderConfig = this.renderConfig;
+      this.logger.info("ts command: ", this.buildCommand_);
 
-      this.initForTsConfig(filePath, rootDir, outDir, renderConfig);
-
-      const watchStatement = renderConfig.watch?.enabled ? "--watch" : "";
-
-      const command_ = `npx tsc --project ${WORKSPACE_DIR}/user.tsconfig.json ${watchStatement}`;
-      this.logger.info("ts command: ", command_);
-
-      if (renderConfig.watch?.enabled) {
-        const process_ = exec(command_, (error_, stdout_, stderr_) => {
-          if (error_) {
-            this.logger.error(`exec error: ${error_}`);
-            return;
+      if (this.renderConfig.watch?.enabled) {
+        const process_ = exec(
+          this.buildCommand_,
+          (error_, stdout_, stderr_) => {
+            if (error_) {
+              this.logger.error(`exec error: ${error_}`);
+              return;
+            }
+            this.logger.info(`stdout: ${stdout_}`);
+            this.logger.error(`stderr: ${stderr_}`);
           }
-          this.logger.info(`stdout: ${stdout_}`);
-          this.logger.error(`stderr: ${stderr_}`);
-        });
+        );
 
         this.logger.info("start watching process on PID: ", process_.pid);
       } else {
-        const output = execSync(command_).toString();
+        const output = execSync(this.buildCommand_).toString();
 
         this.logger.info("stdout: ", output);
       }

@@ -13,12 +13,29 @@ export class MarkdownRenderer extends Renderable {
 
   private readonly USING_HIGHLIGHT_JS_STORE: Set<string> = new Set<string>();
 
+  private selfConfig_: markdownit.Options = {};
+
   constructor(
     traversal: TraversalWorkspace,
     engineState: BullEngineState,
     renderConfig: RenderConfig
   ) {
     super(traversal, engineState, renderConfig);
+  }
+
+  protected setupSelfConfig(): void {
+    this.selfConfig_ = Object.assign(
+      {},
+      {
+        html: true,
+        linkify: true,
+        typographer: true,
+        langPrefix: "language-",
+        breaks: true,
+        xhtmlOut: true,
+      },
+      this.renderConfig.markdown.config || {}
+    );
   }
 
   private prepareHighlightCssFile(
@@ -65,6 +82,23 @@ export class MarkdownRenderer extends Renderable {
     };
   }
 
+  private highlightHandler(filePath: string, code: string, lang: string) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        this.USING_HIGHLIGHT_JS_STORE.add(filePath);
+
+        return hljs.highlight(code, {
+          language: lang,
+          ignoreIllegals: true,
+        }).value;
+      } catch (err) {
+        this.logger.error(err);
+      }
+    }
+
+    return ""; // use external default escaping
+  }
+
   protected async doRender(
     filePath: string,
     rootDir: string,
@@ -77,38 +111,15 @@ export class MarkdownRenderer extends Renderable {
     this.logger.info(filePath);
     const renderConfig = this.renderConfig;
 
-    const config_: markdownit.Options = Object.assign(
-      {},
-      {
-        html: true,
-        linkify: true,
-        typographer: true,
-        langPrefix: "language-",
-        breaks: true,
-        xhtmlOut: true,
-        highlight: (str: string, lang: string) => {
-          if (lang && hljs.getLanguage(lang)) {
-            try {
-              this.USING_HIGHLIGHT_JS_STORE.add(filePath);
+    // this.logger.info("config: ", selfConfig_);
 
-              return hljs.highlight(str, {
-                language: lang,
-                ignoreIllegals: true,
-              }).value;
-            } catch (err) {
-              this.logger.error(err);
-            }
-          }
-
-          return ""; // use external default escaping
-        },
+    Object.assign(this.selfConfig_, {
+      highlight: (code: string, lang: string) => {
+        return this.highlightHandler(filePath, code, lang);
       },
-      renderConfig.markdown.config
-    );
+    });
 
-    // this.logger.info("config: ", config_);
-
-    const mdProcesser = markdownit(config_);
+    const mdProcesser = markdownit(this.selfConfig_);
 
     const renderedContent = mdProcesser.render(
       fs.readFileSync(filePath).toString()

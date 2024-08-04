@@ -5,6 +5,8 @@ import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
 
 export class CopyResourceRenderer extends Renderable {
+  private extsToCopy: string[] = [];
+
   constructor(
     traversal: TraversalWorkspace,
     engineState: BullEngineState,
@@ -13,14 +15,23 @@ export class CopyResourceRenderer extends Renderable {
     super(traversal, engineState, renderConfig);
   }
 
-  protected async doRender(filePath: string, rootDir: string, outDir: string) {
-    const renderConfig = this.renderConfig;
-
-    let extsToCopy = [".jpg", ".jpeg", ".png", ".gif", ".ico", ".woff", ".ttf"];
-    if (Array.isArray(renderConfig.copyResource?.config?.extsToCopy)) {
-      extsToCopy = renderConfig.copyResource?.config?.extsToCopy;
+  protected setupSelfConfig(): void {
+    this.extsToCopy = [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif",
+      ".ico",
+      ".woff",
+      ".ttf",
+    ];
+    if (Array.isArray(this.renderConfig.copyResource?.config?.extsToCopy)) {
+      this.extsToCopy = this.renderConfig.copyResource?.config?.extsToCopy;
     }
-    if (extsToCopy.some((ext) => filePath.endsWith(ext))) {
+  }
+
+  protected async doRender(filePath: string, rootDir: string, outDir: string) {
+    if (this.extsToCopy.some((ext) => filePath.endsWith(ext))) {
       this.logger.info("copy resource for ", filePath);
       FileSystemHelper.copyFile({
         sourceFilePath: filePath,

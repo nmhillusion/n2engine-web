@@ -11,12 +11,26 @@ export class PugRenderer extends Renderable {
   private readonly PATTERN__LINK_TS =
     /<script(?:.+?)src=(?:'|")(?:.+?)(\.ts)(?:'|")(?:.*?)>/;
 
+  private selfConfig_: pug.Options = {};
+
   constructor(
     traversaler: TraversalWorkspace,
     engineState: BullEngineState,
     renderConfig: RenderConfig
   ) {
     super(traversaler, engineState, renderConfig);
+  }
+
+  protected setupSelfConfig(): void {
+    const renderConfig = this.renderConfig;
+
+    this.selfConfig_ = {
+      pretty: true,
+    };
+
+    if (renderConfig?.pug?.config) {
+      Object.assign(this.selfConfig_, renderConfig.pug.config);
+    }
   }
 
   private renameForImportScss(content: string): string {
@@ -54,17 +68,8 @@ export class PugRenderer extends Renderable {
   protected async doRender(filePath: string, rootDir: string, outDir: string) {
     if (filePath.endsWith(".pug")) {
       this.logger.info(filePath);
-      const renderConfig = this.renderConfig;
 
-      const configToRender = {
-        pretty: true,
-      };
-
-      if (renderConfig?.pug?.config) {
-        Object.assign(configToRender, renderConfig.pug.config);
-      }
-
-      let rendered = pug.renderFile(filePath, configToRender);
+      let rendered = pug.renderFile(filePath, this.selfConfig_);
 
       rendered = this.renameForImportTs(rendered);
       rendered = this.renameForImportScss(rendered);

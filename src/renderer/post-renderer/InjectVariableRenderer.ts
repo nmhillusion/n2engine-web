@@ -10,13 +10,16 @@ export class InjectVariableRenderer extends Renderable {
     /{{\s*n2v:(.+?)\s*}}/gi;
 
   constructor(
-    variableFilePathToInject: string,
+    private variableFilePathToInject: string,
     traversaler: TraversalWorkspace,
     engineState: BullEngineState,
     renderConfig: RenderConfig
   ) {
     super(traversaler, engineState, renderConfig);
-    this.loadVariableFromFile(variableFilePathToInject);
+  }
+
+  protected setupSelfConfig(): void {
+    this.loadVariableFromFile(this.variableFilePathToInject);
   }
 
   private loadVariableFromFile(filePath: string) {

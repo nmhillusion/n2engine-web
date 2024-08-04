@@ -29,7 +29,11 @@ export abstract class Renderable {
         return self.doRender(filePath, rootDir, outDir);
       },
     });
+
+    this.setupSelfConfig();
   }
+
+  protected abstract setupSelfConfig(): void;
 
   protected abstract doRender(
     filePath: string,

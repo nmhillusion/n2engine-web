@@ -17,6 +17,10 @@ export class RewriteJavascriptRenderer extends Renderable {
     super(traversaler, engineState, renderConfig);
   }
 
+  protected setupSelfConfig(): void {
+    // do nothing
+  }
+
   protected doRender(filePath: string, rootDir: string, outDir: string) {
     const renderConfig = this.renderConfig;
 
