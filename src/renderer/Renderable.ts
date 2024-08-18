@@ -25,8 +25,15 @@ export abstract class Renderable {
     const self = this;
     this.traversaler.registerCallback({
       name: self.constructor.name,
-      invoke(filePath: string) {
-        return self.doRender(filePath, rootDir, outDir);
+      invoke: (filePath: string) => {
+        if (!filePath.startsWith("_")) {
+          return self.doRender(filePath, rootDir, outDir);
+        } else {
+          this.logger.warn(
+            "Not traversal for internal file (filename start with `_`), skipped: ",
+            filePath
+          );
+        }
       },
     });
 
