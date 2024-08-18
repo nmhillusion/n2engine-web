@@ -1,6 +1,7 @@
 ---
 layoutPath: "../layout/_posts2.pug"
 title: "DNA definition"
+iconLink: "/post/dna.png"
 @author: nmhillusion
 @date: 2024-08-18 12:14:46 +0700
 @categories: news, science, biology

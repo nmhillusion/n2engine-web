@@ -14,6 +14,7 @@ import { PugRenderHelper } from "../../helper/PugRenderHelper";
 export interface MarkdownMetadata {
   layoutPath: string;
   title: string;
+  iconLink: string;
   variables: { [key: string]: string };
 }
 
@@ -164,6 +165,7 @@ export class MarkdownRenderer extends Renderable {
   private parseMetadataOfMarkdownFile(metadata: string): MarkdownMetadata {
     let title = "";
     let layoutPath = "";
+    let iconLink = "";
     const variables = {};
 
     metadata
@@ -189,6 +191,8 @@ export class MarkdownRenderer extends Renderable {
           layoutPath = value;
         } else if ("title" == key) {
           title = value;
+        } else if ("iconLink" == key) {
+          iconLink = value;
         } else if (key.match(/^@\w+$/)) {
           variables[key.split("@")[1]] = value;
         }
@@ -197,6 +201,7 @@ export class MarkdownRenderer extends Renderable {
     return {
       layoutPath,
       title,
+      iconLink,
       variables,
     };
   }
@@ -332,6 +337,7 @@ export class MarkdownRenderer extends Renderable {
       outContentWithHighlightCssAndHTML = layoutContent
         .replace(/{{\s*content\s*}}/g, outContentWithHighlightCssAndHTML)
         .replace(/{{\s*title\s*}}/g, metadata?.title ?? "")
+        .replace(/{{\s*iconLink\s*}}/g, metadata?.iconLink ?? "")
         .trim();
     }
 

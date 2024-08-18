@@ -3,25 +3,16 @@ import * as path from "path";
 
 export class FileSystemHelper {
   static getFileNameFromPath(path_: string, ignoreExt = true): string {
-    // {
-    //   const slashIndex = path_.lastIndexOf("/");
-    //   if (-1 < slashIndex && slashIndex < path_.length - 1) {
-    //     path_ = path_.substring(slashIndex + 1);
-    //   }
-    // }
-
-    // {
-    //   const dotIndex = path_.lastIndexOf(".");
-    //   if (0 < dotIndex && ignoreExt) {
-    //     path_ = path_.substring(0, dotIndex);
-    //   }
-    // }
-
-    // return path_;
     const baseName = path.basename(path_);
-    return baseName.includes(".")
+    let outName = baseName.includes(".")
       ? baseName.substring(0, baseName.lastIndexOf("."))
       : baseName;
+
+    if (!ignoreExt) {
+      outName = outName + path.extname(path_);
+    }
+
+    return outName;
   }
 
   static getDirFromPath(path_: string) {
