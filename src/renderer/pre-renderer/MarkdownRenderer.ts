@@ -2,12 +2,14 @@ import * as fs from "fs";
 import hljs from "highlight.js";
 import * as markdownit from "markdown-it";
 import * as path from "path";
+import * as pug from "pug";
 import { WORKSPACE_DIR } from "../..";
 import { BullEngineState } from "../../core";
 import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
 import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
+import { PugRenderHelper } from "../../helper/PugRenderHelper";
 
 export interface MarkdownMetadata {
   layoutPath: string;
@@ -192,6 +194,52 @@ export class MarkdownRenderer extends Renderable {
     };
   }
 
+  private injectVariableIntoRenderedContent(
+    content: string,
+    metadata: MarkdownMetadata
+  ): string {
+    if (!metadata?.variables) {
+      return content;
+    }
+
+    let outContent = content;
+
+    const variables = metadata.variables || {};
+
+    const keys = Object.keys(variables);
+    for (const key_ of keys) {
+      outContent = outContent.replace(`{{${key_}}}`, variables[key_]);
+    }
+
+    return outContent;
+  }
+
+  private loadLayoutFile(filePath: string, metadata: MarkdownMetadata): string {
+    if (!metadata?.layoutPath) {
+      return "";
+    }
+
+    const layoutFilePath = path.resolve(
+      path.dirname(filePath),
+      metadata.layoutPath
+    );
+
+    if (!fs.existsSync(layoutFilePath)) {
+      return "";
+    }
+
+    const ext = path.extname(layoutFilePath);
+
+    if (ext === ".pug") {
+      return pug.renderFile(
+        layoutFilePath,
+        PugRenderHelper.combineConfig(this.renderConfig)
+      );
+    } else if (ext === ".html") {
+      return fs.readFileSync(layoutFilePath).toString("utf-8");
+    }
+  }
+
   protected async doRender(
     filePath: string,
     rootDir: string,
@@ -206,10 +254,12 @@ export class MarkdownRenderer extends Renderable {
     let markdownContent = fs.readFileSync(filePath).toString("utf-8").trim();
 
     const metadataContent = this.extractMetadataOfMarkdownFile(markdownContent);
-    let metadata = null;
+    let metadata: MarkdownMetadata = null;
+    let layoutContent = "";
     if (metadataContent) {
       markdownContent = markdownContent.replace(metadataContent, "").trim();
       metadata = this.parseMetadataOfMarkdownFile(metadataContent);
+      layoutContent = this.loadLayoutFile(filePath, metadata);
     }
 
     this.logger.info({ metadata });
@@ -266,6 +316,18 @@ export class MarkdownRenderer extends Renderable {
       ${outContentWithHighlightCssAndHTML}
       
       `;
+    }
+
+    outContentWithHighlightCssAndHTML = this.injectVariableIntoRenderedContent(
+      outContentWithHighlightCssAndHTML,
+      metadata
+    );
+
+    if (layoutContent && metadata) {
+      outContentWithHighlightCssAndHTML = layoutContent
+        .replace(/{{content}}/g, outContentWithHighlightCssAndHTML)
+        .replace(/{{title}}/g, metadata?.title ?? "")
+        .trim();
     }
 
     FileSystemHelper.writeOutFile({

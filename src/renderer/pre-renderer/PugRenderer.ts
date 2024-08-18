@@ -4,6 +4,7 @@ import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
 import { BullEngineState } from "../../core";
 import { TraversalWorkspace } from "../../core/TraversalWorkspace";
+import { PugRenderHelper } from "../../helper/PugRenderHelper";
 
 export class PugRenderer extends Renderable {
   private readonly PATTERN__LINK_SCSS =
@@ -22,15 +23,7 @@ export class PugRenderer extends Renderable {
   }
 
   protected setupSelfConfig(): void {
-    const renderConfig = this.renderConfig;
-
-    this.selfConfig_ = {
-      pretty: true,
-    };
-
-    if (renderConfig?.pug?.config) {
-      Object.assign(this.selfConfig_, renderConfig.pug.config);
-    }
+    this.selfConfig_ = PugRenderHelper.combineConfig(this.renderConfig);
   }
 
   private renameForImportScss(content: string): string {
