@@ -1,11 +1,10 @@
 ---
-layoutPath: post.html
-title: "Latest Rate of Bank"
+layoutPath: "../layout/_posts2.pug"
+title: "DNA definition"
 @author: nmhillusion
 @date: 2024-08-18 12:14:46 +0700
-@categories: news, bank
+@categories: news, science, biology
 ---
-
 
 Deoxyribonucleic acid (/diːˈɒksɪˌraɪboʊnjuːˌkliːɪk, -ˌkleɪ-/ ⓘ;[1] DNA) is a polymer composed of two polynucleotide chains that coil around each other to form a double helix. The polymer carries genetic instructions for the development, functioning, growth and reproduction of all known organisms and many viruses. DNA and ribonucleic acid (RNA) are nucleic acids. Alongside proteins, lipids and complex carbohydrates (polysaccharides), nucleic acids are one of the four major types of macromolecules that are essential for all known forms of life.
 

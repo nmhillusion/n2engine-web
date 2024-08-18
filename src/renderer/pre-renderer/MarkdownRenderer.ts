@@ -178,6 +178,13 @@ export class MarkdownRenderer extends Renderable {
             ?.slice(1)
             .map((it) => it.trim()) ?? [];
 
+        if (value.match(/^".*"$/)) {
+          value = value
+            .match(/^"(.*?)"$/)
+            ?.splice(1)
+            .join("");
+        }
+
         if ("layoutPath" == key) {
           layoutPath = value;
         } else if ("title" == key) {
@@ -208,7 +215,10 @@ export class MarkdownRenderer extends Renderable {
 
     const keys = Object.keys(variables);
     for (const key_ of keys) {
-      outContent = outContent.replace(`{{${key_}}}`, variables[key_]);
+      outContent = outContent.replace(
+        new RegExp(`{{\s*${key_}\s*}}`, "g"),
+        variables[key_]
+      );
     }
 
     return outContent;
@@ -318,17 +328,17 @@ export class MarkdownRenderer extends Renderable {
       `;
     }
 
+    if (layoutContent && metadata) {
+      outContentWithHighlightCssAndHTML = layoutContent
+        .replace(/{{\s*content\s*}}/g, outContentWithHighlightCssAndHTML)
+        .replace(/{{\s*title\s*}}/g, metadata?.title ?? "")
+        .trim();
+    }
+
     outContentWithHighlightCssAndHTML = this.injectVariableIntoRenderedContent(
       outContentWithHighlightCssAndHTML,
       metadata
     );
-
-    if (layoutContent && metadata) {
-      outContentWithHighlightCssAndHTML = layoutContent
-        .replace(/{{content}}/g, outContentWithHighlightCssAndHTML)
-        .replace(/{{title}}/g, metadata?.title ?? "")
-        .trim();
-    }
 
     FileSystemHelper.writeOutFile({
       data: outContentWithHighlightCssAndHTML,
