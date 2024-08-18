@@ -2,7 +2,7 @@
   "compilerOptions": {
     "sourceRoot": "./src",
     "sourceMap": true,
-    "target": "ES6",
+    "target": "ES2018",
     "alwaysStrict": true,
     "declaration": true,
     "declarationMap": true,

@@ -2,12 +2,18 @@ import * as fs from "fs";
 import hljs from "highlight.js";
 import * as markdownit from "markdown-it";
 import * as path from "path";
+import { WORKSPACE_DIR } from "../..";
 import { BullEngineState } from "../../core";
 import { TraversalWorkspace } from "../../core/TraversalWorkspace";
 import { FileSystemHelper } from "../../helper/FileSystemHelper";
 import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
-import { WORKSPACE_DIR } from "../..";
+
+export interface MarkdownMetadata {
+  layoutPath: string;
+  title: string;
+  variables: { [key: string]: string };
+}
 
 export class MarkdownRenderer extends Renderable {
   private readonly HIGHLIGHT_CSS_FILE_NAME = "markdown.highlight.css";
@@ -139,6 +145,53 @@ export class MarkdownRenderer extends Renderable {
     return ""; // use external default escaping
   }
 
+  private extractMetadataOfMarkdownFile(markdownContent: string) {
+    const meta_ = markdownContent.match(/^---(.+?)---$/ms);
+    if (meta_ && meta_.length > 0) {
+      const metadata = meta_[1];
+      this.logger.info({
+        metadata,
+      });
+
+      return metadata;
+    } else {
+      this.logger.info("not found metadata");
+    }
+  }
+
+  private parseMetadataOfMarkdownFile(metadata: string): MarkdownMetadata {
+    let title = "";
+    let layoutPath = "";
+    const variables = {};
+
+    metadata
+      .split("\n")
+      .map((it) => it.trim())
+      .filter(Boolean)
+      .filter((f) => f.match(/^.+:.+$/))
+      .forEach((it) => {
+        let [key, value] =
+          it
+            .match(/^(.+?):(.+?)$/)
+            ?.slice(1)
+            .map((it) => it.trim()) ?? [];
+
+        if ("layoutPath" == key) {
+          layoutPath = value;
+        } else if ("title" == key) {
+          title = value;
+        } else if (key.match(/^@\w+$/)) {
+          variables[key.split("@")[1]] = value;
+        }
+      });
+
+    return {
+      layoutPath,
+      title,
+      variables,
+    };
+  }
+
   protected async doRender(
     filePath: string,
     rootDir: string,
@@ -150,6 +203,16 @@ export class MarkdownRenderer extends Renderable {
 
     this.logger.info(filePath);
     const renderConfig = this.renderConfig;
+    let markdownContent = fs.readFileSync(filePath).toString("utf-8").trim();
+
+    const metadataContent = this.extractMetadataOfMarkdownFile(markdownContent);
+    let metadata = null;
+    if (metadataContent) {
+      markdownContent = markdownContent.replace(metadataContent, "").trim();
+      metadata = this.parseMetadataOfMarkdownFile(metadataContent);
+    }
+
+    this.logger.info({ metadata });
 
     // this.logger.info("config: ", selfConfig_);
 
@@ -160,10 +223,7 @@ export class MarkdownRenderer extends Renderable {
     });
 
     const mdProcesser = markdownit(this.selfConfig_);
-
-    const renderedContent = mdProcesser.render(
-      fs.readFileSync(filePath).toString()
-    );
+    const renderedContent = mdProcesser.render(markdownContent);
 
     const defaultStyleConfig = this.prepareDefaultMarkdownStyleFile(
       filePath,
