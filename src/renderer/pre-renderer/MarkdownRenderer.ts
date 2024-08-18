@@ -252,6 +252,10 @@ export class MarkdownRenderer extends Renderable {
       );
     } else if (ext === ".html") {
       return fs.readFileSync(layoutFilePath).toString("utf-8");
+    } else {
+      throw new Error(
+        `Unsupported layout file: ${layoutFilePath}. Supported only .pug and .html`
+      );
     }
   }
 
