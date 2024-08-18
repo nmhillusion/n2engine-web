@@ -1,3 +1,4 @@
+import * as path from "path";
 import {
   LogFactory,
   LoggerConfig,
@@ -26,13 +27,15 @@ export abstract class Renderable {
     this.traversaler.registerCallback({
       name: self.constructor.name,
       invoke: (filePath: string) => {
-        if (!filePath.startsWith("_")) {
+        if (!path.basename(filePath).startsWith("_")) {
           return self.doRender(filePath, rootDir, outDir);
         } else {
           this.logger.warn(
             "Not traversal for internal file (filename start with `_`), skipped: ",
             filePath
           );
+
+          return Promise.resolve();
         }
       },
     });
