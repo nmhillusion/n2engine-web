@@ -1,6 +1,6 @@
 # n2ngin-bull-engine
 
-n2engine series: BullEngine to render (pug|scss|typescript|assets|variables) to (html|css|javascript|assets)
+n2engine bull engine: render (pug|markdown|scss|typescript|assets|variables) to (html|css|javascript|assets)
 
 ---
 
@@ -24,6 +24,13 @@ new BullEngine()
       config: {
         // config from pug.Options & pug.LocalsObject
         pretty: false,
+      },
+    },
+    markdown: {
+      enabled: true,
+      highlightStyleName: "atom-one-dark",
+      config: {
+        // config from markdown.Options
       },
     },
     scss: {
@@ -83,7 +90,7 @@ will render to:
 <script src="./main.js" type="module></script>
 ```
 
-## Caveats:
+## Pre-requisites:
 
 - Required to install command `npx` to use Typescript renderer.
 - SCSS: Only support SCSS file, not support SASS file
@@ -120,3 +127,35 @@ html
     h1.author {{n2v:author.name}}
     p {{ n2v.author.email }}
 ```
+
+---
+
+## Development:
+
+- Main source directory: `src`
+
+- You have to run `npm run build` for any chnages in this project `src` to rebuild the project.
+
+- Read `package.json` for more commands.
+
+- Core parts:
+
+  - Engine: `src/core` - main module to proceed engine
+  - Renderer: `src/renderer` - module of renders:
+
+    - Pre-renderer: `src/renderer/pre-renderer` - module of pre-renderers
+    - Post-renderer: `src/renderer/post-renderer` - module of post-renderers
+  
+  - Helpers: `src/helper` - module of helpers and utilities
+
+## Testing:
+
+- Run `npm run test` to test this project.
+
+## Example Server for testing:
+
+- Locate at `/sample`
+
+- `npm run watch` to test this example server in watch mode. Or `npm run test` to build example server for serve.
+
+- Then, serving for Example Server by `npm run serve`.
