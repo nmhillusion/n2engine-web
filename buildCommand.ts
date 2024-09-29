@@ -13,6 +13,7 @@ const commands = [
   `ts-node ./support/generate-info.ts`,
   `tsc`,
   `cp ./src/user.base.tsconfig.json ./package.json dist`,
+  `cp -r ./src/resources dist`,
   `ts-node ./support/build-style-list-of-highlight.ts`,
   `ts-node ./support/build-publish-package-json.ts`,
 ];
