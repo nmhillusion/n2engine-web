@@ -96,6 +96,28 @@ will render to:
 - SCSS: Only support SCSS file, not support SASS file
 - Root Dir and Out Dir: must be the real path (full path), not support relative path (start with `./`, `../`)
 
+## Metadata of Markdown file:
+
+- `layoutPath`: path of layout file, relative to current file
+- `title`: title of post
+- `iconLink`: link of icon, url address of image
+- `@<<paramName>>`: variables with paramName
+
+### Example:
+
+```markdown
+---
+layoutPath: "../layout/_posts2.pug"
+title: "DNA definition"
+iconLink: "/post/dna.png"
+@author: nmhillusion
+@date: 2024-08-18 12:14:46 +0700
+@categories: news, science, biology
+---
+
+Deoxyribonucleic acid (/diːˈɒksɪˌraɪboʊnjuːˌkliːɪk, -ˌkleɪ-/ ⓘ;[1] DNA) is a polymer composed of two polynucleotide chains that coil around each other to form a double helix.
+```
+
 ## Variables:
 
 Structure of a variable environment file must look like:
@@ -145,7 +167,7 @@ html
 
     - Pre-renderer: `src/renderer/pre-renderer` - module of pre-renderers
     - Post-renderer: `src/renderer/post-renderer` - module of post-renderers
-  
+
   - Helpers: `src/helper` - module of helpers and utilities
 
 ## Testing:
