@@ -106,3 +106,10 @@ th {
 th {
   background-color: #ddd;
 }
+
+/* -- CODE ------- */
+pre:has(code[class*="language-"]) {
+  padding: 1em;
+  border-radius: 0.25em;
+  overflow: auto;
+}

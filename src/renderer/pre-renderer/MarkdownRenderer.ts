@@ -325,10 +325,8 @@ export class MarkdownRenderer extends Renderable {
       }">
       <style>
         pre:has(code[class*="language-"]) {
-          padding: 1em;
           background-color: ${isDarkMode ? "#333" : "#eee"};
           color: ${isDarkMode ? "#ccc" : "#333"};
-          border-radius: 0.25em;
         }
       </style>
 
