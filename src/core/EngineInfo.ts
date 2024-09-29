@@ -1,6 +1,6 @@
 
   export const EngineInfo = {
     name: "@nmhillusion/n2ngin-bull-engine",
-    version: "2024.3.2",
+    version: "2024.3.3",
     description: "n2engine series: BullEngine to render (pug|scss|typescript|assets|variables) to (html|css|javascript|assets)"
   };
