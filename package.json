@@ -24,28 +24,28 @@
   "license": "MIT",
   "devDependencies": {
     "@nmhillusion/n2mix": "^2023.129.4",
-    "@types/express": "^4.17.21",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.11",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.9.3",
     "@types/shelljs": "^0.8.15",
     "@types/uglify-js": "^3.17.5",
-    "express": "^4.19.2",
+    "express": "^4.21.1",
     "jest": "^29.7.0",
-    "nodemon": "^3.1.4",
-    "ts-jest": "^29.2.3",
+    "nodemon": "^3.1.7",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
     "@nmhillusion/n2log4web": "^2023.0108.1",
-    "@types/markdown-it": "^14.1.1",
+    "@types/markdown-it": "^14.1.2",
     "@types/pug": "^2.0.10",
     "highlight.js": "^11.10.0",
     "markdown-it": "^14.1.0",
     "pug": "^3.0.3",
-    "sass": "^1.77.8",
+    "sass": "^1.81.0",
     "shelljs": "^0.8.5",
-    "typescript": "^5.5.3",
-    "uglify-js": "^3.19.0"
+    "typescript": "^5.7.2",
+    "uglify-js": "^3.19.3"
   },
   "repository": {
     "type": "git",
