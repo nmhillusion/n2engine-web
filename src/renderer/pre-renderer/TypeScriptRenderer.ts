@@ -2,8 +2,7 @@ import * as fs from "fs";
 import { CompilerOptions } from "typescript";
 
 import { exec, execSync } from "child_process";
-import { TraversalWorkspace } from "../../core/TraversalWorkspace";
-import { BullEngineState, WORKSPACE_DIR } from "../../index";
+import { WORKSPACE_DIR } from "../../index";
 import { RenderConfig } from "../../model";
 import { Renderable } from "../Renderable";
 import path = require("path");
@@ -17,14 +16,6 @@ export class TypeScriptRenderer extends Renderable {
     exclude: string[];
     compilerOptions: CompilerOptions;
   };
-
-  constructor(
-    traversal: TraversalWorkspace,
-    engineState: BullEngineState,
-    renderConfig: RenderConfig
-  ) {
-    super(traversal, engineState, renderConfig);
-  }
 
   protected setupSelfConfig(): void {
     const renderConfig = this.renderConfig;
@@ -77,6 +68,9 @@ export class TypeScriptRenderer extends Renderable {
     if (!this.tsConfig.files || 0 == this.tsConfig.files.length) {
       delete this.tsConfig.files;
     }
+
+    this.logger.info("combined ts-config: ", this.tsConfig);
+
     this.writeUserTsConfigFile(JSON.stringify(this.tsConfig));
   }
 
@@ -85,28 +79,38 @@ export class TypeScriptRenderer extends Renderable {
     rootDir: string,
     outDir: string
   ): Promise<void> {
-    if (!this.tsConfig) {
-      this.logger.info("ts command: ", this.buildCommand_);
+    if (
+      this.engineState.latestCompileTsTime &&
+      this.engineState.latestCompileTsTime.getTime() >=
+        fs.statSync(filePath).mtime.getTime()
+    ) {
+      this.logger.info(
+        "skip render because latestCompileTsTime is newer than file mtime: ",
+        filePath,
+        this.engineState.latestCompileTsTime,
+        fs.statSync(filePath).mtime
+      );
+      return;
+    }
 
-      if (this.renderConfig.watch?.enabled) {
-        const process_ = exec(
-          this.buildCommand_,
-          (error_, stdout_, stderr_) => {
-            if (error_) {
-              this.logger.error(`exec error: ${error_}`);
-              return;
-            }
-            this.logger.info(`stdout: ${stdout_}`);
-            this.logger.error(`stderr: ${stderr_}`);
-          }
-        );
+    this.logger.info("ts command: ", this.buildCommand_);
+    this.engineState.latestCompileTsTime = new Date();
 
-        this.logger.info("start watching process on PID: ", process_.pid);
-      } else {
-        const output = execSync(this.buildCommand_).toString();
+    if (this.renderConfig.watch?.enabled) {
+      const process_ = exec(this.buildCommand_, (error_, stdout_, stderr_) => {
+        if (error_) {
+          this.logger.error(`exec error: ${error_}`);
+          return;
+        }
+        this.logger.info(`stdout: ${stdout_}`);
+        this.logger.error(`stderr: ${stderr_}`);
+      });
 
-        this.logger.info("stdout: ", output);
-      }
+      this.logger.info("start watching process on PID: ", process_.pid);
+    } else {
+      const output = execSync(this.buildCommand_).toString();
+
+      this.logger.info("stdout: ", output);
     }
   }
 }
